@@ -460,9 +460,9 @@
 <img src="/2018/01/26/git-notes/git_6.jpg">
 <p>当你还没将代码提交到服务器，<code>git reset</code> 是一个很简单的方法。但如果已经提交了，那就最好使用 <code>git revert</code> 等操作。<code>git reset</code> 还有参数来控制其影响区域：</p>
 <ul>
-<li>–soft – 缓存区和工作目录都不会被改变</li>
-<li>–mixed – 默认选项。缓存区和你指定的提交同步，但工作目录不受影响</li>
-<li>–hard – 缓存区和工作目录都同步到你指定的提交</li>
+<li>--soft – 缓存区和工作目录都不会被改变</li>
+<li>--mixed – 默认选项。缓存区和你指定的提交同步，但工作目录不受影响</li>
+<li>--hard – 缓存区和工作目录都同步到你指定的提交</li>
 </ul>
 <p>一张图解释清楚各个参数的作用域：</p>
 <img src="/2018/01/26/git-notes/git_7.jpg">
@@ -503,41 +503,41 @@
 <table>
 <thead>
 <tr class="header">
-<th style="text-align: center;">命令</th>
-<th style="text-align: center;">作用域</th>
-<th style="text-align: left;">常用情景</th>
+<th align="center">命令</th>
+<th align="center">作用域</th>
+<th align="left">常用情景</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: center;">git reset</td>
-<td style="text-align: center;">提交层面</td>
-<td style="text-align: left;">在私有分支上舍弃一些没有提交的更改</td>
+<td align="center">git reset</td>
+<td align="center">提交层面</td>
+<td align="left">在私有分支上舍弃一些没有提交的更改</td>
 </tr>
 <tr class="even">
-<td style="text-align: center;">git reset</td>
-<td style="text-align: center;">文件层面</td>
-<td style="text-align: left;">将文件从缓存区中移除</td>
+<td align="center">git reset</td>
+<td align="center">文件层面</td>
+<td align="left">将文件从缓存区中移除</td>
 </tr>
 <tr class="odd">
-<td style="text-align: center;">git checkout</td>
-<td style="text-align: center;">提交层面</td>
-<td style="text-align: left;">切换分支或查看旧版本</td>
+<td align="center">git checkout</td>
+<td align="center">提交层面</td>
+<td align="left">切换分支或查看旧版本</td>
 </tr>
 <tr class="even">
-<td style="text-align: center;">git checkout</td>
-<td style="text-align: center;">文件层面</td>
-<td style="text-align: left;">舍弃工作目录中的更改</td>
+<td align="center">git checkout</td>
+<td align="center">文件层面</td>
+<td align="left">舍弃工作目录中的更改</td>
 </tr>
 <tr class="odd">
-<td style="text-align: center;">git revert</td>
-<td style="text-align: center;">提交层面</td>
-<td style="text-align: left;">在公共分支上回滚更改</td>
+<td align="center">git revert</td>
+<td align="center">提交层面</td>
+<td align="left">在公共分支上回滚更改</td>
 </tr>
 <tr class="even">
-<td style="text-align: center;">git revert</td>
-<td style="text-align: center;">文件层面</td>
-<td style="text-align: left;">（然而并没有）</td>
+<td align="center">git revert</td>
+<td align="center">文件层面</td>
+<td align="left">（然而并没有）</td>
 </tr>
 </tbody>
 </table>
@@ -697,7 +697,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">27</span>
+                    <span class="site-state-item-count">28</span>
                     <span class="site-state-item-name">posts</span>
                   </a>
                 </div>

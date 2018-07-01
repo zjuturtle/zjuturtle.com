@@ -436,7 +436,7 @@
 <h3 id="config.yml-文件"><code>_config.yml</code> 文件</h3>
 <p>在这个文件加入以下设置项，并填入相关信息。</p>
 <figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Gitalk</span></span><br><span class="line"><span class="comment"># more info please open https://github.com/gitalk/gitalk</span></span><br><span class="line"><span class="attr">gitalk:</span></span><br><span class="line"><span class="attr">  enable:</span> <span class="literal">true</span></span><br><span class="line"><span class="attr">  client_id:</span> <span class="comment"># your github application id</span></span><br><span class="line"><span class="attr">  client_secret:</span> <span class="comment"># your github application secret</span></span><br><span class="line"><span class="attr">  repo:</span>  <span class="comment"># your repo. Such as zjuturtle.github.io</span></span><br><span class="line"><span class="attr">  owner:</span> <span class="comment"># your github username. Such as zjuturtle</span></span><br><span class="line"><span class="attr">  admin:</span> <span class="comment"># People(github username) who have write permission to blog repo. Use commas to separate. </span></span><br><span class="line"><span class="attr">  distraction_free_mode:</span> <span class="literal">false</span></span><br></pre></td></tr></table></figure>
-<p><strong>Tips:如果出现 ‘未找到相关的 Issues 进行评论’ 的字样，则登陆 GitHub 授权即可</strong></p>
+<p><strong>Tips:如果出现 '未找到相关的 Issues 进行评论' 的字样，则登陆 GitHub 授权即可</strong></p>
 <h2 id="ssl-实现">SSL 实现</h2>
 <p>因为博客托管在 Github 上，所以在实现 SSL 上有点麻烦（毕竟不能直接）。我借助的是 <a href="https://www.cloudflare.com/" target="_blank" rel="noopener">cloudflare</a> 曲线救国的方式来实现的，虽然严格来说不能算是全链路 https，但起码不会被无良运营商夹带私货。</p>
 <h3 id="一些基本的修改">一些基本的修改</h3>
@@ -447,7 +447,7 @@
 <h3 id="cloudfare-设置步骤">Cloudfare 设置步骤</h3>
 <p>设置步骤基本参照了<a href="https://g2ex.github.io/2015/10/14/Hexo-with-SSL-Hosted-on-Github-Page/" target="_blank" rel="noopener">这个博客</a>。</p>
 <p>我们要做以下几步工作</p>
-<ol type="1">
+<ol style="list-style-type: decimal">
 <li>注册 <a href="https://www.cloudflare.com" target="_blank" rel="noopener"><code>Cloudflare</code></a>，添加个人网站</li>
 <li>获取 <code>Cloudflare</code> 的 <code>Domain Name Server</code></li>
 <li>在域名提供商处修改自己域名的 <code>Domain Name Server</code> 为 2 所获取的 DNS</li>
@@ -581,7 +581,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">27</span>
+                    <span class="site-state-item-count">28</span>
                     <span class="site-state-item-name">posts</span>
                   </a>
                 </div>

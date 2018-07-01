@@ -415,7 +415,7 @@
 <p>我们注意到 <span class="math inline">\(\sum_{n_2=0}^{N_2-1}x_{N_1n_2+n_1}e^{- \frac{2 \pi i}{N_2}n_2k_2}\)</span> 实际上是 <span class="math inline">\(N_1\)</span> 个 长度为 <span class="math inline">\(N_2\)</span> 的 DFT 变换。每一组是 <span class="math inline">\(x_{N_1n_2+n_1},n_1 \in [0, N_1-1]\)</span>。再乘以旋转因子 <span class="math inline">\(e^{- \frac{2 \pi i}Nn_1k_2}\)</span>。然后再做 <span class="math inline">\(N_2\)</span> 个 长度为 <span class="math inline">\(N_1\)</span> 的 DFT 变换。</p>
 <h3 id="具体实现">具体实现</h3>
 <p>具体做法是将原始信号重新排列再进行计算。步骤如下</p>
-<ol type="1">
+<ol style="list-style-type: decimal">
 <li>将信号按列存储为一个矩阵</li>
 <li>对每行计算 <span class="math inline">\(N_2\)</span> 点 DFT</li>
 <li>将矩阵每一项乘以旋转因子 <span class="math inline">\(e^{- \frac{2 \pi i}Nn_1n_2}\)</span></li>
@@ -438,7 +438,7 @@
 <p><span class="math display">\[a_q * b_q = dft^{-1}(dft(a_q)\ dft(b_q))\]</span></p>
 <p>这样，<span class="math inline">\(N\)</span> 长度的 DFT 变换便被分解为长度为 <span class="math inline">\(N-1\)</span> 的两个 DFT 和一个长度为 <span class="math inline">\(N-1\)</span> 的 DFT 逆变换。当然，如果 <span class="math inline">\(N-1\)</span> 因式分解后还是有大质数，那还是得继续使用雷德算法接着分解，这样的耗时也会很大。不过对于 <span class="math inline">\(a_q\)</span> 和 <span class="math inline">\(b_q\)</span> 的循环卷积，也可以使用补零到 2 的幂次方长度再进行 FFT 实现。显然<span class="math inline">\(a_q\)</span> 和 <span class="math inline">\(b_q\)</span> 这两个序列都是 <span class="math inline">\(N-1\)</span> 长度的</p>
 <h3 id="填补方法">填补方法</h3>
-<p>注意到 <span class="math inline">\(a_q\)</span> 和 <span class="math inline">\(b_q\)</span>，可以对 <span class="math inline">\(a_q\)</span> 和 <span class="math inline">\(b_q\)</span> 进行扩充得到 <span class="math inline">\(\hat{a_q}\)</span> 和 <span class="math inline">\(\hat{b_q}\)</span>，使得其长度变为 2 的幂次方。一般是扩充到长度 <span class="math inline">\(M&#39; \geq 2*N-3\)</span> 且 $ M’ $ 是 2 的幂次方。扩充的方法得注意一下，不是直接在后面补零就可以。</p>
+<p>注意到 <span class="math inline">\(a_q\)</span> 和 <span class="math inline">\(b_q\)</span>，可以对 <span class="math inline">\(a_q\)</span> 和 <span class="math inline">\(b_q\)</span> 进行扩充得到 <span class="math inline">\(\hat{a_q}\)</span> 和 <span class="math inline">\(\hat{b_q}\)</span>，使得其长度变为 2 的幂次方。一般是扩充到长度 <span class="math inline">\(M&#39; \geq 2*N-3\)</span> 且 $ M' $ 是 2 的幂次方。扩充的方法得注意一下，不是直接在后面补零就可以。</p>
 <ul>
 <li>对于序列 <span class="math inline">\(a_q\)</span>，在第 0 个元素和第 1 个元素间填补 <span class="math inline">\(M&#39;-N+1\)</span> 个零得到 <span class="math inline">\(\hat{a_q}\)</span></li>
 <li>对于序列 <span class="math inline">\(b_q\)</span>，在其后循环重复 <span class="math inline">\(b_q\)</span> 本身直到其长度为 <span class="math inline">\(M&#39;\)</span> 得到 <span class="math inline">\(\hat{b_q}\)</span></li>
@@ -592,7 +592,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">27</span>
+                    <span class="site-state-item-count">28</span>
                     <span class="site-state-item-name">posts</span>
                   </a>
                 </div>

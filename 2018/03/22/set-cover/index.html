@@ -406,7 +406,7 @@
 <a id="more"></a>
 <h2 id="问题-1">问题 1</h2>
 <h3 id="问题描述">问题描述</h3>
-<p>In the set cover problem, you are given m sets $ S_1,…,S_m$ each a subset of a common set <span class="math inline">\(U\)</span> with size <span class="math inline">\(|U|=n\)</span>. The goal is to select as few of these sets as possible, subject to the constraint that the union of the chosen sets is all of <span class="math inline">\(U\)</span>. (You can assume that $ ∪^m_{i=1} S_i=U $.) For example, if the given sets are {1,2}, {2,3}, and {3,4}, then the optimal solution consists of the sets {1,2} and {3,4}.</p>
+<p>In the set cover problem, you are given m sets $ S_1,...,S_m$ each a subset of a common set <span class="math inline">\(U\)</span> with size <span class="math inline">\(|U|=n\)</span>. The goal is to select as few of these sets as possible, subject to the constraint that the union of the chosen sets is all of <span class="math inline">\(U\)</span>. (You can assume that $ ∪^m_{i=1} S_i=U $.) For example, if the given sets are {1,2}, {2,3}, and {3,4}, then the optimal solution consists of the sets {1,2} and {3,4}.</p>
 <p>Here is a natural iterative greedy algorithm. First, initialize <span class="math inline">\(C=\emptyset\)</span>, where <span class="math inline">\(C\)</span> denotes the sets chosen so far. The main loop is: as long as the union <span class="math inline">\(∪_{S \in C}S\)</span> of the sets chosen so far is not the entire set <span class="math inline">\(U\)</span>:</p>
 <p>Let <span class="math inline">\(S_i\)</span> be a set that includes the maximum-possible number of elements not in previously-chosen sets (i.e., that maximizes <span class="math inline">\(|S_i−∪_{S \in C}S|\)</span>). Add <span class="math inline">\(S_i\)</span> to <span class="math inline">\(C\)</span>.</p>
 <p>Consider the following statement: for every instance of the set cover problem (with <span class="math inline">\(|U|=n\)</span>), this greedy algorithm returns a set cover with size at most <span class="math inline">\(f(n)\)</span> times that of an optimal (minimum-size) set cover. Which of the following is the smallest choice of the function <span class="math inline">\(f(n)\)</span> for which this statement is true?</p>
@@ -445,8 +445,8 @@ n(1-\frac 1{OPT})^k \approx 1 \\\
 n(1- \frac 1{OPT})^{OPT} \approx n \frac 1 e \end{split}\]</span></p>
 <p>上述的最后两个式子取 <span class="math inline">\(log\)</span> 再相除就有 <span class="math inline">\(f(n) = \frac k {OPT} = O(log \ n)\)</span></p>
 <h2 id="问题-2">问题 2</h2>
-<p>Suppose you are given m sets $ S_1,…,S_m$, each a subset of a common set <span class="math inline">\(U\)</span>. The goal is to choose 2 of the m sets, <span class="math inline">\(S_i\)</span> and <span class="math inline">\(S_j\)</span>, to maximize the size <span class="math inline">\(|S_i∪S_j|\)</span> of their union. One natural heuristic is to use a greedy algorithm:</p>
-<ol type="i">
+<p>Suppose you are given m sets $ S_1,...,S_m$, each a subset of a common set <span class="math inline">\(U\)</span>. The goal is to choose 2 of the m sets, <span class="math inline">\(S_i\)</span> and <span class="math inline">\(S_j\)</span>, to maximize the size <span class="math inline">\(|S_i∪S_j|\)</span> of their union. One natural heuristic is to use a greedy algorithm:</p>
+<ol style="list-style-type: lower-roman">
 <li><p>choose the first set <span class="math inline">\(S_i\)</span> to be as large as possible, breaking ties arbitrarily;</p></li>
 <li><p>choose the second set Sj to maximize <span class="math inline">\(|S_i∪S_j|\)</span> (i.e., as the set that includes as many elements as possible that are not already in <span class="math inline">\(S_i\)</span>), again breaking ties arbitrarily.</p></li>
 </ol>
@@ -600,7 +600,7 @@ S_4 &amp;= \{5,6,7,8\} \end{split}\]</span></p>
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">27</span>
+                    <span class="site-state-item-count">28</span>
                     <span class="site-state-item-name">posts</span>
                   </a>
                 </div>

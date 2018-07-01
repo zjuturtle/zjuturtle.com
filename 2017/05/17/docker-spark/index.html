@@ -414,7 +414,7 @@
 <li>将 Docker 的代理设置为10.200.10.1:6152</li>
 </ul>
 <p>这样 Docker 就会走10.200.10.1的代理，然后10.200.10.1是本机的别名，同时 Surge 的代理也是如此，因此解决了127.0.0.1的重名问题</p>
-<p>唯一的遗留问题是如果真的有某个倒霉的设备IP地址是10.200.10.1。恩…这种事情一定不会发生的，对吧？</p>
+<p>唯一的遗留问题是如果真的有某个倒霉的设备IP地址是10.200.10.1。恩...这种事情一定不会发生的，对吧？</p>
 <h2 id="spark">Spark</h2>
 <p>我打算以一个 Ubuntu 的 images 为基础，在上面搭上环境，再 docker save 出来，不知道有没有更好的方法，不过先这么着吧。</p>
 <p>其实 Docker 提供的 Ubuntu 镜像很小，也就意味着它毛都没有。因此需要自己动手装 python、gcc、make、vim 之类的软件（谢天谢地 apt 它还是有的）。</p>
@@ -429,7 +429,7 @@
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -d -p 8088:8088 -p 4040:4040 -p 7077:7077 -p 8080:8080 -p 6066:6066 --name=sparkMaster <span class="built_in">local</span>/sparkcluster /app/start-master.sh</span><br></pre></td></tr></table></figure>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -d --name=sparkSlave <span class="built_in">local</span>/sparkcluster /app/start-slave.sh [IP:port]</span><br></pre></td></tr></table></figure>
 <h2 id="docker-网络">Docker 网络</h2>
-<p>其实关于 Docker 的 network 部分我捣鼓了好久，也没有什么特别好的解决方案。对于 Docker 而言，一个 container 可以根据 –network 参数指定它的 network 类型。默认情况下网络类型是 bridge，其余还有 host 和 none 两种。参照 Docker 的<a href="https://docs.docker.com/engine/reference/run/#network-settings" target="_blank" rel="noopener">文档</a>，理想情况下为了提升性能应该使用 host 模式，注意这里的措辞是 significantly.</p>
+<p>其实关于 Docker 的 network 部分我捣鼓了好久，也没有什么特别好的解决方案。对于 Docker 而言，一个 container 可以根据 --network 参数指定它的 network 类型。默认情况下网络类型是 bridge，其余还有 host 和 none 两种。参照 Docker 的<a href="https://docs.docker.com/engine/reference/run/#network-settings" target="_blank" rel="noopener">文档</a>，理想情况下为了提升性能应该使用 host 模式，注意这里的措辞是 significantly.</p>
 <blockquote>
 <p>Compared to the default bridge mode, the host mode gives significantly better networking performance since it uses the host’s native networking stack whereas the bridge has to go through one level of virtualization through the docker daemon. It is recommended to run containers in this mode when their networking performance is critical, for example, a production Load Balancer or a High Performance Web Server.</p>
 </blockquote>
@@ -574,7 +574,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">27</span>
+                    <span class="site-state-item-count">28</span>
                     <span class="site-state-item-name">posts</span>
                   </a>
                 </div>
