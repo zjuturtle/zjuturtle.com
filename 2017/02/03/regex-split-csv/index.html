@@ -485,6 +485,9 @@
           
 
   
+    <div id="gitalk-container"></div>
+    <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+  
 
 
 
@@ -562,6 +565,10 @@
                 <div class="site-state-item site-state-tags">
                   <a href="/tags/index.html">
                     
+                    
+                      
+                    
+                      
                     
                       
                     
@@ -838,6 +845,25 @@
 
 
 
+
+  
+    
+      <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+      <script type="text/javascript">
+        const gitalk = new Gitalk({
+          clientID: '08e86c9d0536ed791bf9',
+          clientSecret: 'edf722e9512cfd1d793d03f5e32c41bb2c4a4d38',
+          repo: 'https://github.com/AnotherZjuturtle/Gitalk',
+          owner: 'AnotherZjuturtle',
+          admin: 'zjuturtle, AnotherZjuturtle'.split(','),
+          pagerDirection: 'first',
+          // facebook-like distraction free mode
+          distractionFreeMode: false
+        })
+        gitalk.render('gitalk-container')
+      </script>
+    
+  
 
   
 
