@@ -116,7 +116,7 @@
 <meta property="og:site_name" content="zjuturtle&#39;s blog">
 <meta property="og:description" content="整本 PRML 翻来覆去地讲贝叶斯思想。这里做一些与贝叶斯有关的内容的笔记。本来是做成一篇博客的，但奈何实在太长，分为3个部分来发。今天先讲贝叶斯多项式曲线拟合。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-08-02T06:59:02.834Z">
+<meta property="og:updated_time" content="2018-08-19T13:19:54.573Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="PRML笔记 - 贝叶斯多项式曲线拟合">
 <meta name="twitter:description" content="整本 PRML 翻来覆去地讲贝叶斯思想。这里做一些与贝叶斯有关的内容的笔记。本来是做成一篇博客的，但奈何实在太长，分为3个部分来发。今天先讲贝叶斯多项式曲线拟合。">
@@ -323,12 +323,24 @@
                 
               
 
-              <time title="Created: 2018-08-02 14:57:13 / Modified: 14:59:02" itemprop="dateCreated datePublished" datetime="2018-08-02T14:57:13+08:00">2018-08-02</time>
+              <time title="Created: 2018-08-02 14:57:13" itemprop="dateCreated datePublished" datetime="2018-08-02T14:57:13+08:00">2018-08-02</time>
             
 
             
               
 
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2018-08-19 21:19:54" itemprop="dateModified" datetime="2018-08-19T21:19:54+08:00">2018-08-19</time>
               
             
           </span>
@@ -400,7 +412,13 @@
 <p>我们考虑一个多项式拟合问题。假设我们的模型为 <span class="math inline">\(y(x, \boldsymbol{w})=\sum_{j=0}^{M}w_jx^j\)</span> 。 <span class="math inline">\(M\)</span> 为多项式阶数，多项式系数 <span class="math inline">\(w_0,...,w_M\)</span> 整体记为 <span class="math inline">\(\boldsymbol{w}\)</span>。假设我们有 <span class="math inline">\(N\)</span> 个带噪声的观测数据 <span class="math inline">\(\boldsymbol{D}=\{t_1, ..., t_N\}\)</span>，其对应的输入为<span class="math inline">\(\boldsymbol{X}=\{x_1,...,x_N\}\)</span>。我们最终需要求的是多项式系数 <span class="math inline">\(\boldsymbol{w}\)</span>。</p>
 <p>注意到贝叶斯定理可以将观测到的数据融合，来把先验概率转化为后验概率。根据贝叶斯公式，我们有</p>
 <p><span class="math display">\[ p(\boldsymbol{w} | \boldsymbol{D}) = \frac{p(\boldsymbol{D} | \boldsymbol{w})p(\boldsymbol{w})}{p(\boldsymbol{D})}\]</span></p>
-<p>解释一下公式里各项的含义 * <span class="math inline">\(p(\boldsymbol{D})\)</span> 即为后验概率。 * <span class="math inline">\(p(\boldsymbol{w})\)</span> 为先验概率，包含了在观测到数据前关于 <span class="math inline">\(\boldsymbol{w}\)</span> 的一些假设。 * <span class="math inline">\(p(\boldsymbol{D} | \boldsymbol{w})\)</span> 由观测数据集 <span class="math inline">\(\boldsymbol{D}\)</span>，可以认为是 <span class="math inline">\(\boldsymbol{w}\)</span> 的函数，也被称为似然函数。表达了在不同 <span class="math inline">\(\boldsymbol{w}\)</span> 下，观测数据出现的可能性大小。注意它不是 <span class="math inline">\(\boldsymbol{w}\)</span> 的概率分布，因此它关于 <span class="math inline">\(\boldsymbol{w}\)</span> 的积分一般不为 1 * <span class="math inline">\(p(\boldsymbol{D})\)</span> 可以认为是一个归一化系数，确保公式右侧的积分为 1</p>
+<p>解释一下公式里各项的含义</p>
+<ul>
+<li><span class="math inline">\(p(\boldsymbol{D})\)</span> 即为后验概率。</li>
+<li><span class="math inline">\(p(\boldsymbol{w})\)</span> 为先验概率，包含了在观测到数据前关于 <span class="math inline">\(\boldsymbol{w}\)</span> 的一些假设。</li>
+<li><span class="math inline">\(p(\boldsymbol{D} | \boldsymbol{w})\)</span> 由观测数据集 <span class="math inline">\(\boldsymbol{D}\)</span>，可以认为是 <span class="math inline">\(\boldsymbol{w}\)</span> 的函数，也被称为似然函数。表达了在不同 <span class="math inline">\(\boldsymbol{w}\)</span> 下，观测数据出现的可能性大小。注意它不是 <span class="math inline">\(\boldsymbol{w}\)</span> 的概率分布，因此它关于 <span class="math inline">\(\boldsymbol{w}\)</span> 的积分一般不为 1</li>
+<li><span class="math inline">\(p(\boldsymbol{D})\)</span> 可以认为是一个归一化系数，确保公式右侧的积分为 1</li>
+</ul>
 <p>用自然语言来表述就是：后验概率正比于似然函数与先验概率的乘积。这三者都可以认为是 <span class="math inline">\(\boldsymbol{w}\)</span> 的函数。实际上对上面公式做关于 <span class="math inline">\(\boldsymbol{w}\)</span> 的积分，我们就可以求得 <span class="math inline">\(p(\boldsymbol{D})\)</span></p>
 <p><span class="math display">\[p(\boldsymbol{D}) = \int p(\boldsymbol{D} | \boldsymbol{w})p(\boldsymbol{w})d\boldsymbol{w}\]</span></p>
 <p>根据后验概率 <span class="math inline">\(p(\boldsymbol{w} | \boldsymbol{D})\)</span>，我们能估计在观测到 <span class="math inline">\(p(\boldsymbol{D})\)</span> 之后 <span class="math inline">\(\boldsymbol{w}\)</span> 的不确定性。</p>
@@ -557,7 +575,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">31</span>
+                    <span class="site-state-item-count">32</span>
                     <span class="site-state-item-name">posts</span>
                   </a>
                 </div>
