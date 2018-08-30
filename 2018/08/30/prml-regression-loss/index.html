@@ -108,24 +108,25 @@
 
 
 
-  <meta name="description" content="这篇记录了一下回归损失函数的推导过程，主要是 PRML 的式 1.88 和式 1.90。我在 Google 上搜了过 1.88 的推导。有一些中文博客的推导，不过写的什么 J8 玩意，看着推导的时候被带到沟里去了。最后找了stackexchange 以及这里stackexchange 才算得到完美解答。">
+  <meta name="description" content="这篇记录了一下回归损失函数的推导过程，主要是 PRML 的式 1.88 和式 1.90。我在 Google 上搜了过 1.88 的推导。有一些中文博客的推导，不过写的什么 J8 玩意，看着推导的时候被带到沟里去了。最后找了 stackexchange 以及这里stackexchange 才算得到完美解答。">
+<meta name="keywords" content="PRML,regression">
 <meta property="og:type" content="article">
-<meta property="og:title" content="zjuturtle&#39;s blog">
-<meta property="og:url" content="https://zjuturtle.com/2018/08/29/prml-regression-loss/index.html">
+<meta property="og:title" content="PRML笔记 - 回归损失函数">
+<meta property="og:url" content="https://zjuturtle.com/2018/08/30/prml-regression-loss/index.html">
 <meta property="og:site_name" content="zjuturtle&#39;s blog">
-<meta property="og:description" content="这篇记录了一下回归损失函数的推导过程，主要是 PRML 的式 1.88 和式 1.90。我在 Google 上搜了过 1.88 的推导。有一些中文博客的推导，不过写的什么 J8 玩意，看着推导的时候被带到沟里去了。最后找了stackexchange 以及这里stackexchange 才算得到完美解答。">
+<meta property="og:description" content="这篇记录了一下回归损失函数的推导过程，主要是 PRML 的式 1.88 和式 1.90。我在 Google 上搜了过 1.88 的推导。有一些中文博客的推导，不过写的什么 J8 玩意，看着推导的时候被带到沟里去了。最后找了 stackexchange 以及这里stackexchange 才算得到完美解答。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-08-29T05:58:02.436Z">
+<meta property="og:updated_time" content="2018-08-30T03:22:15.477Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="zjuturtle&#39;s blog">
-<meta name="twitter:description" content="这篇记录了一下回归损失函数的推导过程，主要是 PRML 的式 1.88 和式 1.90。我在 Google 上搜了过 1.88 的推导。有一些中文博客的推导，不过写的什么 J8 玩意，看着推导的时候被带到沟里去了。最后找了stackexchange 以及这里stackexchange 才算得到完美解答。">
+<meta name="twitter:title" content="PRML笔记 - 回归损失函数">
+<meta name="twitter:description" content="这篇记录了一下回归损失函数的推导过程，主要是 PRML 的式 1.88 和式 1.90。我在 Google 上搜了过 1.88 的推导。有一些中文博客的推导，不过写的什么 J8 玩意，看着推导的时候被带到沟里去了。最后找了 stackexchange 以及这里stackexchange 才算得到完美解答。">
 
 
 
 
 
 
-  <link rel="canonical" href="https://zjuturtle.com/2018/08/29/prml-regression-loss/"/>
+  <link rel="canonical" href="https://zjuturtle.com/2018/08/30/prml-regression-loss/"/>
 
 
 
@@ -135,7 +136,7 @@
   };
 </script>
 
-  <title> | zjuturtle's blog</title>
+  <title>PRML笔记 - 回归损失函数 | zjuturtle's blog</title>
   
 
 
@@ -280,7 +281,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://zjuturtle.com/2018/08/29/prml-regression-loss/">
+    <link itemprop="mainEntityOfPage" href="https://zjuturtle.com/2018/08/30/prml-regression-loss/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="zjuturtle">
@@ -297,7 +298,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">
+          <h1 class="post-title" itemprop="name headline">PRML笔记 - 回归损失函数
               
             
           </h1>
@@ -322,7 +323,7 @@
                 
               
 
-              <time title="Created: 2018-08-29 00:00:00 / Modified: 13:58:02" itemprop="dateCreated datePublished" datetime="2018-08-29T00:00:00+08:00">2018-08-29</time>
+              <time title="Created: 2018-08-30 11:21:14 / Modified: 11:22:15" itemprop="dateCreated datePublished" datetime="2018-08-30T11:21:14+08:00">2018-08-30</time>
             
 
             
@@ -333,6 +334,24 @@
           </span>
 
           
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Algorithm/" itemprop="url" rel="index"><span itemprop="name">Algorithm</span></a></span>
+
+                
+                
+              
+            </span>
+          
 
           
             
@@ -340,7 +359,7 @@
 
           
           
-             <span id="/2018/08/29/prml-regression-loss/" class="leancloud_visitors" data-flag-title="">
+             <span id="/2018/08/30/prml-regression-loss/" class="leancloud_visitors" data-flag-title="PRML笔记 - 回归损失函数">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -371,7 +390,7 @@
       
 
       
-        <p>这篇记录了一下回归损失函数的推导过程，主要是 PRML 的式 1.88 和式 1.90。我在 Google 上搜了过 1.88 的推导。有一些中文博客的推导，不过写的什么 J8 玩意，看着推导的时候被带到沟里去了。最后找了<a href="https://math.stackexchange.com/questions/2130282/bishop-ml-and-pattern-recognition-calculus-of-variations-linear-regression-loss" target="_blank" rel="noopener">stackexchange</a> 以及这里<a href="https://stats.stackexchange.com/questions/228561/loss-functions-for-regression-proof" target="_blank" rel="noopener">stackexchange</a> 才算得到完美解答。</p>
+        <p>这篇记录了一下回归损失函数的推导过程，主要是 PRML 的式 1.88 和式 1.90。我在 Google 上搜了过 1.88 的推导。有一些中文博客的推导，不过写的什么 J8 玩意，看着推导的时候被带到沟里去了。最后找了 <a href="https://math.stackexchange.com/questions/2130282/bishop-ml-and-pattern-recognition-calculus-of-variations-linear-regression-loss" target="_blank" rel="noopener">stackexchange</a> 以及这里<a href="https://stats.stackexchange.com/questions/228561/loss-functions-for-regression-proof" target="_blank" rel="noopener">stackexchange</a> 才算得到完美解答。</p>
 <a id="more"></a>
 <h2 id="回归损失函数">回归损失函数</h2>
 <p>我们首先给出回归损失函数的定义 <span class="math inline">\(L(t,y(x))\)</span> 。其中 <span class="math inline">\(x\)</span> 是输入，<span class="math inline">\(y(x)\)</span> 是对 <span class="math inline">\(t\)</span> 的具体估计。<span class="math inline">\(t\)</span> 可以认为是真值。函数 <span class="math inline">\(L\)</span> 可以理解为损失函数，或者是惩罚函数。那么平均损失（或者说期望损失）就是</p>
@@ -436,6 +455,14 @@
     
 
     <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/PRML/" rel="tag"># PRML</a>
+          
+            <a href="/tags/regression/" rel="tag"># regression</a>
+          
+        </div>
       
 
       
@@ -635,7 +662,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">32</span>
+                      
+                    
+                    <span class="site-state-item-count">33</span>
                     <span class="site-state-item-name">tags</span>
                   </a>
                 </div>
