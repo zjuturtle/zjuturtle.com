@@ -108,25 +108,25 @@
 
 
 
-  <meta name="description" content="最近在学习研究神经网络的时候，遇到一个 Xavier 初始化的问题，所以就做一个记录。">
-<meta name="keywords" content="Algorithm,Machine Learning">
+  <meta name="description" content="这次记录一下线性回归相关的内容。 基本模型 最简单的线性回归模型为 \[y(\boldsymbol{x},\boldsymbol{w})=w_0 +w_1x_1+...+w_Dx_D\] 一般来说，我们会套一个基函数 \(\phi_j(x)\)，这样能拟合的函数就多了 \[y(\boldsymbol{x},\boldsymbol{w})=w_0 + \sum_{j=1}^{M-1}w_j\phi_">
+<meta name="keywords" content="PRML,贝叶斯">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Xavier 初始化">
-<meta property="og:url" content="https://zjuturtle.com/2018/05/10/xavier-init/index.html">
+<meta property="og:title" content="PRML - 线性回归">
+<meta property="og:url" content="https://zjuturtle.com/2018/09/30/prml-linear-regression/index.html">
 <meta property="og:site_name" content="zjuturtle&#39;s blog">
-<meta property="og:description" content="最近在学习研究神经网络的时候，遇到一个 Xavier 初始化的问题，所以就做一个记录。">
+<meta property="og:description" content="这次记录一下线性回归相关的内容。 基本模型 最简单的线性回归模型为 \[y(\boldsymbol{x},\boldsymbol{w})=w_0 +w_1x_1+...+w_Dx_D\] 一般来说，我们会套一个基函数 \(\phi_j(x)\)，这样能拟合的函数就多了 \[y(\boldsymbol{x},\boldsymbol{w})=w_0 + \sum_{j=1}^{M-1}w_j\phi_">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-06-20T09:08:59.963Z">
+<meta property="og:updated_time" content="2018-09-30T03:45:49.923Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Xavier 初始化">
-<meta name="twitter:description" content="最近在学习研究神经网络的时候，遇到一个 Xavier 初始化的问题，所以就做一个记录。">
+<meta name="twitter:title" content="PRML - 线性回归">
+<meta name="twitter:description" content="这次记录一下线性回归相关的内容。 基本模型 最简单的线性回归模型为 \[y(\boldsymbol{x},\boldsymbol{w})=w_0 +w_1x_1+...+w_Dx_D\] 一般来说，我们会套一个基函数 \(\phi_j(x)\)，这样能拟合的函数就多了 \[y(\boldsymbol{x},\boldsymbol{w})=w_0 + \sum_{j=1}^{M-1}w_j\phi_">
 
 
 
 
 
 
-  <link rel="canonical" href="https://zjuturtle.com/2018/05/10/xavier-init/"/>
+  <link rel="canonical" href="https://zjuturtle.com/2018/09/30/prml-linear-regression/"/>
 
 
 
@@ -136,7 +136,7 @@
   };
 </script>
 
-  <title>Xavier 初始化 | zjuturtle's blog</title>
+  <title>PRML - 线性回归 | zjuturtle's blog</title>
   
 
 
@@ -281,7 +281,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://zjuturtle.com/2018/05/10/xavier-init/">
+    <link itemprop="mainEntityOfPage" href="https://zjuturtle.com/2018/09/30/prml-linear-regression/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="zjuturtle">
@@ -298,7 +298,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Xavier 初始化
+          <h1 class="post-title" itemprop="name headline">PRML - 线性回归
               
             
           </h1>
@@ -323,24 +323,12 @@
                 
               
 
-              <time title="Created: 2018-05-10 14:55:53" itemprop="dateCreated datePublished" datetime="2018-05-10T14:55:53+08:00">2018-05-10</time>
+              <time title="Created: 2018-09-30 11:38:31 / Modified: 11:45:49" itemprop="dateCreated datePublished" datetime="2018-09-30T11:38:31+08:00">2018-09-30</time>
             
 
             
               
 
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">Edited on</span>
-                
-                <time title="Modified: 2018-06-20 17:08:59" itemprop="dateModified" datetime="2018-06-20T17:08:59+08:00">2018-06-20</time>
               
             
           </span>
@@ -371,7 +359,7 @@
 
           
           
-             <span id="/2018/05/10/xavier-init/" class="leancloud_visitors" data-flag-title="Xavier 初始化">
+             <span id="/2018/09/30/prml-linear-regression/" class="leancloud_visitors" data-flag-title="PRML - 线性回归">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -402,35 +390,67 @@
       
 
       
-        <p>最近在学习研究神经网络的时候，遇到一个 Xavier 初始化的问题，所以就做一个记录。</p>
-<a id="more"></a>
-<h2 id="xavier-由来">Xavier 由来</h2>
-<p>当我们在初始化网络的权重时，需要设置一个合理的随机值，避免出现 symmetry 的情况。一般我们会将其初始化为均值为 0 的随机分布（高斯或者均匀分布）。如果权重初始化过小(即选择的方差过小)，那么随着输入信号的改变，网络后端的改变也会过小。同样的，如果权重初始化过大，随着输入信号的改变，网络后端的改变则会过大。Xavier 方法提供了一个合理的方式来初始化权重。</p>
-<p>简单来说，就是将一个神经元的初始值权重初始化为均值为0，方差为 <span class="math inline">\(Var(w_i)=\frac 1 {n_{in}}\)</span> 的随机分布（高斯或者均匀分布）。其中 <span class="math inline">\(n_{in}\)</span> 是该神经元的输入数目。</p>
-<h2 id="xavier-推导">Xavier 推导</h2>
-<p>我们不考虑激活函数（假设它不存在）。对于一个没有经过激活函数的神经元，它的输出为 $ y=<em>{i=1}^{n</em>{in}}x_iw_i $。我们假设期望为 <span class="math inline">\(E(x_i)=E(w_i)=0\)</span>，且各个变量互相独立，那么 <span class="math inline">\(E(\sum_{i=1}^{n_{in}}x_iw_i)=0\)</span>。</p>
-<p>因此我们可以写出方差的公式如下</p>
-<p><span class="math display">\[\begin{split}Var(w_ix_i)&amp;=[E(x_i)]^2 + [E(W_i)]^2 Var(x_i) + Var(w_i)Var(x_i) \\
-&amp;=Var(w_i)Var(x_i)\end{split}\]</span></p>
-<p>假设 <span class="math inline">\(wi,x_i\)</span> 服从同一分布，那么可以得到</p>
-<p><span class="math display">\[\begin{split} Var(y)&amp;=Var(\sum_{i=1}^{n_{in}}x_iw_i) \\
-&amp;=n_{in}Var(w_i)Var(x_i) \end{split}\]</span></p>
-<p>可以这么理解，对于一个神经元的输出（没有经过激活函数前），当其输入服从同一个分布时，其输出的方差为输入方差乘以输入数目。所以，如果我们希望其输出的方差同输入一致，便需要 <span class="math inline">\(Var(w_i)= \frac 1 {n_{in}}\)</span></p>
-<h2 id="xavier-变体">Xavier 变体</h2>
-<p>当使用反向传播时，同上，我们可以得到如果需要方差保持一致，需要</p>
-<p><span class="math display">\[Var(w_i)= \frac 1 {n_{out}}\]</span></p>
-<p><span class="math inline">\(n_{in}\)</span> 代表输入数目，<span class="math inline">\(n_{out}\)</span> 代表输出数目。显然当且仅当 <span class="math inline">\(n_{in}=n_{out}\)</span> 时，才能保证正向和反向的方差一致。当二者不一致时，综合一下可以使用下式</p>
-<p><span class="math display">\[Var(w_i) = \frac 2 {n_{in}+n_{out}}\]</span></p>
-<p>在实践中，采用 <span class="math inline">\(Var(w_i)= \frac 1 {n_{out}}\)</span> 和 <span class="math inline">\(Var(w_i) = \frac 2 {n_{in}+n_{out}}\)</span> 都有，不同的神经网络库都不太一样。</p>
-<h2 id="xavier-延伸探讨">Xavier 延伸探讨</h2>
-<p>我感觉 Xavier 初始化还是用了很多“大胆”的假设。比如它没有考虑到激活函数的非线性，也假设了所有的输入都是服从同一分布。但在实践中，它的确有用，能让收敛速度加快。</p>
-<p>实际上，我们假设了激活函数在输入为 0 附近时，其梯度为 1 。不过对于 ReLu 激活函数而言这就不成立了。因此对于使用 ReLu 激活函数，我们的初始化为</p>
-<p><span class="math display">\[Var(w_i)=\frac 2 {n_{in}}\]</span></p>
-<h2 id="参考资料">参考资料</h2>
-<ul>
-<li><a href="http://proceedings.mlr.press/v9/glorot10a/glorot10a.pdf" target="_blank" rel="noopener">Understanding the difficulty of training deep feedforward neural networks</a></li>
-<li><a href="http://andyljones.tumblr.com/post/110998971763/an-explanation-of-xavier-initialization" target="_blank" rel="noopener">Andy's blog</a></li>
-</ul>
+        <p>这次记录一下线性回归相关的内容。</p>
+<h2 id="基本模型">基本模型</h2>
+<p>最简单的线性回归模型为</p>
+<p><span class="math display">\[y(\boldsymbol{x},\boldsymbol{w})=w_0 +w_1x_1+...+w_Dx_D\]</span></p>
+<p>一般来说，我们会套一个基函数 <span class="math inline">\(\phi_j(x)\)</span>，这样能拟合的函数就多了</p>
+<p><span class="math display">\[y(\boldsymbol{x},\boldsymbol{w})=w_0 + \sum_{j=1}^{M-1}w_j\phi_j(\boldsymbol{x})\]</span></p>
+<p>这样这个回归模型就会有 <span class="math inline">\(M\)</span> 个参数，为了方便起见，我们会定义个 <span class="math inline">\(\phi_0(\boldsymbol{x})=0\)</span>，然后就会变成</p>
+<p><span class="math display">\[y(\boldsymbol{x},\boldsymbol{w})=\boldsymbol{w}^T \boldsymbol{\phi}(\mathbf{x})\]</span></p>
+<p>这里 <span class="math inline">\(\boldsymbol{w}=(w_0,...,w_{M-1})^T\)</span>，<span class="math inline">\(\boldsymbol{\phi}=(\phi_0,...,\phi_{M-1})^T\)</span></p>
+<p>对于 <span class="math inline">\(\boldsymbol{\phi}\)</span>，有很多种选择，比如可以选 <span class="math inline">\(\phi_j(x)=x^j\)</span>，这样就变成了多项式拟合。又比如可以使用 <span class="math inline">\(\phi_j(x)=\exp\{-\frac{(x-\mu_j)^2}{2s^2}\}\)</span>，就是高斯基函数。</p>
+<h2 id="极大似然法和最小平方">极大似然法和最小平方</h2>
+<p>假设目标变量 <span class="math inline">\(t\)</span> 由确定的函数 <span class="math inline">\(y(\boldsymbol{x},\boldsymbol{w})\)</span> 加噪声给出，则</p>
+<p><span class="math display">\[t=y(\boldsymbol{x},\boldsymbol{w})+\varepsilon\]</span></p>
+<p>那么我们有</p>
+<p><span class="math display">\[p(t|\boldsymbol{x},\boldsymbol{w},\beta)=\mathscr{N}(t|y(\boldsymbol{x},\boldsymbol{w}), {\beta}^{-1})\]</span></p>
+<p>对于观测数据 <span class="math inline">\(\boldsymbol{X}={x_1,...,x_N}\)</span>，其对应的目标值为 <span class="math inline">\(\boldsymbol{t}={t_1,...,t_N}\)</span>，那么可以写出似然函数</p>
+<p><span class="math display">\[p(\boldsymbol{t}|\boldsymbol{X},\boldsymbol{w},\beta)= \prod_{n=1}^{N} \mathscr{N}(t_n|w^T\boldsymbol{\phi}(x_n),{\beta}^{-1})\]</span></p>
+<p>两边取对数（下面省略了 <span class="math inline">\(x\)</span>）</p>
+<p><span class="math display">\[\begin{split}\ln p(\boldsymbol{t}|\boldsymbol{w},\beta) &amp;= \sum_{n=1}^{N} \ln \mathscr{N}(t_n|w^T \boldsymbol{\phi}(x_n),{\beta}^{-1}) \\
+&amp;= \frac N 2 \ln \beta- \frac N 2 \ln(2 \pi) -\beta E_D(\boldsymbol{w}) \\
+E_D(\boldsymbol{w}) &amp;= \frac 1 2 \sum^N_{n=1}\{t_n - \boldsymbol{w}^T \boldsymbol{\phi}(x_n)\}^2\end{split}\]</span></p>
+<p>接下来就是对似然函数算梯度</p>
+<p><span class="math display">\[ \nabla \ln p(\boldsymbol{t}|\boldsymbol{w},\beta) = \beta \sum_{n=1}^{N}\{t_n-\boldsymbol{w}^T \boldsymbol{\phi}(x_n) \} \boldsymbol{\phi}(x_n)^T \]</span></p>
+<p>老规矩，将梯度设为 0，得到如下</p>
+<p><span class="math display">\[0= \sum^N_{n=1}t_n \boldsymbol{\phi}(x_n)^T-\boldsymbol{w}^T\left(  \sum_{n=1}^N \boldsymbol{\phi}(x_n)\boldsymbol{\phi}(x_n)^T \right)\]</span></p>
+<p>这样通过极大似然就有</p>
+<p><span class="math display">\[\boldsymbol{w}_{ML}=(\boldsymbol{\Phi}^T\boldsymbol{\Phi})^{-1}\boldsymbol{\Phi}^T\]</span></p>
+<p>其中的 <span class="math inline">\(\boldsymbol{\Phi}\)</span> 就是设计矩阵，定义如下</p>
+<p><span class="math display">\[\boldsymbol{\Phi}= \begin {pmatrix} 
+\phi_0(x_1) &amp; \phi_1(x_1) &amp; ... &amp; \phi_{M-1}(x_1) \\
+\phi_0(x_2) &amp; \phi_1(x_2) &amp; ... &amp; \phi_{M-1}(x_2) \\
+... &amp; ...&amp; \ddots &amp;... \\
+\phi_0(x_N) &amp; \phi_1(x_N) &amp; ... &amp; \phi_{M-1}(x_N)
+ \end{pmatrix}\]</span></p>
+<p>这里还引申出一个重要的量叫伪逆，某种意义上它可以看作是方阵的逆在非方阵上的推广。</p>
+<p><span class="math display">\[ \boldsymbol{\Phi}^{\dagger}=(\boldsymbol{\Phi}^T\boldsymbol{\Phi})^{-1}\boldsymbol{\Phi}^T \]</span></p>
+<h2 id="高斯变量的贝叶斯定理">高斯变量的贝叶斯定理</h2>
+<p>这里略去证明直接给出定义。假定我们有高斯分布的边缘分布和条件分布如下</p>
+<p><span class="math display">\[\begin{split}p(x)&amp;=\mathscr{N}(x|\mu, \Lambda ^{-1})\\
+p(y|x)&amp;=\mathscr{N}(y|Ax+b,L^{-1})\end{split}\]</span></p>
+<p>那么我们就有</p>
+<p><span class="math display">\[\begin{split}p(y) &amp;= \mathscr{N}(y|A\mu+b,L^{-1}+A\Lambda^{-1}A^T)\\
+p(x|y) &amp;= \mathscr{N}(x|\Sigma\{A^TL(y-b)+\Lambda \mu\},\Sigma)\end{split}\]</span></p>
+<p>其中</p>
+<p><span class="math display">\[\Sigma = (\Lambda+A^TLA)^{-1}\]</span></p>
+<h2 id="参数分布">参数分布</h2>
+<p>接下来阐述参数分布。假设我们的先验分布如下</p>
+<p><span class="math display">\[p(\boldsymbol{w})=\mathscr{N}(\boldsymbol{w}|,\boldsymbol{m}_0,\boldsymbol{S}_0)\]</span></p>
+<p>我们的后验分布则为</p>
+<p><span class="math display">\[p(\boldsymbol{w}|\boldsymbol{t})=\mathscr{N}(\boldsymbol{w}|\boldsymbol{m}_N,\boldsymbol{S}_N)\]</span></p>
+<p>其中</p>
+<p><span class="math display">\[\boldsymbol{m}_N=\boldsymbol{S}_N({\boldsymbol{S}_0}^{-1}\boldsymbol{m}_0+\beta \boldsymbol{\Phi}^T\boldsymbol{t})\]</span></p>
+<p><span class="math display">\[\boldsymbol{S}_N^{-1}=\boldsymbol{S}_0^{-1}+\beta\boldsymbol{\Phi}^T\boldsymbol{\Phi}\]</span></p>
+<h2 id="预测分布">预测分布</h2>
+<p>实际应用中，通常我们对新的 <span class="math inline">\(x\)</span> 值预测出的 <span class="math inline">\(t\)</span> 值感兴趣。这就需要计算预测分布(这里简略了输入量 <span class="math inline">\(\boldsymbol{x}\)</span>)</p>
+<p><span class="math display">\[p(t|\boldsymbol{t},\alpha,\beta)=\int p(\boldsymbol{w},\beta)p(\boldsymbol{w},\alpha, \beta)\]</span></p>
+<p>，在线性模型下，其预测分布也是高斯的</p>
+<p><span class="math display">\[p(t|\boldsymbol{x},\boldsymbol{t},\alpha,\beta) = \mathscr{N}(t|\boldsymbol{m}_N^T \boldsymbol{\phi}(\boldsymbol{x}), \sigma^2_N(\boldsymbol{x}))\]</span></p>
+<p>其中</p>
+<p><span class="math display">\[\sigma^2_N(\boldsymbol{x})=\frac 1 {\beta}+\phi(\boldsymbol{x})^T\boldsymbol{S}_N\boldsymbol{\phi}(x)\]</span></p>
+<p>其中第一项表示了数据中的噪声，而第二项则反映了参数 <span class="math inline">\(\boldsymbol{w}\)</span> 关联的不确定性。</p>
 
       
     </div>
@@ -451,9 +471,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Algorithm/" rel="tag"># Algorithm</a>
+            <a href="/tags/PRML/" rel="tag"># PRML</a>
           
-            <a href="/tags/Machine-Learning/" rel="tag"># Machine Learning</a>
+            <a href="/tags/贝叶斯/" rel="tag"># 贝叶斯</a>
           
         </div>
       
@@ -466,8 +486,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/04/11/wavelet-1/" rel="next" title="小波入门（一）">
-                <i class="fa fa-chevron-left"></i> 小波入门（一）
+              <a href="/2018/08/30/prml-regression-loss/" rel="next" title="PRML笔记 - 回归损失函数">
+                <i class="fa fa-chevron-left"></i> PRML笔记 - 回归损失函数
               </a>
             
           </div>
@@ -475,10 +495,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/06/20/docker-run-cmd-entrypoint/" rel="prev" title="Docker 中 RUN/CMD/ENTRYPOINT 详解">
-                Docker 中 RUN/CMD/ENTRYPOINT 详解 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -707,7 +723,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#xavier-由来"><span class="nav-number">1.</span> <span class="nav-text">Xavier 由来</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#xavier-推导"><span class="nav-number">2.</span> <span class="nav-text">Xavier 推导</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#xavier-变体"><span class="nav-number">3.</span> <span class="nav-text">Xavier 变体</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#xavier-延伸探讨"><span class="nav-number">4.</span> <span class="nav-text">Xavier 延伸探讨</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考资料"><span class="nav-number">5.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#基本模型"><span class="nav-number">1.</span> <span class="nav-text">基本模型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#极大似然法和最小平方"><span class="nav-number">2.</span> <span class="nav-text">极大似然法和最小平方</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#高斯变量的贝叶斯定理"><span class="nav-number">3.</span> <span class="nav-text">高斯变量的贝叶斯定理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参数分布"><span class="nav-number">4.</span> <span class="nav-text">参数分布</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#预测分布"><span class="nav-number">5.</span> <span class="nav-text">预测分布</span></a></li></ol></div>
             
 
           </div>
