@@ -15,10 +15,10 @@
 
 
 <html class="theme-next gemini use-motion" lang="zh-Hans">
-<head>
-  <meta charset="UTF-8"/>
-<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
 
 
@@ -32,8 +32,6 @@
 
 
 
-<meta http-equiv="Cache-Control" content="no-transform" />
-<meta http-equiv="Cache-Control" content="no-siteapp" />
 
 
 
@@ -46,6 +44,21 @@
 
 
 
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=7.1.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.ico?v=7.1.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=7.1.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico?v=7.1.0">
+
+
+  <link rel="mask-icon" href="/images/favicon.ico?v=7.1.0" color="#222">
 
 
 
@@ -53,40 +66,15 @@
 
 
 
-
-
-
-<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
-
-<link href="/css/main.css?v=6.4.1" rel="stylesheet" type="text/css" />
-
-
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.ico?v=6.4.1">
-
-
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=6.4.1">
-
-
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico?v=6.4.1">
-
-
-  <link rel="mask-icon" href="/images/favicon.ico?v=6.4.1" color="#222">
-
-
-
-
-
-
-
-
-
-<script type="text/javascript" id="hexo.configurations">
+<script id="hexo.configurations">
   var NexT = window.NexT || {};
   var CONFIG = {
     root: '/',
     scheme: 'Gemini',
-    version: '6.4.1',
-    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    version: '7.1.0',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
     fancybox: false,
     fastclick: false,
     lazyload: false,
@@ -125,12 +113,13 @@
 
 
 
+  
+  
+  <link rel="canonical" href="https://zjuturtle.com/2018/06/20/docker-run-cmd-entrypoint/">
 
-  <link rel="canonical" href="https://zjuturtle.com/2018/06/20/docker-run-cmd-entrypoint/"/>
 
 
-
-<script type="text/javascript" id="page.configurations">
+<script id="page.configurations">
   CONFIG.page = {
     sidebar: "",
   };
@@ -147,30 +136,31 @@
 
 
 
+
+
+
   <noscript>
-  <style type="text/css">
-    .use-motion .motion-element,
-    .use-motion .brand,
-    .use-motion .menu-item,
-    .sidebar-inner,
-    .use-motion .post-block,
-    .use-motion .pagination,
-    .use-motion .comments,
-    .use-motion .post-header,
-    .use-motion .post-body,
-    .use-motion .collection-title { opacity: initial; }
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
 
-    .use-motion .logo,
-    .use-motion .site-title,
-    .use-motion .site-subtitle {
-      opacity: initial;
-      top: initial;
-    }
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
 
-    .use-motion {
-      .logo-line-before i { left: initial; }
-      .logo-line-after i { right: initial; }
-    }
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
   </style>
 </noscript>
 
@@ -188,7 +178,7 @@
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
       <div class="header-inner"><div class="site-brand-wrapper">
-  <div class="site-meta ">
+  <div class="site-meta">
     
 
     <div class="custom-logo-site-title">
@@ -198,6 +188,7 @@
         <span class="logo-line-after"><i></i></span>
       </a>
     </div>
+    
     
   </div>
 
@@ -221,16 +212,34 @@
         
           
           <li class="menu-item menu-item-home">
-    <a href="/" rel="section">
-      <i class="menu-item-icon fa fa-fw fa-home"></i> <br />Home</a>
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>Home</a>
+
   </li>
         
         
         
           
           <li class="menu-item menu-item-archives">
-    <a href="/archives/" rel="section">
-      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives</a>
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>Archives</a>
+
   </li>
 
       
@@ -298,10 +307,11 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Docker 中 RUN/CMD/ENTRYPOINT 详解
+          <h2 class="post-title" itemprop="name headline">Docker 中 RUN/CMD/ENTRYPOINT 详解
+
               
             
-          </h1>
+          </h2>
         
 
         <div class="post-meta">
@@ -334,7 +344,7 @@
           </span>
 
           
-            <span class="post-category" >
+            <span class="post-category">
             
               <span class="post-meta-divider">|</span>
             
@@ -355,20 +365,21 @@
 
           
             
+            
           
 
           
           
-             <span id="/2018/06/20/docker-run-cmd-entrypoint/" class="leancloud_visitors" data-flag-title="Docker 中 RUN/CMD/ENTRYPOINT 详解">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">Views: </span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
+            <span id="/2018/06/20/docker-run-cmd-entrypoint/" class="leancloud_visitors" data-flag-title="Docker 中 RUN/CMD/ENTRYPOINT 详解">
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Views: </span>
+              
+                <span class="leancloud-visitors-count"></span>
+            </span>
           
 
           
@@ -400,7 +411,7 @@
 </ul>
 <figure class="highlight docker"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">RUN</span><span class="bash"> apt-get update</span></span><br></pre></td></tr></table></figure>
 <ul>
-<li>exec 格式 <code>RUN [&quot;executable&quot;, &quot;param1&quot;, &quot;param2&quot;]</code>。例如</li>
+<li>exec 格式 <code>RUN ["executable", "param1", "param2"]</code>。例如</li>
 </ul>
 <figure class="highlight docker"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">RUN</span><span class="bash"> [<span class="string">"apt-get"</span>, <span class="string">"update"</span>]</span></span><br></pre></td></tr></table></figure>
 <p>但要注意，我们最好将命令写在同一个 <code>RUN</code> 命令里面，否则会造成镜像臃肿（因为每运行一次 <code>RUN</code> 就会新建一层）。</p>
@@ -409,20 +420,20 @@
 <p><code>RUN</code> 指令在容器构建过程中起作用，和容器的运行无关。</p>
 <h2 id="cmd-指令">CMD 指令</h2>
 <p><code>CMD</code> 指令用于指定默认的容器主建成的启动命令。在一个镜像里面仅有一个 <code>CMD</code> 指令会起作用。比如下面这个 Dockerfile</p>
-<figure class="highlight docker"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">FROM</span> ubuntu:<span class="number">16.04</span></span><br><span class="line"><span class="keyword">CMD</span><span class="bash"> [<span class="string">"echo"</span>, <span class="string">"first"</span>]</span></span><br><span class="line"><span class="bash">CMD [<span class="string">"echo"</span>, <span class="string">"second"</span>]</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight docker"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">FROM</span> ubuntu:<span class="number">16.04</span></span><br><span class="line"><span class="keyword">CMD</span><span class="bash"> [<span class="string">"echo"</span>, <span class="string">"first"</span>]</span></span><br><span class="line"><span class="keyword">CMD</span><span class="bash"> [<span class="string">"echo"</span>, <span class="string">"second"</span>]</span></span><br></pre></td></tr></table></figure>
 <p>第一个 <code>CMD</code> 指令会被忽略。如果运行这个 image，只会输出 <code>second</code></p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ docker build -t <span class="built_in">test</span> .</span><br><span class="line">$ docker run <span class="built_in">test</span></span><br><span class="line"><span class="comment"># echo second</span></span><br><span class="line">second</span><br></pre></td></tr></table></figure>
 <h2 id="entrypoint-指令">ENTRYPOINT 指令</h2>
 <p>如果我们需要在容器运行时传一些参数，就需要 <code>ENTRYPOINT</code> 指令了。当存在 <code>ENTRYPOINT</code> 时，<code>CMD</code> 的含义就发生了改变，不再是直接的运行其命令，而是将 <code>CMD</code> 的内容作为参数传给 <code>ENTRYPOINT</code> 指令，换句话说实际执行时，将变为</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;ENTRYPOINT&gt; <span class="string">"&lt;CMD&gt;"</span></span><br></pre></td></tr></table></figure>
 <p>举个栗子，下面这个镜像可以得知当前的公网 IP。</p>
-<figure class="highlight docker"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">FROM</span> ubuntu:<span class="number">16.04</span></span><br><span class="line"><span class="keyword">RUN</span><span class="bash"> apt-get update \</span></span><br><span class="line"><span class="bash">    &amp;&amp; apt-get install -y curl \</span></span><br><span class="line"><span class="bash">    &amp;&amp; rm -rf /var/lib/apt/lists/*</span></span><br><span class="line"><span class="bash">CMD [ <span class="string">"curl"</span>, <span class="string">"-s"</span>, <span class="string">"http://ip.cn"</span> ]</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight docker"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">FROM</span> ubuntu:<span class="number">16.04</span></span><br><span class="line"><span class="keyword">RUN</span><span class="bash"> apt-get update \</span></span><br><span class="line"><span class="bash">    &amp;&amp; apt-get install -y curl \</span></span><br><span class="line"><span class="bash">    &amp;&amp; rm -rf /var/lib/apt/lists/*</span></span><br><span class="line"><span class="keyword">CMD</span><span class="bash"> [ <span class="string">"curl"</span>, <span class="string">"-s"</span>, <span class="string">"http://ip.cn"</span> ]</span></span><br></pre></td></tr></table></figure>
 <p>我们可以直接运行</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ docker build -t myip .</span><br><span class="line">$ docker run myip</span><br><span class="line"><span class="comment">## 显示当前 IP ##</span></span><br></pre></td></tr></table></figure>
 <p>但如果我们希望显示 HTTP 头信息，就需要加上 <code>-i</code> 参数。但我们不可以直接加 <code>-i</code> 参数给 <code>docker run myip</code> 。因为 <code>docker run myip -i</code> 实际上会用 <code>-i</code> 来覆盖原有的默认 <code>CMD</code> 命令 <code>curl -s http://ip.cn</code>，而 <code>-i</code> 完全不是个命令。因此我们只能这么用</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker run myip curl -s http://ip.cn -i</span><br></pre></td></tr></table></figure>
 <p>很蠢，所以 <code>ENTRYPOINT</code> 指令就派上用场了。现在我们将 Dockerfile 改写如下</p>
-<figure class="highlight docker"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">FROM</span> ubuntu:<span class="number">16.04</span></span><br><span class="line"><span class="keyword">RUN</span><span class="bash"> apt-get update \</span></span><br><span class="line"><span class="bash">    &amp;&amp; apt-get install -y curl \</span></span><br><span class="line"><span class="bash">    &amp;&amp; rm -rf /var/lib/apt/lists/*</span></span><br><span class="line"><span class="bash">ENTRYPOINT [ <span class="string">"curl"</span>, <span class="string">"-s"</span>, <span class="string">"http://ip.cn"</span> ]</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight docker"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">FROM</span> ubuntu:<span class="number">16.04</span></span><br><span class="line"><span class="keyword">RUN</span><span class="bash"> apt-get update \</span></span><br><span class="line"><span class="bash">    &amp;&amp; apt-get install -y curl \</span></span><br><span class="line"><span class="bash">    &amp;&amp; rm -rf /var/lib/apt/lists/*</span></span><br><span class="line"><span class="keyword">ENTRYPOINT</span><span class="bash"> [ <span class="string">"curl"</span>, <span class="string">"-s"</span>, <span class="string">"http://ip.cn"</span> ]</span></span><br></pre></td></tr></table></figure>
 <p>这样，当我们运行 <code>docker run myip -i</code> 时， <code>CMD</code> 命令为 <code>-i</code>。再加上 <code>ENTRYPOINT</code>，本质上执行的命令就变成了 <code>curl -s http://ip.cn -i</code></p>
 <p>P.S. 上面栗子来自<a href="https://yeasy.gitbooks.io/docker_practice/content/image/dockerfile/entrypoint.html" target="_blank" rel="noopener">Docker — 从入门到实践</a></p>
 <h2 id="总结">总结</h2>
@@ -443,6 +454,9 @@
 
     
 
+    
+      
+    
     
 
     
@@ -501,9 +515,9 @@
           
 
   
-    <div id="gitalk-container"></div>
-    <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+    <div class="comments" id="gitalk-container">
     </div>
+
   
 
 
@@ -521,7 +535,6 @@
   </div>
 
   <aside id="sidebar" class="sidebar">
-    
     <div class="sidebar-inner">
 
       
@@ -537,16 +550,14 @@
         </ul>
       
 
-      <section class="site-overview-wrap sidebar-panel">
+      <div class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
-              <img class="site-author-image" itemprop="image"
-                src="/images/avatar.png"
-                alt="zjuturtle" />
+              <img class="site-author-image" itemprop="image" src="/images/avatar.png" alt="zjuturtle">
             
               <p class="site-author-name" itemprop="name">zjuturtle</p>
-              <p class="site-description motion-element" itemprop="description">瞎几把搞的幸运E</p>
+              <div class="site-description motion-element" itemprop="description">瞎几把搞的幸运E</div>
           </div>
 
           
@@ -556,7 +567,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">33</span>
+                    <span class="site-state-item-count">35</span>
                     <span class="site-state-item-name">posts</span>
                   </a>
                 </div>
@@ -566,7 +577,11 @@
                 
                 
                 <div class="site-state-item site-state-categories">
-                  <a href="/categories/index.html">
+                  
+                    
+                      <a href="/categories/">
+                    
+                  
                     
                     
                       
@@ -589,7 +604,11 @@
                 
                 
                 <div class="site-state-item site-state-tags">
-                  <a href="/tags/index.html">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
                     
                     
                       
@@ -658,7 +677,15 @@
                     
                       
                     
-                    <span class="site-state-item-count">33</span>
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">37</span>
                     <span class="site-state-item-name">tags</span>
                   </a>
                 </div>
@@ -669,22 +696,35 @@
           
 
           
+
+          
             <div class="links-of-author motion-element">
               
                 <span class="links-of-author-item">
-                  <a href="https://github.com/zjuturtle" target="_blank" title="GitHub"><i class="fa fa-fw fa-globe"></i>GitHub</a>
                   
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/zjuturtle" title="GitHub &rarr; https://github.com/zjuturtle" rel="noopener" target="_blank"><i class="fa fa-fw fa-globe"></i>GitHub</a>
                 </span>
               
                 <span class="links-of-author-item">
-                  <a href="mailto:leijinghaog@gmail.com" target="_blank" title="E-Mail"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
                   
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="mailto:leijinghaog@gmail.com" title="E-Mail &rarr; mailto:leijinghaog@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
                 </span>
               
             </div>
           
 
-          
           
 
           
@@ -696,15 +736,16 @@
           
 
         </div>
-      </section>
+      </div>
 
       
       <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
           <div class="post-toc">
 
             
-              
+            
+            
             
 
             
@@ -712,7 +753,7 @@
             
 
           </div>
-        </section>
+        </div>
       <!--/noindex-->
       
 
@@ -720,6 +761,7 @@
 
     </div>
   </aside>
+  
 
 
         
@@ -728,7 +770,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
   <span class="with-love" id="animate">
     <i class="fa fa-user"></i>
   </span>
@@ -740,9 +782,7 @@
 </div>
 
 
-
-
-  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> v3.7.1</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> v3.8.0</div>
 
 
 
@@ -750,7 +790,7 @@
 
 
 
-  <div class="theme-info">Theme – <a class="theme-link" target="_blank" href="https://theme-next.org">NexT.Gemini</a> v6.4.1</div>
+  <div class="theme-info">Theme – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.1.0</div>
 
 
 
@@ -760,8 +800,7 @@
 
 
 
-
-  <script type="text/javascript">
+  <script>
     (function() {
       var hm = document.createElement("script");
       hm.src = "//tajs.qq.com/stats?sId=61683784";
@@ -769,6 +808,7 @@
       s.parentNode.insertBefore(hm, s);
     })();
   </script>
+
 
 
 
@@ -785,7 +825,7 @@
     
 
     
-	
+
     
 
     
@@ -793,7 +833,7 @@
 
   
 
-<script type="text/javascript">
+<script>
   if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
     window.Promise = null;
   }
@@ -825,27 +865,21 @@
 
 
   
-  
-    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
-  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
 
   
-  
-    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
-  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
 
   
-  
-    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
-  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
 
 
   
 
 
-  <script type="text/javascript" src="/js/src/utils.js?v=6.4.1"></script>
+  <script src="/js/utils.js?v=7.1.0"></script>
 
-  <script type="text/javascript" src="/js/src/motion.js?v=6.4.1"></script>
+  <script src="/js/motion.js?v=7.1.0"></script>
 
 
 
@@ -853,135 +887,130 @@
   
 
 
-  <script type="text/javascript" src="/js/src/affix.js?v=6.4.1"></script>
+  <script src="/js/affix.js?v=7.1.0"></script>
 
-  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=6.4.1"></script>
+  <script src="/js/schemes/pisces.js?v=7.1.0"></script>
 
-
-
-  
-  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.4.1"></script>
-<script type="text/javascript" src="/js/src/post-details.js?v=6.4.1"></script>
 
 
 
   
-
-
-  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.4.1"></script>
+  <script src="/js/scrollspy.js?v=7.1.0"></script>
+<script src="/js/post-details.js?v=7.1.0"></script>
 
 
 
   
 
 
+  <script src="/js/next-boot.js?v=7.1.0"></script>
+
 
   
 
+  
 
+  
 
-
-
-
+  
 
 
   
     
-      <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
-      <script src="https://cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.min.js"></script>
-      <script type="text/javascript">
-        const gitalk = new Gitalk({
-          clientID: '08e86c9d0536ed791bf9',
-          clientSecret: 'edf722e9512cfd1d793d03f5e32c41bb2c4a4d38',
-          repo: 'Gitalk',
-          owner: 'AnotherZjuturtle',
-          admin: 'AnotherZjuturtle'.split(','),
-          pagerDirection: 'first',
-          id: md5(window.location.pathname),
-          // facebook-like distraction free mode
-          distractionFreeMode: false
-        })
-        gitalk.render('gitalk-container')
-      </script>
+
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+
+
+<script src="//cdn.jsdelivr.net/npm/js-md5@0.7.3/src/md5.min.js"></script>
+
+<script>
+  var gitalk = new Gitalk({
+    clientID: '',
+    clientSecret: '',
+    repo: 'Gitalk',
+    owner: 'AnotherZjuturtle',
+    admin: ['AnotherZjuturtle,zjuturtle'],
+    id: md5(location.pathname),
     
+      language: window.navigator.language || window.navigator.userLanguage,
+    
+    distractionFreeMode: 'true'
+  });
+  gitalk.render('gitalk-container');
+</script>
+
+  
+
+
   
 
 
 
 
   
-
-
-
-
-
-  
-
   
   <script>
     
     function addCount(Counter) {
-      var $visitors = $(".leancloud_visitors");
+      var $visitors = $('.leancloud_visitors');
       var url = $visitors.attr('id').trim();
       var title = $visitors.attr('data-flag-title').trim();
 
       Counter('get', '/classes/Counter', { where: JSON.stringify({ url }) })
-        .done(function ({ results }) {
+        .done(function({ results }) {
           if (results.length > 0) {
             var counter = results[0];
             
               var $element = $(document.getElementById(url));
               $element.find('.leancloud-visitors-count').text(counter.time + 1);
             
-            Counter('put', `/classes/Counter/${counter.objectId}`, JSON.stringify({ time: { "__op":"Increment", "amount":1 } }))
+            Counter('put', '/classes/Counter/' + counter.objectId, JSON.stringify({ time: { '__op': 'Increment', 'amount': 1 } }))
             
-            .fail(function ({ responseJSON }) {
+              .fail(function ({ responseJSON }) {
                 console.log('Failed to save Visitor num, with error message: ' + responseJSON.error);
-            })
+              })
           } else {
             
-              Counter('post', '/classes/Counter', JSON.stringify({ title: title, url: url, time: 1}))
-                .done(function () {
-                  var $element = $(document.getElementById(url));
-                  $element.find('.leancloud-visitors-count').text(1);
-                })
-                .fail(function () {
-                  console.log('Failed to create');
-                });
+              var $element = $(document.getElementById(url));
+              $element.find('.leancloud-visitors-count').text('Counter not initialized! More info at console err msg.');
+              console.error('ATTENTION! LeanCloud counter has security bug, see how to solve it here: https://github.com/theme-next/hexo-leancloud-counter-security. \n However, you can still use LeanCloud without security, by setting `security` option to `false`.');
             
           }
         })
-      .fail(function ({ responseJSON }) {
-        console.log('LeanCloud Counter Error:' + responseJSON.code + " " + responseJSON.error);
-      });
+        .fail(function ({ responseJSON }) {
+          console.log('LeanCloud Counter Error: ' + responseJSON.code + ' ' + responseJSON.error);
+        });
     }
     
 
     $(function() {
-      $.get('https://app-router.leancloud.cn/2/route?appId=' + "WPxUE6YkPBut4XJcmskHhlvL-gzGzoHsz")
-        .done(function ({ api_server }) {
-          var Counter = function (method, url, data) {
+      $.get('https://app-router.leancloud.cn/2/route?appId=' + 'WPxUE6YkPBut4XJcmskHhlvL-gzGzoHsz')
+        .done(function({ api_server }) {
+          var Counter = function(method, url, data) {
             return $.ajax({
               method: method,
-              url: `https://${api_server}/1.1${url}`,
+              url: 'https://' + api_server + '/1.1' + url,
               headers: {
-                'X-LC-Id': "WPxUE6YkPBut4XJcmskHhlvL-gzGzoHsz",
-                'X-LC-Key': "oCVD6rCmlv3Nx4jcOX0UiWNW",
+                'X-LC-Id': 'WPxUE6YkPBut4XJcmskHhlvL-gzGzoHsz',
+                'X-LC-Key': 'oCVD6rCmlv3Nx4jcOX0UiWNW',
                 'Content-Type': 'application/json',
               },
-              data: data,
+              data: data
             });
           };
           
-          addCount(Counter);
+            addCount(Counter);
           
-        })
+        });
     });
   </script>
 
 
-
-  
 
   
 
@@ -994,31 +1023,66 @@
   
     
       <script type="text/x-mathjax-config">
-    MathJax.Hub.Config({
-      tex2jax: {
-        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
-        processEscapes: true,
-        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-      },
-      TeX: {equationNumbers: { autoNumber: "AMS" }}
+  
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') { next = next.nextSibling }
+        if (next && next.nodeName.toLowerCase() === 'br') { next.parentNode.removeChild(next) }
+      }
     });
+  });
 </script>
 
 <script type="text/x-mathjax-config">
-    MathJax.Hub.Queue(function() {
-      var all = MathJax.Hub.getAllJax(), i;
-        for (i=0; i < all.length; i += 1) {
-          all[i].SourceElement().parentNode.className += ' has-jax';
-        }
-    });
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      document.getElementById(all[i].inputID + '-Frame').parentNode.className += ' has-jax';
+    }
+  });
 </script>
-<script type="text/javascript" src="//cdn.jsdelivr.net/npm/mathjax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script src="//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
     
   
 
 
   
+
+  
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+  
+
+  
+
   
 
   

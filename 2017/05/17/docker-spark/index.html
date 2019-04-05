@@ -15,10 +15,10 @@
 
 
 <html class="theme-next gemini use-motion" lang="zh-Hans">
-<head>
-  <meta charset="UTF-8"/>
-<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
 
 
@@ -32,8 +32,6 @@
 
 
 
-<meta http-equiv="Cache-Control" content="no-transform" />
-<meta http-equiv="Cache-Control" content="no-siteapp" />
 
 
 
@@ -46,6 +44,21 @@
 
 
 
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=7.1.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.ico?v=7.1.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=7.1.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico?v=7.1.0">
+
+
+  <link rel="mask-icon" href="/images/favicon.ico?v=7.1.0" color="#222">
 
 
 
@@ -53,40 +66,15 @@
 
 
 
-
-
-
-<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
-
-<link href="/css/main.css?v=6.4.1" rel="stylesheet" type="text/css" />
-
-
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.ico?v=6.4.1">
-
-
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=6.4.1">
-
-
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico?v=6.4.1">
-
-
-  <link rel="mask-icon" href="/images/favicon.ico?v=6.4.1" color="#222">
-
-
-
-
-
-
-
-
-
-<script type="text/javascript" id="hexo.configurations">
+<script id="hexo.configurations">
   var NexT = window.NexT || {};
   var CONFIG = {
     root: '/',
     scheme: 'Gemini',
-    version: '6.4.1',
-    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    version: '7.1.0',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
     fancybox: false,
     fastclick: false,
     lazyload: false,
@@ -116,7 +104,7 @@
 <meta property="og:site_name" content="zjuturtle&#39;s blog">
 <meta property="og:description" content="公司需要一个离线的分析系统，我打算直接在阿里云上开N台按量付费的机子然后一起跑。整个系统打算使用 Docker、Spark 来搞。即在阿里云的机子上先搭一层 Docker ，然后在 Docker 的基础上搭建 Spark 的集群。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-06-20T09:08:59.934Z">
+<meta property="og:updated_time" content="2018-06-20T09:08:59.935Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Docker 部署 Spark">
 <meta name="twitter:description" content="公司需要一个离线的分析系统，我打算直接在阿里云上开N台按量付费的机子然后一起跑。整个系统打算使用 Docker、Spark 来搞。即在阿里云的机子上先搭一层 Docker ，然后在 Docker 的基础上搭建 Spark 的集群。">
@@ -125,12 +113,13 @@
 
 
 
+  
+  
+  <link rel="canonical" href="https://zjuturtle.com/2017/05/17/docker-spark/">
 
-  <link rel="canonical" href="https://zjuturtle.com/2017/05/17/docker-spark/"/>
 
 
-
-<script type="text/javascript" id="page.configurations">
+<script id="page.configurations">
   CONFIG.page = {
     sidebar: "",
   };
@@ -147,30 +136,31 @@
 
 
 
+
+
+
   <noscript>
-  <style type="text/css">
-    .use-motion .motion-element,
-    .use-motion .brand,
-    .use-motion .menu-item,
-    .sidebar-inner,
-    .use-motion .post-block,
-    .use-motion .pagination,
-    .use-motion .comments,
-    .use-motion .post-header,
-    .use-motion .post-body,
-    .use-motion .collection-title { opacity: initial; }
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
 
-    .use-motion .logo,
-    .use-motion .site-title,
-    .use-motion .site-subtitle {
-      opacity: initial;
-      top: initial;
-    }
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
 
-    .use-motion {
-      .logo-line-before i { left: initial; }
-      .logo-line-after i { right: initial; }
-    }
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
   </style>
 </noscript>
 
@@ -188,7 +178,7 @@
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
       <div class="header-inner"><div class="site-brand-wrapper">
-  <div class="site-meta ">
+  <div class="site-meta">
     
 
     <div class="custom-logo-site-title">
@@ -198,6 +188,7 @@
         <span class="logo-line-after"><i></i></span>
       </a>
     </div>
+    
     
   </div>
 
@@ -221,16 +212,34 @@
         
           
           <li class="menu-item menu-item-home">
-    <a href="/" rel="section">
-      <i class="menu-item-icon fa fa-fw fa-home"></i> <br />Home</a>
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>Home</a>
+
   </li>
         
         
         
           
           <li class="menu-item menu-item-archives">
-    <a href="/archives/" rel="section">
-      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives</a>
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>Archives</a>
+
   </li>
 
       
@@ -298,10 +307,11 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Docker 部署 Spark
+          <h2 class="post-title" itemprop="name headline">Docker 部署 Spark
+
               
             
-          </h1>
+          </h2>
         
 
         <div class="post-meta">
@@ -346,7 +356,7 @@
           </span>
 
           
-            <span class="post-category" >
+            <span class="post-category">
             
               <span class="post-meta-divider">|</span>
             
@@ -367,20 +377,21 @@
 
           
             
+            
           
 
           
           
-             <span id="/2017/05/17/docker-spark/" class="leancloud_visitors" data-flag-title="Docker 部署 Spark">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">Views: </span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
+            <span id="/2017/05/17/docker-spark/" class="leancloud_visitors" data-flag-title="Docker 部署 Spark">
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Views: </span>
+              
+                <span class="leancloud-visitors-count"></span>
+            </span>
           
 
           
@@ -442,7 +453,7 @@
 <p>设置样例<code>config.example.json</code></p>
 <figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">"master"</span>:&#123;<span class="attr">"IP"</span>:<span class="string">""</span>,<span class="attr">"password"</span>:<span class="string">""</span>&#125;,</span><br><span class="line">  <span class="attr">"workers"</span>:[&#123;<span class="attr">"IP"</span>:<span class="string">""</span>,<span class="attr">"password"</span>:<span class="string">""</span>&#125;],</span><br><span class="line">  <span class="attr">"end_point"</span>:<span class="string">""</span>,</span><br><span class="line">  <span class="attr">"bucket_name"</span>:<span class="string">""</span>,</span><br><span class="line">  <span class="attr">"access_key_id"</span>:<span class="string">""</span>,</span><br><span class="line">  <span class="attr">"access_key_secret"</span>:<span class="string">""</span>,</span><br><span class="line">  <span class="attr">"oss_docker_image_name"</span>:<span class="string">"sparkCluster.tar"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>docker 部署脚本<code>deploy.py</code> ，注意该部署脚本使用了 threading 模块和 Event 来同时部署多台机器</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> paramiko</span><br><span class="line"><span class="keyword">import</span> json</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> threading</span><br><span class="line"></span><br><span class="line"><span class="comment"># 载入外部设置</span></span><br><span class="line"><span class="keyword">with</span> open(<span class="string">'config.json'</span>, <span class="string">'r'</span>) <span class="keyword">as</span> f:</span><br><span class="line">    config_data = json.load(f)</span><br><span class="line">MASTER = config_data[<span class="string">'master'</span>]</span><br><span class="line">WORKERS = config_data[<span class="string">'workers'</span>]</span><br><span class="line"><span class="keyword">with</span> open(<span class="string">'config.json.tmp'</span>, <span class="string">'w'</span>) <span class="keyword">as</span> outfile:</span><br><span class="line">    data = dict()</span><br><span class="line">    data[<span class="string">'end_point'</span>] = config_data[<span class="string">'end_point'</span>]</span><br><span class="line">    data[<span class="string">'bucket_name'</span>] = config_data[<span class="string">'bucket_name'</span>]</span><br><span class="line">    data[<span class="string">'access_key_id'</span>] = config_data[<span class="string">'access_key_id'</span>]</span><br><span class="line">    data[<span class="string">'access_key_secret'</span>] = config_data[<span class="string">'access_key_secret'</span>]</span><br><span class="line">    data[<span class="string">'oss_docker_image_name'</span>] = config_data[<span class="string">'oss_docker_image_name'</span>]</span><br><span class="line">    json.dump(data, outfile)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">docker_spark_start</span><span class="params">(ip, password, name, run_cmd, event=None)</span>:</span></span><br><span class="line">    <span class="keyword">with</span> open(<span class="string">'docker_install.sh'</span>) <span class="keyword">as</span> fo:</span><br><span class="line">        docker_install_cmd = fo.read().splitlines()</span><br><span class="line">    ssh = paramiko.SSHClient()</span><br><span class="line">    ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())</span><br><span class="line">    ssh.connect(hostname=ip, port=<span class="number">22</span>, username=<span class="string">'root'</span>, password=password)</span><br><span class="line">    sftp = ssh.open_sftp()</span><br><span class="line">    sftp.put(<span class="string">'get_docker_image.py'</span>, <span class="string">'get_docker_image.py'</span>)</span><br><span class="line"></span><br><span class="line">    sftp.put(<span class="string">'config.json.tmp'</span>, <span class="string">'config.json'</span>)</span><br><span class="line">    <span class="keyword">for</span> cmd <span class="keyword">in</span> docker_install_cmd:</span><br><span class="line">        stdin, stdout, stderr = ssh.exec_command(cmd)</span><br><span class="line">        <span class="keyword">for</span> line <span class="keyword">in</span> iter(<span class="keyword">lambda</span>: stdout.readline(<span class="number">2048</span>), <span class="string">""</span>):</span><br><span class="line">            print(<span class="string">'[REMOTE-'</span> + name + <span class="string">'][INFO]'</span> + str(line), end=<span class="string">''</span>)</span><br><span class="line">        <span class="keyword">for</span> line <span class="keyword">in</span> iter(<span class="keyword">lambda</span>: stderr.readline(<span class="number">2048</span>), <span class="string">""</span>):</span><br><span class="line">            print(<span class="string">'[REMOT-'</span> + name + <span class="string">'][ERROR]'</span> + str(line), end=<span class="string">''</span>)</span><br><span class="line">    print(<span class="string">'[INFO]'</span>+name+<span class="string">' install docker spark finish'</span>)</span><br><span class="line">    <span class="comment"># 使用Event保证Master部署完毕才启动Slave</span></span><br><span class="line">    <span class="keyword">if</span> event <span class="keyword">is</span> <span class="keyword">not</span> <span class="keyword">None</span>:</span><br><span class="line">        event.wait()</span><br><span class="line">    stdin, stdout, stderr = ssh.exec_command(run_cmd)</span><br><span class="line">    <span class="keyword">for</span> line <span class="keyword">in</span> iter(<span class="keyword">lambda</span>: stdout.readline(<span class="number">2048</span>), <span class="string">""</span>):</span><br><span class="line">        print(<span class="string">'[REMOTE-'</span> + name + <span class="string">'][INFO]'</span> + str(line), end=<span class="string">''</span>)</span><br><span class="line">    <span class="keyword">for</span> line <span class="keyword">in</span> iter(<span class="keyword">lambda</span>: stderr.readline(<span class="number">2048</span>), <span class="string">""</span>):</span><br><span class="line">        print(<span class="string">'[REMOTE-'</span> + name + <span class="string">'][ERROR]'</span> + str(line), end=<span class="string">''</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">start_worker</span><span class="params">(current_worker, worker_index, master_addr, event)</span>:</span></span><br><span class="line">    docker_spark_start(current_worker[<span class="string">'IP'</span>], current_worker[<span class="string">'password'</span>], <span class="string">'WORKER-'</span>+str(worker_index),</span><br><span class="line">                       <span class="string">'docker run -d -p 8088:8088 -p 4040:4040 -p 7077:7077 -p 8080:8080 '</span></span><br><span class="line">                       <span class="string">'-p 6066:6066 --name=sparkWorker'</span> + str(worker_index) +</span><br><span class="line">                       <span class="string">' local/sparkcluster /app/start-slave.sh '</span> + master_addr,</span><br><span class="line">                       event)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">event = threading.Event()</span><br><span class="line">index = <span class="number">0</span></span><br><span class="line">worker_threads = []</span><br><span class="line"><span class="keyword">for</span> worker <span class="keyword">in</span> WORKERS:</span><br><span class="line">    t = threading.Thread(target=start_worker, name=<span class="string">'WORKER'</span>+str(index),</span><br><span class="line">                         args=(worker, index, MASTER[<span class="string">'innerIP'</span>]+<span class="string">':7077'</span>, event))</span><br><span class="line">    t.daemon = <span class="keyword">True</span></span><br><span class="line">    t.start()</span><br><span class="line">    worker_threads.append(t)</span><br><span class="line">    index += <span class="number">1</span></span><br><span class="line">docker_spark_start(MASTER[<span class="string">'IP'</span>], MASTER[<span class="string">'password'</span>], <span class="string">'MASTER'</span>,</span><br><span class="line">                   <span class="string">'docker run -d -p 8088:8088 -p 4040:4040 -p 7077:7077 -p 8080:8080 '</span></span><br><span class="line">                   <span class="string">'-p 6066:6066 --name=sparkMaster local/sparkcluster /app/start-master.sh'</span>)</span><br><span class="line"></span><br><span class="line">event.set()</span><br><span class="line">print(<span class="string">'[INFO]Deploy spark master finish'</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> t <span class="keyword">in</span> worker_threads:</span><br><span class="line">    t.join()</span><br><span class="line">os.remove(<span class="string">'config.json.tmp'</span>)</span><br><span class="line">print(<span class="string">'[INFO]Deploy spark workers finish'</span>)</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> paramiko</span><br><span class="line"><span class="keyword">import</span> json</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> threading</span><br><span class="line"></span><br><span class="line"><span class="comment"># 载入外部设置</span></span><br><span class="line"><span class="keyword">with</span> open(<span class="string">'config.json'</span>, <span class="string">'r'</span>) <span class="keyword">as</span> f:</span><br><span class="line">    config_data = json.load(f)</span><br><span class="line">MASTER = config_data[<span class="string">'master'</span>]</span><br><span class="line">WORKERS = config_data[<span class="string">'workers'</span>]</span><br><span class="line"><span class="keyword">with</span> open(<span class="string">'config.json.tmp'</span>, <span class="string">'w'</span>) <span class="keyword">as</span> outfile:</span><br><span class="line">    data = dict()</span><br><span class="line">    data[<span class="string">'end_point'</span>] = config_data[<span class="string">'end_point'</span>]</span><br><span class="line">    data[<span class="string">'bucket_name'</span>] = config_data[<span class="string">'bucket_name'</span>]</span><br><span class="line">    data[<span class="string">'access_key_id'</span>] = config_data[<span class="string">'access_key_id'</span>]</span><br><span class="line">    data[<span class="string">'access_key_secret'</span>] = config_data[<span class="string">'access_key_secret'</span>]</span><br><span class="line">    data[<span class="string">'oss_docker_image_name'</span>] = config_data[<span class="string">'oss_docker_image_name'</span>]</span><br><span class="line">    json.dump(data, outfile)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">docker_spark_start</span><span class="params">(ip, password, name, run_cmd, event=None)</span>:</span></span><br><span class="line">    <span class="keyword">with</span> open(<span class="string">'docker_install.sh'</span>) <span class="keyword">as</span> fo:</span><br><span class="line">        docker_install_cmd = fo.read().splitlines()</span><br><span class="line">    ssh = paramiko.SSHClient()</span><br><span class="line">    ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())</span><br><span class="line">    ssh.connect(hostname=ip, port=<span class="number">22</span>, username=<span class="string">'root'</span>, password=password)</span><br><span class="line">    sftp = ssh.open_sftp()</span><br><span class="line">    sftp.put(<span class="string">'get_docker_image.py'</span>, <span class="string">'get_docker_image.py'</span>)</span><br><span class="line"></span><br><span class="line">    sftp.put(<span class="string">'config.json.tmp'</span>, <span class="string">'config.json'</span>)</span><br><span class="line">    <span class="keyword">for</span> cmd <span class="keyword">in</span> docker_install_cmd:</span><br><span class="line">        stdin, stdout, stderr = ssh.exec_command(cmd)</span><br><span class="line">        <span class="keyword">for</span> line <span class="keyword">in</span> iter(<span class="keyword">lambda</span>: stdout.readline(<span class="number">2048</span>), <span class="string">""</span>):</span><br><span class="line">            print(<span class="string">'[REMOTE-'</span> + name + <span class="string">'][INFO]'</span> + str(line), end=<span class="string">''</span>)</span><br><span class="line">        <span class="keyword">for</span> line <span class="keyword">in</span> iter(<span class="keyword">lambda</span>: stderr.readline(<span class="number">2048</span>), <span class="string">""</span>):</span><br><span class="line">            print(<span class="string">'[REMOT-'</span> + name + <span class="string">'][ERROR]'</span> + str(line), end=<span class="string">''</span>)</span><br><span class="line">    print(<span class="string">'[INFO]'</span>+name+<span class="string">' install docker spark finish'</span>)</span><br><span class="line">    <span class="comment"># 使用Event保证Master部署完毕才启动Slave</span></span><br><span class="line">    <span class="keyword">if</span> event <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">        event.wait()</span><br><span class="line">    stdin, stdout, stderr = ssh.exec_command(run_cmd)</span><br><span class="line">    <span class="keyword">for</span> line <span class="keyword">in</span> iter(<span class="keyword">lambda</span>: stdout.readline(<span class="number">2048</span>), <span class="string">""</span>):</span><br><span class="line">        print(<span class="string">'[REMOTE-'</span> + name + <span class="string">'][INFO]'</span> + str(line), end=<span class="string">''</span>)</span><br><span class="line">    <span class="keyword">for</span> line <span class="keyword">in</span> iter(<span class="keyword">lambda</span>: stderr.readline(<span class="number">2048</span>), <span class="string">""</span>):</span><br><span class="line">        print(<span class="string">'[REMOTE-'</span> + name + <span class="string">'][ERROR]'</span> + str(line), end=<span class="string">''</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">start_worker</span><span class="params">(current_worker, worker_index, master_addr, event)</span>:</span></span><br><span class="line">    docker_spark_start(current_worker[<span class="string">'IP'</span>], current_worker[<span class="string">'password'</span>], <span class="string">'WORKER-'</span>+str(worker_index),</span><br><span class="line">                       <span class="string">'docker run -d -p 8088:8088 -p 4040:4040 -p 7077:7077 -p 8080:8080 '</span></span><br><span class="line">                       <span class="string">'-p 6066:6066 --name=sparkWorker'</span> + str(worker_index) +</span><br><span class="line">                       <span class="string">' local/sparkcluster /app/start-slave.sh '</span> + master_addr,</span><br><span class="line">                       event)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">event = threading.Event()</span><br><span class="line">index = <span class="number">0</span></span><br><span class="line">worker_threads = []</span><br><span class="line"><span class="keyword">for</span> worker <span class="keyword">in</span> WORKERS:</span><br><span class="line">    t = threading.Thread(target=start_worker, name=<span class="string">'WORKER'</span>+str(index),</span><br><span class="line">                         args=(worker, index, MASTER[<span class="string">'innerIP'</span>]+<span class="string">':7077'</span>, event))</span><br><span class="line">    t.daemon = <span class="literal">True</span></span><br><span class="line">    t.start()</span><br><span class="line">    worker_threads.append(t)</span><br><span class="line">    index += <span class="number">1</span></span><br><span class="line">docker_spark_start(MASTER[<span class="string">'IP'</span>], MASTER[<span class="string">'password'</span>], <span class="string">'MASTER'</span>,</span><br><span class="line">                   <span class="string">'docker run -d -p 8088:8088 -p 4040:4040 -p 7077:7077 -p 8080:8080 '</span></span><br><span class="line">                   <span class="string">'-p 6066:6066 --name=sparkMaster local/sparkcluster /app/start-master.sh'</span>)</span><br><span class="line"></span><br><span class="line">event.set()</span><br><span class="line">print(<span class="string">'[INFO]Deploy spark master finish'</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> t <span class="keyword">in</span> worker_threads:</span><br><span class="line">    t.join()</span><br><span class="line">os.remove(<span class="string">'config.json.tmp'</span>)</span><br><span class="line">print(<span class="string">'[INFO]Deploy spark workers finish'</span>)</span><br></pre></td></tr></table></figure>
 <p>docker 安装脚本<code>docker_install.sh</code></p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#! /bin/bash</span></span><br><span class="line"><span class="comment"># docker_install.sh for ubuntu16.04</span></span><br><span class="line">apt update</span><br><span class="line">apt install python3 -y</span><br><span class="line">apt install vim -y</span><br><span class="line">apt install apt-transport-https -y</span><br><span class="line">apt install ca-certificates -y</span><br><span class="line">apt install curl -y</span><br><span class="line">apt install software-properties-common -y</span><br><span class="line">curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -</span><br><span class="line">apt-key fingerprint 0EBFCD88</span><br><span class="line">add-apt-repository <span class="string">"deb [arch=amd64] https://download.docker.com/linux/ubuntu <span class="variable">$(lsb_release -cs)</span> stable"</span></span><br><span class="line">apt update</span><br><span class="line">apt install docker-ce -y</span><br><span class="line">apt install python3 -y</span><br><span class="line">apt install python3-pip -y</span><br><span class="line">pip3 install --upgrade pip</span><br><span class="line">pip3 install oss2</span><br><span class="line">python3 get_docker_image.py</span><br><span class="line">rm config.json</span><br><span class="line">docker stop $(docker ps -a -q)</span><br><span class="line">docker rm $(docker ps -a -q)</span><br><span class="line">docker rmi $(docker images -q)</span><br><span class="line">docker load --input dockerImage.tar</span><br><span class="line">rm dockerImage.tar</span><br><span class="line">rm get_docker_image.py</span><br></pre></td></tr></table></figure>
 <p>镜像获取<code>get_docker_image.py</code></p>
@@ -461,6 +472,9 @@
 
     
 
+    
+      
+    
     
 
     
@@ -519,9 +533,9 @@
           
 
   
-    <div id="gitalk-container"></div>
-    <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+    <div class="comments" id="gitalk-container">
     </div>
+
   
 
 
@@ -539,7 +553,6 @@
   </div>
 
   <aside id="sidebar" class="sidebar">
-    
     <div class="sidebar-inner">
 
       
@@ -555,16 +568,14 @@
         </ul>
       
 
-      <section class="site-overview-wrap sidebar-panel">
+      <div class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
-              <img class="site-author-image" itemprop="image"
-                src="/images/avatar.png"
-                alt="zjuturtle" />
+              <img class="site-author-image" itemprop="image" src="/images/avatar.png" alt="zjuturtle">
             
               <p class="site-author-name" itemprop="name">zjuturtle</p>
-              <p class="site-description motion-element" itemprop="description">瞎几把搞的幸运E</p>
+              <div class="site-description motion-element" itemprop="description">瞎几把搞的幸运E</div>
           </div>
 
           
@@ -574,7 +585,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">33</span>
+                    <span class="site-state-item-count">35</span>
                     <span class="site-state-item-name">posts</span>
                   </a>
                 </div>
@@ -584,7 +595,11 @@
                 
                 
                 <div class="site-state-item site-state-categories">
-                  <a href="/categories/index.html">
+                  
+                    
+                      <a href="/categories/">
+                    
+                  
                     
                     
                       
@@ -607,7 +622,11 @@
                 
                 
                 <div class="site-state-item site-state-tags">
-                  <a href="/tags/index.html">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
                     
                     
                       
@@ -676,7 +695,15 @@
                     
                       
                     
-                    <span class="site-state-item-count">33</span>
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">37</span>
                     <span class="site-state-item-name">tags</span>
                   </a>
                 </div>
@@ -687,22 +714,35 @@
           
 
           
+
+          
             <div class="links-of-author motion-element">
               
                 <span class="links-of-author-item">
-                  <a href="https://github.com/zjuturtle" target="_blank" title="GitHub"><i class="fa fa-fw fa-globe"></i>GitHub</a>
                   
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/zjuturtle" title="GitHub &rarr; https://github.com/zjuturtle" rel="noopener" target="_blank"><i class="fa fa-fw fa-globe"></i>GitHub</a>
                 </span>
               
                 <span class="links-of-author-item">
-                  <a href="mailto:leijinghaog@gmail.com" target="_blank" title="E-Mail"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
                   
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="mailto:leijinghaog@gmail.com" title="E-Mail &rarr; mailto:leijinghaog@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
                 </span>
               
             </div>
           
 
-          
           
 
           
@@ -714,15 +754,16 @@
           
 
         </div>
-      </section>
+      </div>
 
       
       <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
           <div class="post-toc">
 
             
-              
+            
+            
             
 
             
@@ -730,7 +771,7 @@
             
 
           </div>
-        </section>
+        </div>
       <!--/noindex-->
       
 
@@ -738,6 +779,7 @@
 
     </div>
   </aside>
+  
 
 
         
@@ -746,7 +788,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
   <span class="with-love" id="animate">
     <i class="fa fa-user"></i>
   </span>
@@ -758,9 +800,7 @@
 </div>
 
 
-
-
-  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> v3.7.1</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> v3.8.0</div>
 
 
 
@@ -768,7 +808,7 @@
 
 
 
-  <div class="theme-info">Theme – <a class="theme-link" target="_blank" href="https://theme-next.org">NexT.Gemini</a> v6.4.1</div>
+  <div class="theme-info">Theme – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.1.0</div>
 
 
 
@@ -778,8 +818,7 @@
 
 
 
-
-  <script type="text/javascript">
+  <script>
     (function() {
       var hm = document.createElement("script");
       hm.src = "//tajs.qq.com/stats?sId=61683784";
@@ -787,6 +826,7 @@
       s.parentNode.insertBefore(hm, s);
     })();
   </script>
+
 
 
 
@@ -803,7 +843,7 @@
     
 
     
-	
+
     
 
     
@@ -811,7 +851,7 @@
 
   
 
-<script type="text/javascript">
+<script>
   if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
     window.Promise = null;
   }
@@ -843,27 +883,21 @@
 
 
   
-  
-    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
-  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
 
   
-  
-    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
-  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
 
   
-  
-    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
-  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
 
 
   
 
 
-  <script type="text/javascript" src="/js/src/utils.js?v=6.4.1"></script>
+  <script src="/js/utils.js?v=7.1.0"></script>
 
-  <script type="text/javascript" src="/js/src/motion.js?v=6.4.1"></script>
+  <script src="/js/motion.js?v=7.1.0"></script>
 
 
 
@@ -871,135 +905,130 @@
   
 
 
-  <script type="text/javascript" src="/js/src/affix.js?v=6.4.1"></script>
+  <script src="/js/affix.js?v=7.1.0"></script>
 
-  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=6.4.1"></script>
+  <script src="/js/schemes/pisces.js?v=7.1.0"></script>
 
-
-
-  
-  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.4.1"></script>
-<script type="text/javascript" src="/js/src/post-details.js?v=6.4.1"></script>
 
 
 
   
-
-
-  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.4.1"></script>
+  <script src="/js/scrollspy.js?v=7.1.0"></script>
+<script src="/js/post-details.js?v=7.1.0"></script>
 
 
 
   
 
 
+  <script src="/js/next-boot.js?v=7.1.0"></script>
+
 
   
 
+  
 
+  
 
-
-
-
+  
 
 
   
     
-      <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
-      <script src="https://cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.min.js"></script>
-      <script type="text/javascript">
-        const gitalk = new Gitalk({
-          clientID: '08e86c9d0536ed791bf9',
-          clientSecret: 'edf722e9512cfd1d793d03f5e32c41bb2c4a4d38',
-          repo: 'Gitalk',
-          owner: 'AnotherZjuturtle',
-          admin: 'AnotherZjuturtle'.split(','),
-          pagerDirection: 'first',
-          id: md5(window.location.pathname),
-          // facebook-like distraction free mode
-          distractionFreeMode: false
-        })
-        gitalk.render('gitalk-container')
-      </script>
+
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+
+
+<script src="//cdn.jsdelivr.net/npm/js-md5@0.7.3/src/md5.min.js"></script>
+
+<script>
+  var gitalk = new Gitalk({
+    clientID: '',
+    clientSecret: '',
+    repo: 'Gitalk',
+    owner: 'AnotherZjuturtle',
+    admin: ['AnotherZjuturtle,zjuturtle'],
+    id: md5(location.pathname),
     
+      language: window.navigator.language || window.navigator.userLanguage,
+    
+    distractionFreeMode: 'true'
+  });
+  gitalk.render('gitalk-container');
+</script>
+
+  
+
+
   
 
 
 
 
   
-
-
-
-
-
-  
-
   
   <script>
     
     function addCount(Counter) {
-      var $visitors = $(".leancloud_visitors");
+      var $visitors = $('.leancloud_visitors');
       var url = $visitors.attr('id').trim();
       var title = $visitors.attr('data-flag-title').trim();
 
       Counter('get', '/classes/Counter', { where: JSON.stringify({ url }) })
-        .done(function ({ results }) {
+        .done(function({ results }) {
           if (results.length > 0) {
             var counter = results[0];
             
               var $element = $(document.getElementById(url));
               $element.find('.leancloud-visitors-count').text(counter.time + 1);
             
-            Counter('put', `/classes/Counter/${counter.objectId}`, JSON.stringify({ time: { "__op":"Increment", "amount":1 } }))
+            Counter('put', '/classes/Counter/' + counter.objectId, JSON.stringify({ time: { '__op': 'Increment', 'amount': 1 } }))
             
-            .fail(function ({ responseJSON }) {
+              .fail(function ({ responseJSON }) {
                 console.log('Failed to save Visitor num, with error message: ' + responseJSON.error);
-            })
+              })
           } else {
             
-              Counter('post', '/classes/Counter', JSON.stringify({ title: title, url: url, time: 1}))
-                .done(function () {
-                  var $element = $(document.getElementById(url));
-                  $element.find('.leancloud-visitors-count').text(1);
-                })
-                .fail(function () {
-                  console.log('Failed to create');
-                });
+              var $element = $(document.getElementById(url));
+              $element.find('.leancloud-visitors-count').text('Counter not initialized! More info at console err msg.');
+              console.error('ATTENTION! LeanCloud counter has security bug, see how to solve it here: https://github.com/theme-next/hexo-leancloud-counter-security. \n However, you can still use LeanCloud without security, by setting `security` option to `false`.');
             
           }
         })
-      .fail(function ({ responseJSON }) {
-        console.log('LeanCloud Counter Error:' + responseJSON.code + " " + responseJSON.error);
-      });
+        .fail(function ({ responseJSON }) {
+          console.log('LeanCloud Counter Error: ' + responseJSON.code + ' ' + responseJSON.error);
+        });
     }
     
 
     $(function() {
-      $.get('https://app-router.leancloud.cn/2/route?appId=' + "WPxUE6YkPBut4XJcmskHhlvL-gzGzoHsz")
-        .done(function ({ api_server }) {
-          var Counter = function (method, url, data) {
+      $.get('https://app-router.leancloud.cn/2/route?appId=' + 'WPxUE6YkPBut4XJcmskHhlvL-gzGzoHsz')
+        .done(function({ api_server }) {
+          var Counter = function(method, url, data) {
             return $.ajax({
               method: method,
-              url: `https://${api_server}/1.1${url}`,
+              url: 'https://' + api_server + '/1.1' + url,
               headers: {
-                'X-LC-Id': "WPxUE6YkPBut4XJcmskHhlvL-gzGzoHsz",
-                'X-LC-Key': "oCVD6rCmlv3Nx4jcOX0UiWNW",
+                'X-LC-Id': 'WPxUE6YkPBut4XJcmskHhlvL-gzGzoHsz',
+                'X-LC-Key': 'oCVD6rCmlv3Nx4jcOX0UiWNW',
                 'Content-Type': 'application/json',
               },
-              data: data,
+              data: data
             });
           };
           
-          addCount(Counter);
+            addCount(Counter);
           
-        })
+        });
     });
   </script>
 
 
-
-  
 
   
 
@@ -1012,31 +1041,66 @@
   
     
       <script type="text/x-mathjax-config">
-    MathJax.Hub.Config({
-      tex2jax: {
-        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
-        processEscapes: true,
-        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-      },
-      TeX: {equationNumbers: { autoNumber: "AMS" }}
+  
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') { next = next.nextSibling }
+        if (next && next.nodeName.toLowerCase() === 'br') { next.parentNode.removeChild(next) }
+      }
     });
+  });
 </script>
 
 <script type="text/x-mathjax-config">
-    MathJax.Hub.Queue(function() {
-      var all = MathJax.Hub.getAllJax(), i;
-        for (i=0; i < all.length; i += 1) {
-          all[i].SourceElement().parentNode.className += ' has-jax';
-        }
-    });
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      document.getElementById(all[i].inputID + '-Frame').parentNode.className += ' has-jax';
+    }
+  });
 </script>
-<script type="text/javascript" src="//cdn.jsdelivr.net/npm/mathjax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script src="//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
     
   
 
 
   
+
+  
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+  
+
+  
+
   
 
   
