@@ -96,18 +96,18 @@
 
 
 
-  <meta name="description" content="这其实是一个相对独立的知识点，介绍一下 Lempel-Ziv complexity 。这个概念最开始是在 On the Complexity of Finite Sequences (IEEE Trans. On IT-22,1 1976) 提出的。Lempel-Ziv complexity 可以用于衡量 0-1 序列或者文本序列的自身重复程度。">
-<meta name="keywords" content="EEG,feature">
+  <meta name="description" content="我们经常会遇到本地开发，但最终需要部署到服务器的情况。对于服务器部署，我们会选择使用 Docker 部署，但对于本地开发而言就略微有点不爽了。因为我们的本地环境（比如 Mac ）和 Docker 内的环境（一般是各种版本的 Linux）不一致，导致我们没办法很好地使用 IDE 的一些功能。">
+<meta name="keywords" content="Docker,C++,Clion,GDB">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Lempel-Ziv complexity 详解">
-<meta property="og:url" content="https://zjuturtle.com/2018/06/22/lz-complexity/index.html">
+<meta property="og:title" content="使用 Clion 调试 Docker 内的 C++ 代码">
+<meta property="og:url" content="https://zjuturtle.com/2019/04/29/clion-docker/index.html">
 <meta property="og:site_name" content="zjuturtle&#39;s blog">
-<meta property="og:description" content="这其实是一个相对独立的知识点，介绍一下 Lempel-Ziv complexity 。这个概念最开始是在 On the Complexity of Finite Sequences (IEEE Trans. On IT-22,1 1976) 提出的。Lempel-Ziv complexity 可以用于衡量 0-1 序列或者文本序列的自身重复程度。">
+<meta property="og:description" content="我们经常会遇到本地开发，但最终需要部署到服务器的情况。对于服务器部署，我们会选择使用 Docker 部署，但对于本地开发而言就略微有点不爽了。因为我们的本地环境（比如 Mac ）和 Docker 内的环境（一般是各种版本的 Linux）不一致，导致我们没办法很好地使用 IDE 的一些功能。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-06-22T08:40:24.924Z">
+<meta property="og:updated_time" content="2019-04-29T14:39:43.285Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Lempel-Ziv complexity 详解">
-<meta name="twitter:description" content="这其实是一个相对独立的知识点，介绍一下 Lempel-Ziv complexity 。这个概念最开始是在 On the Complexity of Finite Sequences (IEEE Trans. On IT-22,1 1976) 提出的。Lempel-Ziv complexity 可以用于衡量 0-1 序列或者文本序列的自身重复程度。">
+<meta name="twitter:title" content="使用 Clion 调试 Docker 内的 C++ 代码">
+<meta name="twitter:description" content="我们经常会遇到本地开发，但最终需要部署到服务器的情况。对于服务器部署，我们会选择使用 Docker 部署，但对于本地开发而言就略微有点不爽了。因为我们的本地环境（比如 Mac ）和 Docker 内的环境（一般是各种版本的 Linux）不一致，导致我们没办法很好地使用 IDE 的一些功能。">
 
 
 
@@ -115,7 +115,7 @@
 
   
   
-  <link rel="canonical" href="https://zjuturtle.com/2018/06/22/lz-complexity/">
+  <link rel="canonical" href="https://zjuturtle.com/2019/04/29/clion-docker/">
 
 
 
@@ -125,7 +125,7 @@
   };
 </script>
 
-  <title>Lempel-Ziv complexity 详解 | zjuturtle's blog</title>
+  <title>使用 Clion 调试 Docker 内的 C++ 代码 | zjuturtle's blog</title>
   
 
 
@@ -290,7 +290,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://zjuturtle.com/2018/06/22/lz-complexity/">
+    <link itemprop="mainEntityOfPage" href="https://zjuturtle.com/2019/04/29/clion-docker/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="zjuturtle">
@@ -307,7 +307,7 @@
 
         
         
-          <h2 class="post-title" itemprop="name headline">Lempel-Ziv complexity 详解
+          <h2 class="post-title" itemprop="name headline">使用 Clion 调试 Docker 内的 C++ 代码
 
               
             
@@ -333,7 +333,7 @@
                 
               
 
-              <time title="Created: 2018-06-22 17:42:37 / Modified: 16:40:24" itemprop="dateCreated datePublished" datetime="2018-06-22T17:42:37+08:00">2018-06-22</time>
+              <time title="Created: 2019-04-29 22:37:46 / Modified: 22:39:43" itemprop="dateCreated datePublished" datetime="2019-04-29T22:37:46+08:00">2019-04-29</time>
             
 
             
@@ -355,7 +355,7 @@
                 <span class="post-meta-item-text">In</span>
               
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Algorithm/" itemprop="url" rel="index"><span itemprop="name">Algorithm</span></a></span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/C-Altar/" itemprop="url" rel="index"><span itemprop="name">C++Altar</span></a></span>
 
                 
                 
@@ -370,7 +370,7 @@
 
           
           
-            <span id="/2018/06/22/lz-complexity/" class="leancloud_visitors" data-flag-title="Lempel-Ziv complexity 详解">
+            <span id="/2019/04/29/clion-docker/" class="leancloud_visitors" data-flag-title="使用 Clion 调试 Docker 内的 C++ 代码">
               <span class="post-meta-divider">|</span>
               <span class="post-meta-item-icon">
                 <i class="fa fa-eye"></i>
@@ -401,194 +401,30 @@
       
 
       
-        <p>这其实是一个相对独立的知识点，介绍一下 Lempel-Ziv complexity 。这个概念最开始是在 <strong>On the Complexity of Finite Sequences (IEEE Trans. On IT-22,1 1976)</strong> 提出的。Lempel-Ziv complexity 可以用于衡量 0-1 序列或者文本序列的自身重复程度。</p>
+        <p>我们经常会遇到本地开发，但最终需要部署到服务器的情况。对于服务器部署，我们会选择使用 Docker 部署，但对于本地开发而言就略微有点不爽了。因为我们的本地环境（比如 Mac ）和 Docker 内的环境（一般是各种版本的 Linux）不一致，导致我们没办法很好地使用 IDE 的一些功能。</p>
 <a id="more"></a>
-<h2 id="理论">理论</h2>
-<p>首先我们假设 <span class="math inline">\(S\)</span> 是一个 0-1 序列（读取顺序为从左往右），其 Lempel-Ziv complexity 记为 <span class="math inline">\(C(S)\)</span>。</p>
-<p>想象我们有一个在读取过程中从左到右移动的分隔符。在初始状态下这个分隔符在第一个元素和第二个元素中间，且确定该位置为第一个分隔符位置，记录为起始位置。然后我们定义前缀序列为分隔符之前的序列舍去最后一个元素，注意此时前缀序列为空。接下来尝试将分隔符向右移动一个元素，定义起始位置和当前位置之间的序列为当前序列。如果当前序列为前缀序列的一个子串，则继续将分隔符向右移动一个元素，直到条件不满足。当条件不满足时，再次将此时的分隔符位置记录为起始位置，如此循环。复杂度即为起始位置设置的次数</p>
-<h2 id="例子">例子</h2>
-<p>说起来真是拗口，其实我在翻资料的时候也着实理解了半天。比如我们现在有一串序列 <code>BAABBBBABBAAAABA</code>，需要计算它的 Lempel-Ziv complexity。我们用 <code>|</code> 表示记录的起始位置，用 <code>,</code> 正在移动的分隔符。</p>
-<table>
-<thead>
-<tr class="header">
-<th>步骤</th>
-<th>序列</th>
-<th>前缀</th>
-<th>当前序列</th>
-<th>备注</th>
-<th></th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>0</td>
-<td>B|AABBBBABBAAAABA</td>
-<td>B</td>
-<td>-</td>
-<td>初始状态</td>
-<td></td>
-</tr>
-<tr class="even">
-<td>1</td>
-<td>B|A,ABBBBABBAAAABA</td>
-<td>B</td>
-<td>A</td>
-<td>分隔符右移</td>
-<td></td>
-</tr>
-<tr class="odd">
-<td>2</td>
-<td>B|A|ABBBBABBAAAABA</td>
-<td>BA</td>
-<td>-</td>
-<td>记录为起始位置</td>
-<td></td>
-</tr>
-<tr class="even">
-<td>3</td>
-<td>B|A|A,BBBBABBAAAABA</td>
-<td>BA</td>
-<td>A</td>
-<td>分隔符右移</td>
-<td></td>
-</tr>
-<tr class="odd">
-<td>4</td>
-<td>B|A|AB,BBBABBAAAABA</td>
-<td>BAA</td>
-<td>AB</td>
-<td>分隔符右移</td>
-<td></td>
-</tr>
-<tr class="even">
-<td>5</td>
-<td>B|A|AB|BBBABBAAAABA</td>
-<td>BAAB</td>
-<td>-</td>
-<td>记录为起始位置</td>
-<td></td>
-</tr>
-<tr class="odd">
-<td>6</td>
-<td>B|A|AB|B,BBABBAAAABA</td>
-<td>BAAB</td>
-<td>B</td>
-<td>分隔符右移</td>
-<td></td>
-</tr>
-<tr class="even">
-<td>7</td>
-<td>B|A|AB|BB,BABBAAAABA</td>
-<td>BAABB</td>
-<td>BB</td>
-<td>分隔符右移</td>
-<td></td>
-</tr>
-<tr class="odd">
-<td>8</td>
-<td>B|A|AB|BBB,ABBAAAABA</td>
-<td>BAABBB</td>
-<td>BBB</td>
-<td>分隔符右移</td>
-<td></td>
-</tr>
-<tr class="even">
-<td>9</td>
-<td>B|A|AB|BBBA,BBAAAABA</td>
-<td>BAABBBB</td>
-<td>BBBA</td>
-<td>分隔符右移</td>
-<td></td>
-</tr>
-<tr class="odd">
-<td>10</td>
-<td>B|A|AB|BBBA|BBAAAABA</td>
-<td>BAABBBB</td>
-<td>-</td>
-<td>记录为起始位置</td>
-<td></td>
-</tr>
-<tr class="even">
-<td>11</td>
-<td>B|A|AB|BBBA|B,BAAAABA</td>
-<td>BAABBBBA</td>
-<td>B</td>
-<td>分隔符右移</td>
-<td></td>
-</tr>
-<tr class="odd">
-<td>12</td>
-<td>B|A|AB|BBBA|BB,AAAABA</td>
-<td>BAABBBBAB</td>
-<td>BB</td>
-<td>分隔符右移</td>
-<td></td>
-</tr>
-<tr class="even">
-<td>13</td>
-<td>B|A|AB|BBBA|BBA,AAABA</td>
-<td>BAABBBBABB</td>
-<td>BBA</td>
-<td>分隔符右移</td>
-<td></td>
-</tr>
-<tr class="odd">
-<td>14</td>
-<td>B|A|AB|BBBA|BBAA,AABA</td>
-<td>BAABBBBABBA</td>
-<td>BBBA</td>
-<td>分隔符右移</td>
-<td></td>
-</tr>
-<tr class="even">
-<td>15</td>
-<td>B|A|AB|BBBA|BBAA|AABA</td>
-<td>BAABBBBABBAA</td>
-<td>-</td>
-<td>记录为起始位置</td>
-<td></td>
-</tr>
-<tr class="odd">
-<td>16</td>
-<td>B|A|AB|BBBA|BBAA|A,ABA</td>
-<td>BAABBBBABBAA</td>
-<td>A</td>
-<td>分隔符右移</td>
-<td></td>
-</tr>
-<tr class="even">
-<td>17</td>
-<td>B|A|AB|BBBA|BBAA|AA,BA</td>
-<td>BAABBBBABBAAA</td>
-<td>AA</td>
-<td>分隔符右移</td>
-<td></td>
-</tr>
-<tr class="odd">
-<td>18</td>
-<td>B|A|AB|BBBA|BBAA|AAB,A</td>
-<td>BAABBBBABBAAAA</td>
-<td>AAB</td>
-<td>分隔符右移</td>
-<td></td>
-</tr>
-<tr class="even">
-<td>19</td>
-<td>B|A|AB|BBBA|BBAA|AABA</td>
-<td>BAABBBBABBAAAAB</td>
-<td>AABA</td>
-<td>分隔符右移</td>
-<td></td>
-</tr>
-</tbody>
-</table>
-<p>这里特别注意，第 3 步到第 4 步前缀的变化。随着分隔符的移动，我们的前缀也在增长。</p>
-<h2 id="在-eeg-上的应用">在 EEG 上的应用</h2>
-<p>首先我们的脑电数据是一个非平稳信号，要应用 Lempel-Ziv complexity 则需要先对它进行二值化。二值化的方法其实特别简单粗暴。对于一段脑波序列 <span class="math inline">\(X={x[0], x[1], x[2], ... , x[n]}\)</span>，按以下公式二值化。</p>
-<p><span class="math display">\[ y[i]=\begin{cases}
-1,  &amp; \text{if $ x[i] &lt; m$} \\
-0, &amp; \text{otherwise}
-\end{cases} \]</span></p>
+<p>这一点在 C++ 开发上显得尤为明显。本机的 Mac 环境和 Docker 内的环境很多头文件/库文件所在的路径和版本都不一致，导致在 Mac 下开发比较痛苦——IDE 基本沦为文本编辑器，无法编译/调试。好在 Clion 提供了 remote 模式，可以通过 ssh 的方式远程进入 Docker。这就相当于把 Clion 直接在 Docker 内环境进行编译/调试等操作，也能够正确进行代码跳转/提示。</p>
+<h2 id="docker-准备">Docker 准备</h2>
+<p>一般而言我们会有一个 Docker 的编译环境镜像，我们需要对这个镜像进行一定的修改，使得其能对外提供 ssh 服务。不同的 Linux 系统略微有些差别， Dockerfile 大致需要以下内容，参考<a href="https://docs.docker.com/engine/examples/running_ssh_service/" target="_blank" rel="noopener">这里</a></p>
+<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">RUN</span><span class="bash"> apt-get update &amp;&amp; apt-get install -y openssh-server</span></span><br><span class="line"><span class="keyword">RUN</span><span class="bash"> mkdir /var/run/sshd</span></span><br><span class="line"><span class="keyword">RUN</span><span class="bash"> <span class="built_in">echo</span> <span class="string">'root:THE_PASSWORD_YOU_CREATED'</span> | chpasswd</span></span><br><span class="line"><span class="keyword">RUN</span><span class="bash"> sed -i <span class="string">'s/PermitRootLogin prohibit-password/PermitRootLogin yes/'</span> /etc/ssh/sshd_config</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># SSH login fix. Otherwise user is kicked off after login</span></span><br><span class="line"><span class="keyword">RUN</span><span class="bash"> sed <span class="string">'s@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g'</span> -i /etc/pam.d/sshd</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">ENV</span> NOTVISIBLE <span class="string">"in users profile"</span></span><br><span class="line"><span class="keyword">RUN</span><span class="bash"> <span class="built_in">echo</span> <span class="string">"export VISIBLE=now"</span> &gt;&gt; /etc/profile</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">EXPOSE</span> <span class="number">22</span></span><br><span class="line"><span class="keyword">CMD</span><span class="bash"> [<span class="string">"/usr/sbin/sshd"</span>, <span class="string">"-D"</span>]</span></span><br></pre></td></tr></table></figure>
+<p>在执行 <code>docker run</code> 之后，能够直接通过 <code>ssh -p XXXX root@localhost</code> 进入就算大功告成。注意这里需要把 container 内的 22 端口映射到外部。</p>
+<h3 id="环境变量设定">环境变量设定</h3>
+<p>还需要注意的一点是在 Dockerfile 内设定的环境变量，不会出现在 ssh 进入的环境里。具体原因在 <a href="https://stackoverflow.com/questions/34630571/docker-env-variables-not-set-while-log-via-shell" target="_blank" rel="noopener">stackoverflow</a> 里有说明，可以认为是 Docker 和 SSH 的特性。因此我们需要在 Dockerfile 里面加如下内容</p>
+<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">RUN</span><span class="bash"> env | grep _ &gt;&gt; /etc/environment &amp;&amp; env | grep PATH &gt;&gt; /etc/environment</span></span><br></pre></td></tr></table></figure>
+<h3 id="gdb-设定">GDB 设定</h3>
+<p>为了能够在 Docker 内实现 GDB 功能，我们还需要一点设置，参考这个 <a href="https://github.com/shuhaoliu/docker-clion-dev/blob/master/docker-compose.yml" target="_blank" rel="noopener">docker-compose.yml</a>。</p>
+<p>最终，我们的 Docker 启动命令如下</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -idt -p 7002:22 --security-opt seccomp=unconfined,apparmor=unconfined YOUR_ENV_IMAGE</span><br></pre></td></tr></table></figure>
+<h2 id="clion-准备">Clion 准备</h2>
+<p>Clion 这边的准备就比较容易了，都是一些点点的工作。在 Clion 的官网上有很详尽的<a href="https://www.jetbrains.com/help/clion/remote-development.html" target="_blank" rel="noopener">文档</a>，这里只简单说明一些注意事项</p>
+<ol type="1">
+<li>Clion 实际上是把本地的代码同步到 container 内进行编译</li>
+<li>有些时候本地的源码和 contianer 的源码可能不同步，需要手动 sync。甚至需要修改本地文件后再触发 sync</li>
+</ol>
+<h2 id="参考资料">参考资料</h2>
+<p><a href="https://docs.docker.com/engine/examples/running_ssh_service/" target="_blank" rel="noopener">Dockerize an SSH service</a></p>
+<p><a href="https://github.com/shuhaoliu/docker-clion-dev" target="_blank" rel="noopener">Debugging C++ in a Docker Container with CLion</a></p>
+<p><a href="https://www.jetbrains.com/help/clion/remote-development.html" target="_blank" rel="noopener">CLion Remote Development</a></p>
 
       
     </div>
@@ -612,9 +448,13 @@
       
         <div class="post-tags">
           
-            <a href="/tags/EEG/" rel="tag"># EEG</a>
+            <a href="/tags/Docker/" rel="tag"># Docker</a>
           
-            <a href="/tags/feature/" rel="tag"># feature</a>
+            <a href="/tags/C/" rel="tag"># C++</a>
+          
+            <a href="/tags/Clion/" rel="tag"># Clion</a>
+          
+            <a href="/tags/GDB/" rel="tag"># GDB</a>
           
         </div>
       
@@ -627,8 +467,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/06/20/sagemaker/" rel="next" title="SageMaker 使用笔记">
-                <i class="fa fa-chevron-left"></i> SageMaker 使用笔记
+              <a href="/2019/04/06/prml-logistic-regression-bayes/" rel="next" title="PRML笔记 - Logistic Regression 的贝叶斯方法">
+                <i class="fa fa-chevron-left"></i> PRML笔记 - Logistic Regression 的贝叶斯方法
               </a>
             
           </div>
@@ -636,10 +476,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/07/01/go-alone/" rel="prev" title="踽踽独行">
-                踽踽独行 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -900,7 +736,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#理论"><span class="nav-number">1.</span> <span class="nav-text">理论</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#例子"><span class="nav-number">2.</span> <span class="nav-text">例子</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#在-eeg-上的应用"><span class="nav-number">3.</span> <span class="nav-text">在 EEG 上的应用</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#docker-准备"><span class="nav-number">1.</span> <span class="nav-text">Docker 准备</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#环境变量设定"><span class="nav-number">1.1.</span> <span class="nav-text">环境变量设定</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#gdb-设定"><span class="nav-number">1.2.</span> <span class="nav-text">GDB 设定</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#clion-准备"><span class="nav-number">2.</span> <span class="nav-text">Clion 准备</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考资料"><span class="nav-number">3.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
             
 
           </div>
