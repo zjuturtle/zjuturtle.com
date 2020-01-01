@@ -34,4 +34,5 @@
 {"title":"PRML笔记 - 线性回归","url":"/2018/09/30/prml-linear-regression/"},
 {"title":"PRML笔记 - Laplace Approximation","url":"/2019/04/06/prml-laplace-approximation/"},
 {"title":"PRML笔记 - Logistic Regression 的贝叶斯方法","url":"/2019/04/06/prml-logistic-regression-bayes/"},
+{"title":"使用 Clion 调试 Docker 内的 C++ 代码","url":"/2019/04/29/clion-docker/"},
 ]
