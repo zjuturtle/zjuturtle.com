@@ -1,127 +1,73 @@
 <!DOCTYPE html>
-
-
-
-
-
-
-
-
-
-
-
-
-  
-
-
-<html class="theme-next gemini use-motion" lang="zh-Hans">
-<head><meta name="generator" content="Hexo 3.9.0">
+<html lang="zh-Hans">
+<head>
   <meta charset="UTF-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico">
+  <link rel="mask-icon" href="/images/favicon.ico" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
 
 
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
-
-<link rel="stylesheet" href="/css/main.css?v=7.1.0">
-
-
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.ico?v=7.1.0">
-
-
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=7.1.0">
-
-
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico?v=7.1.0">
-
-
-  <link rel="mask-icon" href="/images/favicon.ico?v=7.1.0" color="#222">
-
-
-
-
-
-
-
-<script id="hexo.configurations">
+<script id="hexo-configurations">
   var NexT = window.NexT || {};
   var CONFIG = {
+    hostname: new URL('http://zjuturtle.com').hostname,
     root: '/',
     scheme: 'Gemini',
-    version: '7.1.0',
-    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
-    back2top: true,
-    back2top_sidebar: false,
+    version: '7.7.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
     fancybox: false,
-    fastclick: false,
+    mediumzoom: false,
     lazyload: false,
-    tabs: true,
-    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},
     algolia: {
-      applicationID: '',
+      appID: '',
       apiKey: '',
       indexName: '',
       hits: {"per_page":10},
       labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
-    }
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
   };
 </script>
 
-
-  
-
-
-
-
   <meta name="description" content="第二部分主要是 z 变换相关内容。">
-<meta name="keywords" content="DSP,Algorithm">
 <meta property="og:type" content="article">
 <meta property="og:title" content="信号处理笔记（二）">
-<meta property="og:url" content="https://zjuturtle.com/2018/02/19/dsp-2/index.html">
+<meta property="og:url" content="http://zjuturtle.com/2018/02/19/dsp-2/index.html">
 <meta property="og:site_name" content="zjuturtle&#39;s blog">
 <meta property="og:description" content="第二部分主要是 z 变换相关内容。">
-<meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-06-20T09:08:59.960Z">
+<meta property="article:published_time" content="2018-02-19T05:27:47.000Z">
+<meta property="article:modified_time" content="2018-06-20T09:08:59.960Z">
+<meta property="article:author" content="zjuturtle">
+<meta property="article:tag" content="DSP">
+<meta property="article:tag" content="Algorithm">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="信号处理笔记（二）">
-<meta name="twitter:description" content="第二部分主要是 z 变换相关内容。">
+
+<link rel="canonical" href="http://zjuturtle.com/2018/02/19/dsp-2/">
 
 
-
-
-
-  
-  
-  <link rel="canonical" href="https://zjuturtle.com/2018/02/19/dsp-2/">
-
-
-
-<script id="page.configurations">
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
   CONFIG.page = {
     sidebar: "",
+    isHome: false,
+    isPost: true
   };
 </script>
 
@@ -133,15 +79,8 @@
 
 
 
-
-
-
-
-
-
   <noscript>
   <style>
-  .use-motion .motion-element,
   .use-motion .brand,
   .use-motion .menu-item,
   .sidebar-inner,
@@ -150,9 +89,8 @@
   .use-motion .comments,
   .use-motion .post-header,
   .use-motion .post-body,
-  .use-motion .collection-title { opacity: initial; }
+  .use-motion .collection-header { opacity: initial; }
 
-  .use-motion .logo,
   .use-motion .site-title,
   .use-motion .site-subtitle {
     opacity: initial;
@@ -166,243 +104,127 @@
 
 </head>
 
-<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
-
-  
-  
-    
-  
-
-  <div class="container sidebar-position-left page-post-detail">
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
     <div class="headband"></div>
 
-    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
-      <div class="header-inner"><div class="site-brand-wrapper">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
   <div class="site-meta">
-    
 
-    <div class="custom-logo-site-title">
+    <div>
       <a href="/" class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
         <span class="site-title">zjuturtle's blog</span>
         <span class="logo-line-after"><i></i></span>
       </a>
     </div>
-    
-    
   </div>
 
   <div class="site-nav-toggle">
-    <button aria-label="Toggle navigation bar">
-      <span class="btn-bar"></span>
-      <span class="btn-bar"></span>
-      <span class="btn-bar"></span>
-    </button>
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
   </div>
 </div>
-
 
 
 <nav class="site-nav">
   
-    <ul id="menu" class="menu">
-      
-        
-        
-        
-          
-          <li class="menu-item menu-item-home">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
 
-    
-    
-    
-      
-    
-
-    
-
-    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>Home</a>
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
 
   </li>
-        
-        
-        
-          
-          <li class="menu-item menu-item-archives">
+        <li class="menu-item menu-item-archives">
 
-    
-    
-    
-      
-    
-
-    
-
-    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>Archives</a>
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
 
   </li>
+  </ul>
 
-      
-      
-    </ul>
-  
-
-  
-
-  
 </nav>
-
-
-
-  
-
-
-
 </div>
     </header>
 
     
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
 
 
-    <main id="main" class="main">
+    <main class="main">
       <div class="main-inner">
         <div class="content-wrap">
           
+
+          <div class="content">
             
 
-          
-          <div id="content" class="content">
-            
-
-  <div id="posts" class="posts-expand">
-    
-
-  
-
+  <div class="posts-expand">
+      
   
   
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://zjuturtle.com/2018/02/19/dsp-2/">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://zjuturtle.com/2018/02/19/dsp-2/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
       <meta itemprop="name" content="zjuturtle">
       <meta itemprop="description" content="瞎几把搞的幸运E">
-      <meta itemprop="image" content="/images/avatar.png">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
       <meta itemprop="name" content="zjuturtle's blog">
     </span>
-
-    
       <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">信号处理笔记（二）
-
-              
-            
-          </h2>
-        
+        <h1 class="post-title" itemprop="name headline">
+          信号处理笔记（二）
+        </h1>
 
         <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
+            <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-calendar-o"></i>
               </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-
-              
-                
-              
+              <span class="post-meta-item-text">Posted on</span>
 
               <time title="Created: 2018-02-19 13:27:47" itemprop="dateCreated datePublished" datetime="2018-02-19T13:27:47+08:00">2018-02-19</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
+            </span>
+              <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
-                
-                  <span class="post-meta-item-text">Edited on</span>
-                
+                <span class="post-meta-item-text">Edited on</span>
                 <time title="Modified: 2018-06-20 17:08:59" itemprop="dateModified" datetime="2018-06-20T17:08:59+08:00">2018-06-20</time>
-              
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
+              </span>
+            <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
               </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Algorithm/" itemprop="url" rel="index"><span itemprop="name">Algorithm</span></a></span>
-
-                
-                
-              
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Algorithm/" itemprop="url" rel="index">
+                    <span itemprop="name">Algorithm</span>
+                  </a>
+                </span>
             </span>
-          
 
           
-            
-            
-          
-
-          
-          
-            <span id="/2018/02/19/dsp-2/" class="leancloud_visitors" data-flag-title="信号处理笔记（二）">
-              <span class="post-meta-divider">|</span>
+            <span id="/2018/02/19/dsp-2/" class="post-meta-item leancloud_visitors" data-flag-title="信号处理笔记（二）" title="Views">
               <span class="post-meta-item-icon">
                 <i class="fa fa-eye"></i>
               </span>
-              
-                <span class="post-meta-item-text">Views: </span>
-              
-                <span class="leancloud-visitors-count"></span>
+              <span class="post-meta-item-text">Views: </span>
+              <span class="leancloud-visitors-count"></span>
             </span>
-          
-
-          
-
-          
-
-          
 
         </div>
       </header>
-    
 
     
     
@@ -410,777 +232,443 @@
     <div class="post-body" itemprop="articleBody">
 
       
-      
-
-      
         <p>第二部分主要是 z 变换相关内容。</p>
 <a id="more"></a>
-<h2 id="z-变换定义">z 变换定义</h2>
-<p>对一个离散信号 <span class="math inline">\(x(n), n \in (-\infty, \infty)\)</span>，z 变换的定义如下</p>
-<p><span class="math display">\[X(z) = \sum_{n=-\infty}^{\infty}x(n)z^{-n}\]</span></p>
-<p>其中 <span class="math inline">\(z\)</span> 为一复变量。因为 <span class="math inline">\(n \in (-\infty, \infty)\)</span>，上式也称之为双边 z 变换。那么如果 <span class="math inline">\(n \in [0, \infty)\)</span> ，就变成了单边 z 变换</p>
-<p><span class="math display">\[X(z) = \sum_{n=0}^{\infty}x(n)z^{-n}\]</span></p>
-<p>同样的，如果我们已知 <span class="math inline">\(X(z)\)</span> 及其收敛域 ROC 反求序列 <span class="math inline">\(x(n)\)</span> 则称之为逆 z 变换。</p>
-<h3 id="z-变换与拉普拉斯变换">z 变换与拉普拉斯变换</h3>
-<p>令 <span class="math inline">\(x_s(nT_s)\)</span> 是由连续信号 <span class="math inline">\(x(t)\)</span> 经抽样得到，即有</p>
-<p><span class="math display">\[x_s(nT_s) = x(t)\sum_{n=-\infty}^{\infty}\delta(t-nT_s)=\sum_nx(nT_s)\delta(t-nT_s)\]</span></p>
+
+<h2 id="z-变换定义"><a href="#z-变换定义" class="headerlink" title="z 变换定义"></a>z 变换定义</h2><p>对一个离散信号 $x(n), n \in (-\infty, \infty)$，z 变换的定义如下</p>
+<p>$$X(z) = \sum_{n=-\infty}^{\infty}x(n)z^{-n}$$</p>
+<p>其中 $z$ 为一复变量。因为 $n \in (-\infty, \infty)$，上式也称之为双边 z 变换。那么如果 $n \in [0, \infty)$ ，就变成了单边 z 变换</p>
+<p>$$X(z) = \sum_{n=0}^{\infty}x(n)z^{-n}$$</p>
+<p>同样的，如果我们已知 $X(z)$ 及其收敛域 ROC 反求序列 $x(n)$ 则称之为逆 z 变换。</p>
+<h3 id="z-变换与拉普拉斯变换"><a href="#z-变换与拉普拉斯变换" class="headerlink" title="z 变换与拉普拉斯变换"></a>z 变换与拉普拉斯变换</h3><p>令 $x_s(nT_s)$ 是由连续信号 $x(t)$ 经抽样得到，即有</p>
+<p>$$x_s(nT_s) = x(t)\sum_{n=-\infty}^{\infty}\delta(t-nT_s)=\sum_nx(nT_s)\delta(t-nT_s)$$</p>
 <p>对上式取拉普拉斯变换，有</p>
-<p><span class="math display">\[\begin{split}X(s) &amp;= \int_{-\infty}^{\infty}x_s(nT_s)e^{-st}dt \\\
-&amp;=\int_{-\infty}^{\infty}[\sum_nx(nT_s)\delta(t-nT_s)]e^{-st}dt \\\
-&amp;=\sum_nx(nT_s)\int_{-\infty}^{\infty}\delta(t-nT_s)e^{-st}dt \\\
-&amp;=\sum_{n=-\infty}^{\infty}x(nT_s)e^{-snT_s} \\\
-&amp;=\int_{-\infty}^{\infty}x(nT_s)e^{-(snT_S)t}dt = X(e^{sT_s}) \end{split}\]</span></p>
-<p>记 <span class="math inline">\(z=e^{sT_s}\)</span>，将 <span class="math inline">\(T_s\)</span> 归一化为 1，我们就能得到 z 变换的定义</p>
-<p><span class="math display">\[X(z) = \sum_{n=-\infty}^{\infty}x(n)z^{-n}\]</span></p>
-<p>记拉普拉斯变量 <span class="math inline">\(s=\sigma + j\Omega\)</span>，且 <span class="math inline">\(\Omega=2 \pi f\)</span>。<span class="math inline">\(\Omega\)</span> 可以认为是相对连续系统及连续信号的角频率，单位 rad/s，则有</p>
-<p><span class="math display">\[z=e^{sT_s}=e^{(\sigma+j \Omega)T_s}=e^{\sigma T_s}e^{j \Omega T_s}\]</span></p>
-<p>再记 <span class="math inline">\(r=e^{\sigma T_s},\omega=\Omega T_s\)</span>，则有</p>
-<p><span class="math display">\[z=re^{j \omega}\]</span></p>
-<p><span class="math display">\[X(z)=\sum_{n=-\infty}^{\infty}[x(n)r^{-n}]e^{-j\omega n}\]</span></p>
-<p>注意到这个式子和傅立叶变换的相似之处。z 变换可以看成是信号乘以一加权序列 <span class="math inline">\(r^{-n}\)</span> 后的傅立叶变换 <span class="math inline">\(X(z) = F[x(n)r^{-n}]\)</span>。显然，当 <span class="math inline">\(r=1\)</span> 时 z 变换就变成了离散序列的傅立叶变换。</p>
-<h3 id="z-平面和-s-平面">z 平面和 s 平面</h3>
-<p>直接抄一张书上的图（Mac下数学绘图太麻烦了）</p>
+<p>$$\begin{split}X(s) &amp;= \int_{-\infty}^{\infty}x_s(nT_s)e^{-st}dt \<br>&amp;=\int_{-\infty}^{\infty}[\sum_nx(nT_s)\delta(t-nT_s)]e^{-st}dt \<br>&amp;=\sum_nx(nT_s)\int_{-\infty}^{\infty}\delta(t-nT_s)e^{-st}dt \<br>&amp;=\sum_{n=-\infty}^{\infty}x(nT_s)e^{-snT_s} \<br>&amp;=\int_{-\infty}^{\infty}x(nT_s)e^{-(snT_S)t}dt = X(e^{sT_s}) \end{split}$$</p>
+<p>记 $z=e^{sT_s}$，将 $T_s$ 归一化为 1，我们就能得到 z 变换的定义</p>
+<p>$$X(z) = \sum_{n=-\infty}^{\infty}x(n)z^{-n}$$</p>
+<p>记拉普拉斯变量 $s=\sigma + j\Omega$，且 $\Omega=2 \pi f$。$\Omega$ 可以认为是相对连续系统及连续信号的角频率，单位 rad/s，则有</p>
+<p>$$z=e^{sT_s}=e^{(\sigma+j \Omega)T_s}=e^{\sigma T_s}e^{j \Omega T_s}$$</p>
+<p>再记 $r=e^{\sigma T_s},\omega=\Omega T_s$，则有</p>
+<p>$$z=re^{j \omega}$$</p>
+<p>$$X(z)=\sum_{n=-\infty}^{\infty}[x(n)r^{-n}]e^{-j\omega n}$$</p>
+<p>注意到这个式子和傅立叶变换的相似之处。z 变换可以看成是信号乘以一加权序列 $r^{-n}$ 后的傅立叶变换 $X(z) = F[x(n)r^{-n}]$。显然，当 $r=1$ 时 z 变换就变成了离散序列的傅立叶变换。</p>
+<h3 id="z-平面和-s-平面"><a href="#z-平面和-s-平面" class="headerlink" title="z 平面和 s 平面"></a>z 平面和 s 平面</h3><p>直接抄一张书上的图（Mac下数学绘图太麻烦了）</p>
+
 
 <p>不难得到二者之间的对应关系</p>
 <ul>
-<li>当 <span class="math inline">\(\sigma = 0\)</span> 时， <span class="math inline">\(r=1\)</span>。对应 <span class="math inline">\(s\)</span> 平面的 <span class="math inline">\(j \Omega\)</span> 轴。而 <span class="math inline">\(|z|=1\)</span> 对应 <span class="math inline">\(z\)</span> 平面半径 <span class="math inline">\(r=1\)</span> 的圆。即当 <span class="math inline">\(z\)</span> 仅在 <span class="math inline">\(j\Omega\)</span> 轴上取值时，z 变换就变成了傅立叶变换</li>
-<li>当 <span class="math inline">\(\sigma &lt; 0\)</span> 对应 <span class="math inline">\(s\)</span> 平面的左半平面，对应 <span class="math inline">\(r &lt; 1\)</span> 即单位圆内部</li>
+<li>当 $\sigma = 0$ 时， $r=1$。对应 $s$ 平面的 $j \Omega$ 轴。而 $|z|=1$ 对应 $z$ 平面半径 $r=1$ 的圆。即当 $z$ 仅在 $j\Omega$ 轴上取值时，z 变换就变成了傅立叶变换</li>
+<li>当 $\sigma &lt; 0$ 对应 $s$ 平面的左半平面，对应 $r &lt; 1$ 即单位圆内部</li>
 </ul>
-<p>我们设 <span class="math inline">\(T_s\)</span> 是抽样周期，<span class="math inline">\(f_s = 1/T_s\)</span> 为抽样频率，则有</p>
-<p><span class="math display">\[\omega=\Omega T_s = 2 \pi f/f_s\]</span></p>
-<p>因此，当 <span class="math inline">\(f\)</span> 在 <span class="math inline">\(j\Omega\)</span> 轴上从 <span class="math inline">\(-\infty\)</span> 到 <span class="math inline">\(\infty\)</span> 的过程中。每间隔 <span class="math inline">\(f_s\)</span>，对应 <span class="math inline">\(\omega\)</span> 从 0 到 <span class="math inline">\(2\pi\)</span>，即在单位圆上绕了一周。所以从 <span class="math inline">\(s\)</span> 平面到 <span class="math inline">\(z\)</span> 平面的映射不是单一的。</p>
+<p>我们设 $T_s$ 是抽样周期，$f_s = 1/T_s$ 为抽样频率，则有</p>
+<p>$$\omega=\Omega T_s = 2 \pi f/f_s$$</p>
+<p>因此，当 $f$ 在 $j\Omega$ 轴上从 $-\infty$ 到 $\infty$ 的过程中。每间隔 $f_s$，对应 $\omega$ 从 0 到 $2\pi$，即在单位圆上绕了一周。所以从 $s$ 平面到 $z$ 平面的映射不是单一的。</p>
 <p>由此引出一些重要的定义</p>
 <ul>
-<li>实际频率 <span class="math inline">\(f\)</span>，相对连续系统的频率</li>
-<li>角频率 <span class="math inline">\(\Omega=2\pi f\)</span>，相对连续系统的角频率</li>
-<li>归一化频率 <span class="math inline">\(f&#39;=f/f_s\)</span></li>
-<li>圆周频率 <span class="math inline">\(\omega=2 \pi f&#39;\)</span></li>
+<li>实际频率 $f$，相对连续系统的频率</li>
+<li>角频率 $\Omega=2\pi f$，相对连续系统的角频率</li>
+<li>归一化频率 $f’=f/f_s$</li>
+<li>圆周频率 $\omega=2 \pi f’$</li>
 </ul>
-<h2 id="z-变换的收敛域">z 变换的收敛域</h2>
-<p>给出定义，对于 z 变换 <span class="math inline">\(X(z)\)</span>，使其收敛的 <span class="math inline">\(z\)</span> 的取值集合称为 z 变换的收敛域 ROC。即有</p>
-<p><span class="math display">\[\sum_{n=-\infty}^{\infty}|x(n)r^{-n}|&lt;\infty\]</span></p>
-<p>其中 <span class="math inline">\(r = |z|\)</span>。因此可以想象收敛域时 <span class="math inline">\(z\)</span> 平面上一个圆的内部或者外部，即有 <span class="math inline">\(R_-&lt;|z|&lt;R_+\)</span>。下面有一些例子</p>
-<h3 id="例1">例1</h3>
-<p>令 <span class="math inline">\(a\)</span> 为常数，<span class="math inline">\(u(n)\)</span> 为单位阶跃函数。求以下式子 z 变换的收敛域</p>
-<p><span class="math display">\[x(n)=a^nu(n)\]</span></p>
+<h2 id="z-变换的收敛域"><a href="#z-变换的收敛域" class="headerlink" title="z 变换的收敛域"></a>z 变换的收敛域</h2><p>给出定义，对于 z 变换 $X(z)$，使其收敛的 $z$ 的取值集合称为 z 变换的收敛域 ROC。即有</p>
+<p>$$\sum_{n=-\infty}^{\infty}|x(n)r^{-n}|&lt;\infty$$</p>
+<p>其中 $r = |z|$。因此可以想象收敛域时 $z$ 平面上一个圆的内部或者外部，即有 $R_-&lt;|z|&lt;R_+$。下面有一些例子</p>
+<h3 id="例1"><a href="#例1" class="headerlink" title="例1"></a>例1</h3><p>令 $a$ 为常数，$u(n)$ 为单位阶跃函数。求以下式子 z 变换的收敛域</p>
+<p>$$x(n)=a^nu(n)$$</p>
 <p>根据定义我们有</p>
-<p><span class="math display">\[\begin{split} X(z)&amp;=\sum_{n=-\infty}^{\infty}a^nu(n)z^{-n}=\sum_{n=0}^{\infty} (az^{-1})^n \\\
-&amp;=\frac z{z-a}
-\end{split}\]</span></p>
-<p>显然当 <span class="math inline">\(|az^{-1}|&lt;1\)</span>，即 <span class="math inline">\(|z| &gt; |a|\)</span>时，<span class="math inline">\(X(z)\)</span> 收敛。因此收敛域为 <span class="math inline">\(a&lt;|z|&lt;\infty\)</span>，图像上为圆半径 <span class="math inline">\(r=|a|\)</span> 之外的部分</p>
-<h3 id="例2">例2</h3>
-<p>定义同上</p>
-<p><span class="math display">\[x(n)=-a^nu(-n-1)\]</span></p>
-<p>其中</p>
-<p><span class="math display">\[u(-n-1)=\begin{cases} 
-&amp;1 \ \ \  n \leq -1 \\\
-&amp;0 \ \ \  n \geq 0
-\end{cases}\]</span></p>
+<p>$$\begin{split} X(z)&amp;=\sum_{n=-\infty}^{\infty}a^nu(n)z^{-n}=\sum_{n=0}^{\infty} (az^{-1})^n \<br>&amp;=\frac z{z-a}<br>\end{split}$$</p>
+<p>显然当 $|az^{-1}|&lt;1$，即 $|z| &gt; |a|$时，$X(z)$ 收敛。因此收敛域为 $a&lt;|z|&lt;\infty$，图像上为圆半径 $r=|a|$ 之外的部分</p>
+<h3 id="例2"><a href="#例2" class="headerlink" title="例2"></a>例2</h3><p>定义同上</p>
+<p>$$x(n)=-a^nu(-n-1)$$</p>
+<p>其中 </p>
+<p>$$u(-n-1)=\begin{cases}<br>&amp;1 \ \ \  n \leq -1 \<br>&amp;0 \ \ \  n \geq 0<br>\end{cases}$$</p>
 <p>根据定义我们有</p>
-<p><span class="math display">\[\begin{split} X(z)&amp;=\sum_{n=-\infty}^{\infty}a^nu(-n-1)z^{-n}=-\sum_{n=-\infty}^0 (az^{-1})^n \\\
-&amp;=\frac z{z-a}
-\end{split}\]</span></p>
-<p>此时显然有 <span class="math inline">\(|z|&lt;|a|\)</span> 时收敛。因此收敛域为 <span class="math inline">\(|z|&lt;a\)</span>，图像上为圆半径 <span class="math inline">\(r=|a|\)</span> 之内的部分。注意到例 1 和例 2 的 z 变换结果是一样的，但 ROC 不同。因此为了保证由逆 z 变换求出的序列是唯一的，则必须指明 ROC。</p>
-<h3 id="例3">例3</h3>
-<p>定义同上</p>
-<p><span class="math display">\[x(n)=a^{|n|}=a^nu(n)+a^{-n}u(-n-1)\]</span></p>
-<p>对于级数 <span class="math inline">\(a^nu(n)\)</span>，其 z 变换为 <span class="math inline">\(\frac 1{1-az^{-1}}\)</span>，ROC 是 <span class="math inline">\(|z|&gt;a\)</span>。对于级数 <span class="math inline">\(a^{-n}u(-n-1)\)</span>，其 z 变换为 <span class="math inline">\(\frac 1{1-az}-1\)</span>，ROC 为 <span class="math inline">\(|z|&lt;\frac 1a\)</span>。因此</p>
-<p><span class="math display">\[X(z)=\frac 1{1-az^{-1}}+\frac 1{1-az}-1\]</span></p>
-<p>其 ROC 为 <span class="math inline">\(a&lt;|z|&lt;\frac 1a\)</span></p>
-<p>显然 <span class="math inline">\(a&gt;1\)</span> 时不收敛，当 <span class="math inline">\(a&lt;1\)</span> 时 <span class="math inline">\(X(z)\)</span> 才收敛。在图像上是一个内径为 <span class="math inline">\(r=a\)</span> 外径为 <span class="math inline">\(r=\frac 1a\)</span> 的环</p>
-<h3 id="序列与-roc-的关系">序列与 ROC 的关系</h3>
-<p>我们设序列 <span class="math inline">\(x(n)\)</span> 仅在 <span class="math inline">\(n\)</span> 取值 在 <span class="math inline">\(N_1\)</span> 与 <span class="math inline">\(N_2\)</span> 间有值，且<span class="math inline">\(N_1 &lt; N_2\)</span>。我们可以推演得到以下 ROC 性质。这里特别注意一下，对于有限长的因果序列，其收敛域为 $ |z|&gt;0 $</p>
-<h4 id="有限长序列">有限长序列</h4>
-<table>
+<p>$$\begin{split} X(z)&amp;=\sum_{n=-\infty}^{\infty}a^nu(-n-1)z^{-n}=-\sum_{n=-\infty}^0 (az^{-1})^n \<br>&amp;=\frac z{z-a}<br>\end{split}$$</p>
+<p>此时显然有 $|z|&lt;|a|$ 时收敛。因此收敛域为 $|z|&lt;a$，图像上为圆半径 $r=|a|$ 之内的部分。注意到例 1 和例 2 的 z 变换结果是一样的，但 ROC 不同。因此为了保证由逆 z 变换求出的序列是唯一的，则必须指明 ROC。</p>
+<h3 id="例3"><a href="#例3" class="headerlink" title="例3"></a>例3</h3><p>定义同上</p>
+<p>$$x(n)=a^{|n|}=a^nu(n)+a^{-n}u(-n-1)$$</p>
+<p>对于级数 $a^nu(n)$，其 z 变换为 $\frac 1{1-az^{-1}}$，ROC 是 $|z|&gt;a$。对于级数 $a^{-n}u(-n-1)$，其 z 变换为 $\frac 1{1-az}-1$，ROC 为 $|z|&lt;\frac 1a$。因此</p>
+<p>$$X(z)=\frac 1{1-az^{-1}}+\frac 1{1-az}-1$$</p>
+<p>其 ROC 为 $a&lt;|z|&lt;\frac 1a$</p>
+<p>显然 $a&gt;1$ 时不收敛，当 $a&lt;1$ 时 $X(z)$ 才收敛。在图像上是一个内径为 $r=a$ 外径为 $r=\frac 1a$ 的环</p>
+<h3 id="序列与-ROC-的关系"><a href="#序列与-ROC-的关系" class="headerlink" title="序列与 ROC 的关系"></a>序列与 ROC 的关系</h3><p>我们设序列 $x(n)$ 仅在 $n$ 取值 在 $N_1$ 与 $N_2$ 间有值，且$N_1 &lt; N_2$。我们可以推演得到以下 ROC 性质。这里特别注意一下，对于有限长的因果序列，其收敛域为 $ |z|&gt;0 $</p>
+<h4 id="有限长序列"><a href="#有限长序列" class="headerlink" title="有限长序列"></a>有限长序列</h4><table>
 <thead>
-<tr class="header">
-<th style="text-align: center;"><span class="math inline">\(N_1,N_2\)</span></th>
-<th style="text-align: center;">ROC</th>
+<tr>
+<th align="center">$N_1,N_2$</th>
+<th align="center">ROC</th>
 </tr>
 </thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: center;"><span class="math inline">\(0 \leq N_1 &lt; N_2 &lt; \infty\)</span></td>
-<td style="text-align: center;">$ z &gt;0 $</td>
+<tbody><tr>
+<td align="center">$0 \leq N_1 &lt; N_2 &lt; \infty$</td>
+<td align="center">$  \lvert z  \rvert &gt;0 $</td>
 </tr>
-<tr class="even">
-<td style="text-align: center;">$ -&lt; N_1 &lt; N_2 0$</td>
-<td style="text-align: center;">$ z &lt; $</td>
+<tr>
+<td align="center">$ -\infty&lt; N_1 &lt;  N_2 \leq 0$</td>
+<td align="center">$  \lvert z  \rvert &lt; \infty $</td>
 </tr>
-<tr class="odd">
-<td style="text-align: center;">$ -&lt; N_1 0 &lt; N_2 &lt; $</td>
-<td style="text-align: center;">$ 0 &lt; z &lt; $</td>
+<tr>
+<td align="center">$ -\infty&lt; N_1 \leq 0 &lt; N_2 &lt; \infty$</td>
+<td align="center">$  0 &lt; \lvert z  \rvert &lt; \infty $</td>
 </tr>
-</tbody>
-</table>
-<h4 id="右边序列">右边序列</h4>
-<table>
+</tbody></table>
+<h4 id="右边序列"><a href="#右边序列" class="headerlink" title="右边序列"></a>右边序列</h4><table>
 <thead>
-<tr class="header">
-<th style="text-align: center;"><span class="math inline">\(N_1,N_2\)</span></th>
-<th style="text-align: center;">ROC</th>
+<tr>
+<th align="center">$N_1,N_2$</th>
+<th align="center">ROC</th>
 </tr>
 </thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: center;"><span class="math inline">\(N_1&lt;0,N_2=\infty\)</span></td>
-<td style="text-align: center;">$R_{x1}&lt; z &lt; $</td>
+<tbody><tr>
+<td align="center">$N_1&lt;0,N_2=\infty$</td>
+<td align="center">$R_{x1}&lt; \lvert z \rvert &lt; \infty $</td>
 </tr>
-<tr class="even">
-<td style="text-align: center;"><span class="math inline">\(N_1 \geq 0,N_2=\infty\)</span></td>
-<td style="text-align: center;"><span class="math inline">\(\lvert z \rvert &gt;R_{x1}\)</span></td>
+<tr>
+<td align="center">$N_1 \geq 0,N_2=\infty$</td>
+<td align="center">$\lvert z \rvert &gt;R_{x1}$</td>
 </tr>
-</tbody>
-</table>
-<h4 id="左边序列">左边序列</h4>
-<table>
+</tbody></table>
+<h4 id="左边序列"><a href="#左边序列" class="headerlink" title="左边序列"></a>左边序列</h4><table>
 <thead>
-<tr class="header">
-<th style="text-align: center;"><span class="math inline">\(N_1,N_2\)</span></th>
-<th style="text-align: center;">ROC</th>
+<tr>
+<th align="center">$N_1,N_2$</th>
+<th align="center">ROC</th>
 </tr>
 </thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: center;"><span class="math inline">\(N_1=-\infty,N_2&gt;0\)</span></td>
-<td style="text-align: center;"><span class="math inline">\(0&lt; \lvert z \rvert &lt;R_{x2}\)</span></td>
+<tbody><tr>
+<td align="center">$N_1=-\infty,N_2&gt;0$</td>
+<td align="center">$0&lt; \lvert z \rvert &lt;R_{x2}$</td>
 </tr>
-<tr class="even">
-<td style="text-align: center;"><span class="math inline">\(N_1=-\infty,N_2 \leq 0\)</span></td>
-<td style="text-align: center;"><span class="math inline">\(\lvert z \rvert &lt;R_{x2}\)</span></td>
+<tr>
+<td align="center">$N_1=-\infty,N_2 \leq 0$</td>
+<td align="center">$\lvert z \rvert &lt;R_{x2}$</td>
 </tr>
-</tbody>
-</table>
-<h4 id="双边序列">双边序列</h4>
-<table>
+</tbody></table>
+<h4 id="双边序列"><a href="#双边序列" class="headerlink" title="双边序列"></a>双边序列</h4><table>
 <thead>
-<tr class="header">
-<th style="text-align: center;"><span class="math inline">\(N_1,N_2\)</span></th>
-<th style="text-align: center;">ROC</th>
+<tr>
+<th align="center">$N_1,N_2$</th>
+<th align="center">ROC</th>
 </tr>
 </thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: center;"><span class="math inline">\(N_1=-\infty,N_2=\infty\)</span></td>
-<td style="text-align: center;"><span class="math inline">\(R_{x1}&lt; \lvert z \rvert &lt; R_{x2}\)</span></td>
+<tbody><tr>
+<td align="center">$N_1=-\infty,N_2=\infty$</td>
+<td align="center">$R_{x1}&lt; \lvert z \rvert &lt; R_{x2}$</td>
 </tr>
-</tbody>
-</table>
-<h2 id="z-变换的性质">z 变换的性质</h2>
-<h3 id="线性">线性</h3>
-<p>若</p>
-<p><span class="math display">\[\begin{split} Z[x_1(n)]=&amp;X_1(z),ROC:R_1 \\\
-Z[x_2(n)]=&amp;X_2(z),ROC:R_2 \end{split}\]</span></p>
+</tbody></table>
+<h2 id="z-变换的性质"><a href="#z-变换的性质" class="headerlink" title="z 变换的性质"></a>z 变换的性质</h2><h3 id="线性"><a href="#线性" class="headerlink" title="线性"></a>线性</h3><p>若</p>
+<p>$$\begin{split} Z[x_1(n)]=&amp;X_1(z),ROC:R_1 \<br>Z[x_2(n)]=&amp;X_2(z),ROC:R_2 \end{split}$$</p>
 <p>则有</p>
-<p><span class="math display">\[Z[ax_1(n)+bx_2(n)]=aX_1(z)+bX_2(z), ROC:R_1 \bigcap R_2\]</span></p>
-<h3 id="时移性质">时移性质</h3>
-<p>对于双边 z 变换有</p>
-<p><span class="math display">\[\begin{split} Z[x(n-k)]&amp;=\sum_{n=-\infty}^{\infty}x(n-k)z^{-n} \\\
-&amp;=\sum_{m=-\infty}^{\infty}x(m)z^{-m}z^{-k}=z^{-k}X(z) \end{split}\]</span></p>
-<p>但对于单边 z 变换则稍微有点不同。如果 <span class="math inline">\(x(n)\)</span> 是因果序列</p>
-<p><span class="math display">\[Z[x(n-k)] = z^{-k}X^+(z)=z^{-k}X(z)\]</span> <span class="math display">\[\begin{split} Z[x(n+k)] =&amp; z^k[X^+(z)-\sum_{n=0}^{k-1}x(n)z^{-n}] \\\
-=&amp; z^k[X(z)-\sum_{n=0}^{k-1}x(n)z^{-n}] \end{split}\]</span></p>
-<h3 id="加权性质">加权性质</h3>
-<p>若</p>
-<p><span class="math display">\[Z[x(n)]=X(z),ROC:R_1 &lt; \lvert z \rvert &lt; R_2\]</span></p>
+<p>$$Z[ax_1(n)+bx_2(n)]=aX_1(z)+bX_2(z), ROC:R_1 \bigcap R_2$$</p>
+<h3 id="时移性质"><a href="#时移性质" class="headerlink" title="时移性质"></a>时移性质</h3><p>对于双边 z 变换有</p>
+<p>$$\begin{split} Z[x(n-k)]&amp;=\sum_{n=-\infty}^{\infty}x(n-k)z^{-n} \<br>&amp;=\sum_{m=-\infty}^{\infty}x(m)z^{-m}z^{-k}=z^{-k}X(z) \end{split}$$</p>
+<p>但对于单边 z 变换则稍微有点不同。如果 $x(n)$ 是因果序列</p>
+<p>$$Z[x(n-k)] = z^{-k}X^+(z)=z^{-k}X(z)$$<br>$$\begin{split} Z[x(n+k)] =&amp; z^k[X^+(z)-\sum_{n=0}^{k-1}x(n)z^{-n}] \<br>=&amp; z^k[X(z)-\sum_{n=0}^{k-1}x(n)z^{-n}] \end{split}$$</p>
+<h3 id="加权性质"><a href="#加权性质" class="headerlink" title="加权性质"></a>加权性质</h3><p>若</p>
+<p>$$Z[x(n)]=X(z),ROC:R_1 &lt; \lvert z \rvert &lt; R_2$$</p>
 <p>则</p>
-<p><span class="math display">\[Z[a^nx(n)]=Z(z/a),ROC: \lvert a \rvert R_1 &lt; |z| &lt; |a| R_2 \]</span></p>
-<p><span class="math display">\[Z[nx(n)]=-z \frac d{dz} X(z),ROC:R_1 &lt; |z| &lt; R_2\]</span></p>
-<h3 id="时域卷积性质">时域卷积性质</h3>
-<p>记 <span class="math inline">\(x(n),y(n)\)</span> 的 z 变换分别时 <span class="math inline">\(X(z),Y(z)\)</span>，则</p>
-<p><span class="math display">\[Z[x(n)*y(n)]=X(z)Y(z)\]</span></p>
+<p>$$Z[a^nx(n)]=Z(z/a),ROC: \lvert a \rvert R_1 &lt; |z| &lt; |a| R_2 $$</p>
+<p>$$Z[nx(n)]=-z \frac d{dz} X(z),ROC:R_1 &lt; |z| &lt; R_2$$</p>
+<h3 id="时域卷积性质"><a href="#时域卷积性质" class="headerlink" title="时域卷积性质"></a>时域卷积性质</h3><p>记 $x(n),y(n)$ 的 z 变换分别时 $X(z),Y(z)$，则</p>
+<p>$$Z[x(n)*y(n)]=X(z)Y(z)$$</p>
 
-      
     </div>
 
     
-
-    
-    
-    
-
-    
-
-    
-      
     
     
 
-    
-
-    <footer class="post-footer">
-      
-        <div class="post-tags">
-          
-            <a href="/tags/DSP/" rel="tag"># DSP</a>
-          
-            <a href="/tags/Algorithm/" rel="tag"># Algorithm</a>
-          
-        </div>
-      
-
-      
-      
-      
-
-      
-        <div class="post-nav">
-          <div class="post-nav-next post-nav-item">
-            
-              <a href="/2018/02/12/dsp-1/" rel="next" title="信号处理笔记（一）">
-                <i class="fa fa-chevron-left"></i> 信号处理笔记（一）
-              </a>
-            
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/DSP/" rel="tag"># DSP</a>
+              <a href="/tags/Algorithm/" rel="tag"># Algorithm</a>
           </div>
 
-          <span class="post-nav-divider"></span>
+        
 
-          <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/03/15/dsp-3/" rel="prev" title="信号处理笔记（三）">
-                信号处理笔记（三） <i class="fa fa-chevron-right"></i>
-              </a>
-            
-          </div>
-        </div>
-      
 
-      
-      
-    </footer>
-  </div>
-  
-  
-  
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2018/02/12/dsp-1/" rel="prev" title="信号处理笔记（一）">
+      <i class="fa fa-chevron-left"></i> 信号处理笔记（一）
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2018/03/15/dsp-3/" rel="next" title="信号处理笔记（三）">
+      信号处理笔记（三） <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
   </article>
-
+  
+  
+  
 
   </div>
 
 
           </div>
           
-
-  
-    <div class="comments" id="gitalk-container">
-    </div>
-
-  
-
-
-
-        </div>
-        
-          
-  
-  <div class="sidebar-toggle">
-    <div class="sidebar-toggle-line-wrap">
-      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
-    </div>
-  </div>
-
-  <aside id="sidebar" class="sidebar">
-    <div class="sidebar-inner">
-
-      
-
-      
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            Table of Contents
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
-            Overview
-          </li>
-        </ul>
-      
-
-      <div class="site-overview-wrap sidebar-panel">
-        <div class="site-overview">
-          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-            
-              <img class="site-author-image" itemprop="image" src="/images/avatar.png" alt="zjuturtle">
-            
-              <p class="site-author-name" itemprop="name">zjuturtle</p>
-              <div class="site-description motion-element" itemprop="description">瞎几把搞的幸运E</div>
-          </div>
-
-          
-            <nav class="site-state motion-element">
-              
-                <div class="site-state-item site-state-posts">
-                
-                  <a href="/archives/">
-                
-                    <span class="site-state-item-count">37</span>
-                    <span class="site-state-item-name">posts</span>
-                  </a>
-                </div>
-              
-
-              
-                
-                
-                <div class="site-state-item site-state-categories">
-                  
-                    
-                      <a href="/categories/">
-                    
-                  
-                    
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                    <span class="site-state-item-count">5</span>
-                    <span class="site-state-item-name">categories</span>
-                  </a>
-                </div>
-              
-
-              
-                
-                
-                <div class="site-state-item site-state-tags">
-                  
-                    
-                      <a href="/tags/">
-                    
-                  
-                    
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                    <span class="site-state-item-count">39</span>
-                    <span class="site-state-item-name">tags</span>
-                  </a>
-                </div>
-              
-            </nav>
-          
-
-          
-
-          
-
-          
-            <div class="links-of-author motion-element">
-              
-                <span class="links-of-author-item">
-                  
-                  
-                    
-                  
-                  
-                    
-                  
-                  <a href="https://github.com/zjuturtle" title="GitHub &rarr; https://github.com/zjuturtle" rel="noopener" target="_blank"><i class="fa fa-fw fa-globe"></i>GitHub</a>
-                </span>
-              
-                <span class="links-of-author-item">
-                  
-                  
-                    
-                  
-                  
-                    
-                  
-                  <a href="mailto:leijinghaog@gmail.com" title="E-Mail &rarr; mailto:leijinghaog@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
-                </span>
-              
-            </div>
-          
-
-          
-
-          
-          
-
-          
-            
-          
-          
-
-        </div>
-      </div>
-
-      
-      <!--noindex-->
-        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-            
-            
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#z-变换定义"><span class="nav-number">1.</span> <span class="nav-text">z 变换定义</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#z-变换与拉普拉斯变换"><span class="nav-number">1.1.</span> <span class="nav-text">z 变换与拉普拉斯变换</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#z-平面和-s-平面"><span class="nav-number">1.2.</span> <span class="nav-text">z 平面和 s 平面</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#z-变换的收敛域"><span class="nav-number">2.</span> <span class="nav-text">z 变换的收敛域</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#例1"><span class="nav-number">2.1.</span> <span class="nav-text">例1</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#例2"><span class="nav-number">2.2.</span> <span class="nav-text">例2</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#例3"><span class="nav-number">2.3.</span> <span class="nav-text">例3</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#序列与-roc-的关系"><span class="nav-number">2.4.</span> <span class="nav-text">序列与 ROC 的关系</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#有限长序列"><span class="nav-number">2.4.1.</span> <span class="nav-text">有限长序列</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#右边序列"><span class="nav-number">2.4.2.</span> <span class="nav-text">右边序列</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#左边序列"><span class="nav-number">2.4.3.</span> <span class="nav-text">左边序列</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#双边序列"><span class="nav-number">2.4.4.</span> <span class="nav-text">双边序列</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#z-变换的性质"><span class="nav-number">3.</span> <span class="nav-text">z 变换的性质</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#线性"><span class="nav-number">3.1.</span> <span class="nav-text">线性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#时移性质"><span class="nav-number">3.2.</span> <span class="nav-text">时移性质</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#加权性质"><span class="nav-number">3.3.</span> <span class="nav-text">加权性质</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#时域卷积性质"><span class="nav-number">3.4.</span> <span class="nav-text">时域卷积性质</span></a></li></ol></li></ol></div>
-            
-
-          </div>
-        </div>
-      <!--/noindex-->
-      
-
-      
-
-    </div>
-  </aside>
-  
-
-
-        
-      </div>
-    </main>
-
-    <footer id="footer" class="footer">
-      <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
-  <span class="with-love" id="animate">
-    <i class="fa fa-user"></i>
-  </span>
-  <span class="author" itemprop="copyrightHolder">zjuturtle</span>
-
-  
-
-  
-</div>
-
-
-  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> v3.9.0</div>
-
-
-
-  <span class="post-meta-divider">|</span>
-
-
-
-  <div class="theme-info">Theme – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.1.0</div>
-
-
-
-
-        
-
-
-
-
-  <script>
-    (function() {
-      var hm = document.createElement("script");
-      hm.src = "//tajs.qq.com/stats?sId=61683784";
-      var s = document.getElementsByTagName("script")[0];
-      s.parentNode.insertBefore(hm, s);
-    })();
-  </script>
-
-
-
-
-
-        
-      </div>
-    </footer>
-
-    
-      <div class="back-to-top">
-        <i class="fa fa-arrow-up"></i>
-        
-      </div>
-    
-
-    
-
-    
-
-    
-  </div>
-
-  
+    <div class="comments" id="gitalk-container"></div>
 
 <script>
-  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
-    window.Promise = null;
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
   }
 </script>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        </div>
+          
   
-  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
 
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#z-变换定义"><span class="nav-number">1.</span> <span class="nav-text">z 变换定义</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#z-变换与拉普拉斯变换"><span class="nav-number">1.1.</span> <span class="nav-text">z 变换与拉普拉斯变换</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#z-平面和-s-平面"><span class="nav-number">1.2.</span> <span class="nav-text">z 平面和 s 平面</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#z-变换的收敛域"><span class="nav-number">2.</span> <span class="nav-text">z 变换的收敛域</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#例1"><span class="nav-number">2.1.</span> <span class="nav-text">例1</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#例2"><span class="nav-number">2.2.</span> <span class="nav-text">例2</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#例3"><span class="nav-number">2.3.</span> <span class="nav-text">例3</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#序列与-ROC-的关系"><span class="nav-number">2.4.</span> <span class="nav-text">序列与 ROC 的关系</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#有限长序列"><span class="nav-number">2.4.1.</span> <span class="nav-text">有限长序列</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#右边序列"><span class="nav-number">2.4.2.</span> <span class="nav-text">右边序列</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#左边序列"><span class="nav-number">2.4.3.</span> <span class="nav-text">左边序列</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#双边序列"><span class="nav-number">2.4.4.</span> <span class="nav-text">双边序列</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#z-变换的性质"><span class="nav-number">3.</span> <span class="nav-text">z 变换的性质</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#线性"><span class="nav-number">3.1.</span> <span class="nav-text">线性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#时移性质"><span class="nav-number">3.2.</span> <span class="nav-text">时移性质</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#加权性质"><span class="nav-number">3.3.</span> <span class="nav-text">加权性质</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#时域卷积性质"><span class="nav-number">3.4.</span> <span class="nav-text">时域卷积性质</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="zjuturtle"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">zjuturtle</p>
+  <div class="site-description" itemprop="description">瞎几把搞的幸运E</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">43</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">47</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/zjuturtle" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;zjuturtle" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:leijinghaog@gmail.com" title="E-Mail → mailto:leijinghaog@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
   
-  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">zjuturtle</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v4.2.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">Theme – <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.7.0
+  </div>
 
-  
-  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
-
-
-  
-
-
-  <script src="/js/utils.js?v=7.1.0"></script>
-
-  <script src="/js/motion.js?v=7.1.0"></script>
-
-
-
-  
-  
-
-
-  <script src="/js/affix.js?v=7.1.0"></script>
-
-  <script src="/js/schemes/pisces.js?v=7.1.0"></script>
+        
 
 
 
 
-  
-  <script src="/js/scrollspy.js?v=7.1.0"></script>
-<script src="/js/post-details.js?v=7.1.0"></script>
 
 
-
-  
-
-
-  <script src="/js/next-boot.js?v=7.1.0"></script>
-
-
-  
-
-  
-
-  
-
-  
-
-
-  
-    
-
-  
-
-<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
-
-
-
-  
-
-<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
-
-
-
-  
-
-<script src="//cdn.jsdelivr.net/npm/js-md5@0/src/md5.min.js"></script>
-
-<script>
-  var gitalk = new Gitalk({
-    clientID: '08e86c9d0536ed791bf9',
-    clientSecret: '0982e8cb7b507eee3022547b44ebc4c4f6f2a944',
-    repo: 'Gitalk',
-    owner: 'AnotherZjuturtle',
-    admin: ['AnotherZjuturtle'],
-    id: md5(window.location.pathname),
-    
-      language: window.navigator.language || window.navigator.userLanguage,
-    
-    distractionFreeMode: 'true'
-  });
-  gitalk.render('gitalk-container');
-</script>
-
-  
-
-
-  
-
-
-
-
-  
-  
   <script>
-    
+  function leancloudSelector(url) {
+    url = encodeURI(url);
+    return document.getElementById(url).querySelector('.leancloud-visitors-count');
+  }
+  if (CONFIG.page.isPost) {
     function addCount(Counter) {
-      var $visitors = $('.leancloud_visitors');
-      var url = $visitors.attr('id').trim();
-      var title = $visitors.attr('data-flag-title').trim();
+      var visitors = document.querySelector('.leancloud_visitors');
+      var url = decodeURI(visitors.getAttribute('id'));
+      var title = visitors.getAttribute('data-flag-title');
 
-      Counter('get', '/classes/Counter', { where: JSON.stringify({ url }) })
-        .done(function({ results }) {
+      Counter('get', `/classes/Counter?where=${JSON.stringify({ url })}`)
+        .then(response => response.json())
+        .then(({ results }) => {
           if (results.length > 0) {
             var counter = results[0];
-            
-              var $element = $(document.getElementById(url));
-              $element.find('.leancloud-visitors-count').text(counter.time + 1);
-            
-            Counter('put', '/classes/Counter/' + counter.objectId, JSON.stringify({ time: { '__op': 'Increment', 'amount': 1 } }))
-            
-              .fail(function ({ responseJSON }) {
-                console.log('Failed to save Visitor num, with error message: ' + responseJSON.error);
+            Counter('put', '/classes/Counter/' + counter.objectId, { time: { '__op': 'Increment', 'amount': 1 } })
+              .then(response => response.json())
+              .then(() => {
+                leancloudSelector(url).innerText = counter.time + 1;
+              })
+              .catch(error => {
+                console.error('Failed to save visitor count', error);
               })
           } else {
-            
-              var $element = $(document.getElementById(url));
-              $element.find('.leancloud-visitors-count').text('Counter not initialized! More info at console err msg.');
+              leancloudSelector(url).innerText = 'Counter not initialized! More info at console err msg.';
               console.error('ATTENTION! LeanCloud counter has security bug, see how to solve it here: https://github.com/theme-next/hexo-leancloud-counter-security. \n However, you can still use LeanCloud without security, by setting `security` option to `false`.');
             
           }
         })
-        .fail(function ({ responseJSON }) {
-          console.log('LeanCloud Counter Error: ' + responseJSON.code + ' ' + responseJSON.error);
+        .catch(error => {
+          console.error('LeanCloud Counter Error', error);
         });
     }
-    
+  } else {
+    function showTime(Counter) {
+      var visitors = document.querySelectorAll('.leancloud_visitors');
+      var entries = [...visitors].map(element => {
+        return decodeURI(element.getAttribute('id'));
+      });
 
-    $(function() {
-      $.get('https://app-router.leancloud.cn/2/route?appId=' + 'WPxUE6YkPBut4XJcmskHhlvL-gzGzoHsz')
-        .done(function({ api_server }) {
-          var Counter = function(method, url, data) {
-            return $.ajax({
-              method: method,
-              url: 'https://' + api_server + '/1.1' + url,
-              headers: {
-                'X-LC-Id': 'WPxUE6YkPBut4XJcmskHhlvL-gzGzoHsz',
-                'X-LC-Key': 'oCVD6rCmlv3Nx4jcOX0UiWNW',
-                'Content-Type': 'application/json',
-              },
-              data: data
+      Counter('get', `/classes/Counter?where=${JSON.stringify({ url: { '$in': entries } })}`)
+        .then(response => response.json())
+        .then(({ results }) => {
+          if (results.length === 0) {
+            document.querySelectorAll('.leancloud_visitors .leancloud-visitors-count').forEach(element => {
+              element.innerText = 0;
             });
-          };
-          
-            addCount(Counter);
-          
+            return;
+          }
+          for (let item of results) {
+            let { url, time } = item;
+            leancloudSelector(url).innerText = time;
+          }
+          for (let url of entries) {
+            var element = leancloudSelector(url);
+            if (element.innerText == '') {
+              element.innerText = 0;
+            }
+          }
+        })
+        .catch(error => {
+          console.error('LeanCloud Counter Error', error);
         });
+    }
+  }
+
+  fetch('https://app-router.leancloud.cn/2/route?appId=WPxUE6YkPBut4XJcmskHhlvL-gzGzoHsz')
+    .then(response => response.json())
+    .then(({ api_server }) => {
+      var Counter = (method, url, data) => {
+        return fetch(`https://${api_server}/1.1${url}`, {
+          method: method,
+          headers: {
+            'X-LC-Id': 'WPxUE6YkPBut4XJcmskHhlvL-gzGzoHsz',
+            'X-LC-Key': 'oCVD6rCmlv3Nx4jcOX0UiWNW',
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data)
+        });
+      };
+      if (CONFIG.page.isPost) {
+        if (CONFIG.hostname !== location.hostname) return;
+        addCount(Counter);
+      } else if (document.querySelectorAll('.post-title-link').length >= 1) {
+        showTime(Counter);
+      }
     });
   </script>
 
 
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   
 
   
-  
-
-  
-  
-
-  
-    
-      <script type="text/x-mathjax-config">
-  
+      
+<script type="text/x-mathjax-config">
 
   MathJax.Hub.Config({
     tex2jax: {
@@ -1189,68 +677,66 @@ Z[x_2(n)]=&amp;X_2(z),ROC:R_2 \end{split}\]</span></p>
       skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
     },
     TeX: {
-      
       equationNumbers: {
         autoNumber: 'AMS'
       }
     }
   });
+
   MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
     MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
       if (data.display) {
         var next = data.script.nextSibling;
-        while (next && next.nodeName.toLowerCase() === '#text') { next = next.nextSibling }
-        if (next && next.nodeName.toLowerCase() === 'br') { next.parentNode.removeChild(next) }
+        while (next && next.nodeName.toLowerCase() === '#text') {
+          next = next.nextSibling;
+        }
+        if (next && next.nodeName.toLowerCase() === 'br') {
+          next.parentNode.removeChild(next);
+        }
       }
     });
   });
-</script>
 
-<script type="text/x-mathjax-config">
   MathJax.Hub.Queue(function() {
     var all = MathJax.Hub.getAllJax(), i;
     for (i = 0; i < all.length; i += 1) {
-      document.getElementById(all[i].inputID + '-Frame').parentNode.className += ' has-jax';
+      element = document.getElementById(all[i].inputID + '-Frame').parentNode;
+      if (element.nodeName.toLowerCase() == 'li') {
+        element = element.parentNode;
+      }
+      element.classList.add('has-jax');
     }
   });
 </script>
-<script src="//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML', () => {
+    MathJax.Hub.Typeset();
+  }, window.MathJax);
+</script>
 
     
-  
-
 
   
 
-  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
 
-  
-  <script>
-    (function(){
-      var bp = document.createElement('script');
-      var curProtocol = window.location.protocol.split(':')[0];
-      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
-      var s = document.getElementsByTagName("script")[0];
-      s.parentNode.insertBefore(bp, s);
-    })();
-  </script>
-
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID: '08e86c9d0536ed791bf9',
+      clientSecret: '0982e8cb7b507eee3022547b44ebc4c4f6f2a944',
+      repo: 'Gitalk',
+      owner: 'AnotherZjuturtle',
+      admin: ['AnotherZjuturtle'],
+      id: '0adc9bcde8d3623024922e3e02f276a2',
+        language: 'zh-CN',
+      distractionFreeMode: true
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
 
 </body>
 </html>

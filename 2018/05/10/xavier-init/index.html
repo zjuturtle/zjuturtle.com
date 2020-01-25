@@ -1,127 +1,73 @@
 <!DOCTYPE html>
-
-
-
-
-
-
-
-
-
-
-
-
-  
-
-
-<html class="theme-next gemini use-motion" lang="zh-Hans">
-<head><meta name="generator" content="Hexo 3.9.0">
+<html lang="zh-Hans">
+<head>
   <meta charset="UTF-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico">
+  <link rel="mask-icon" href="/images/favicon.ico" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
 
 
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
-
-<link rel="stylesheet" href="/css/main.css?v=7.1.0">
-
-
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.ico?v=7.1.0">
-
-
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=7.1.0">
-
-
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico?v=7.1.0">
-
-
-  <link rel="mask-icon" href="/images/favicon.ico?v=7.1.0" color="#222">
-
-
-
-
-
-
-
-<script id="hexo.configurations">
+<script id="hexo-configurations">
   var NexT = window.NexT || {};
   var CONFIG = {
+    hostname: new URL('http://zjuturtle.com').hostname,
     root: '/',
     scheme: 'Gemini',
-    version: '7.1.0',
-    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
-    back2top: true,
-    back2top_sidebar: false,
+    version: '7.7.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
     fancybox: false,
-    fastclick: false,
+    mediumzoom: false,
     lazyload: false,
-    tabs: true,
-    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},
     algolia: {
-      applicationID: '',
+      appID: '',
       apiKey: '',
       indexName: '',
       hits: {"per_page":10},
       labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
-    }
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
   };
 </script>
 
-
-  
-
-
-
-
   <meta name="description" content="最近在学习研究神经网络的时候，遇到一个 Xavier 初始化的问题，所以就做一个记录。">
-<meta name="keywords" content="Algorithm,Machine Learning">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Xavier 初始化">
-<meta property="og:url" content="https://zjuturtle.com/2018/05/10/xavier-init/index.html">
+<meta property="og:url" content="http://zjuturtle.com/2018/05/10/xavier-init/index.html">
 <meta property="og:site_name" content="zjuturtle&#39;s blog">
 <meta property="og:description" content="最近在学习研究神经网络的时候，遇到一个 Xavier 初始化的问题，所以就做一个记录。">
-<meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-06-20T09:08:59.964Z">
+<meta property="article:published_time" content="2018-05-10T06:55:53.000Z">
+<meta property="article:modified_time" content="2018-06-20T09:08:59.964Z">
+<meta property="article:author" content="zjuturtle">
+<meta property="article:tag" content="Algorithm">
+<meta property="article:tag" content="Machine Learning">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Xavier 初始化">
-<meta name="twitter:description" content="最近在学习研究神经网络的时候，遇到一个 Xavier 初始化的问题，所以就做一个记录。">
+
+<link rel="canonical" href="http://zjuturtle.com/2018/05/10/xavier-init/">
 
 
-
-
-
-  
-  
-  <link rel="canonical" href="https://zjuturtle.com/2018/05/10/xavier-init/">
-
-
-
-<script id="page.configurations">
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
   CONFIG.page = {
     sidebar: "",
+    isHome: false,
+    isPost: true
   };
 </script>
 
@@ -133,15 +79,8 @@
 
 
 
-
-
-
-
-
-
   <noscript>
   <style>
-  .use-motion .motion-element,
   .use-motion .brand,
   .use-motion .menu-item,
   .sidebar-inner,
@@ -150,9 +89,8 @@
   .use-motion .comments,
   .use-motion .post-header,
   .use-motion .post-body,
-  .use-motion .collection-title { opacity: initial; }
+  .use-motion .collection-header { opacity: initial; }
 
-  .use-motion .logo,
   .use-motion .site-title,
   .use-motion .site-subtitle {
     opacity: initial;
@@ -166,243 +104,127 @@
 
 </head>
 
-<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
-
-  
-  
-    
-  
-
-  <div class="container sidebar-position-left page-post-detail">
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
     <div class="headband"></div>
 
-    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
-      <div class="header-inner"><div class="site-brand-wrapper">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
   <div class="site-meta">
-    
 
-    <div class="custom-logo-site-title">
+    <div>
       <a href="/" class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
         <span class="site-title">zjuturtle's blog</span>
         <span class="logo-line-after"><i></i></span>
       </a>
     </div>
-    
-    
   </div>
 
   <div class="site-nav-toggle">
-    <button aria-label="Toggle navigation bar">
-      <span class="btn-bar"></span>
-      <span class="btn-bar"></span>
-      <span class="btn-bar"></span>
-    </button>
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
   </div>
 </div>
-
 
 
 <nav class="site-nav">
   
-    <ul id="menu" class="menu">
-      
-        
-        
-        
-          
-          <li class="menu-item menu-item-home">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
 
-    
-    
-    
-      
-    
-
-    
-
-    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>Home</a>
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
 
   </li>
-        
-        
-        
-          
-          <li class="menu-item menu-item-archives">
+        <li class="menu-item menu-item-archives">
 
-    
-    
-    
-      
-    
-
-    
-
-    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>Archives</a>
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
 
   </li>
+  </ul>
 
-      
-      
-    </ul>
-  
-
-  
-
-  
 </nav>
-
-
-
-  
-
-
-
 </div>
     </header>
 
     
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
 
 
-    <main id="main" class="main">
+    <main class="main">
       <div class="main-inner">
         <div class="content-wrap">
           
+
+          <div class="content">
             
 
-          
-          <div id="content" class="content">
-            
-
-  <div id="posts" class="posts-expand">
-    
-
-  
-
+  <div class="posts-expand">
+      
   
   
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://zjuturtle.com/2018/05/10/xavier-init/">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://zjuturtle.com/2018/05/10/xavier-init/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
       <meta itemprop="name" content="zjuturtle">
       <meta itemprop="description" content="瞎几把搞的幸运E">
-      <meta itemprop="image" content="/images/avatar.png">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
       <meta itemprop="name" content="zjuturtle's blog">
     </span>
-
-    
       <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">Xavier 初始化
-
-              
-            
-          </h2>
-        
+        <h1 class="post-title" itemprop="name headline">
+          Xavier 初始化
+        </h1>
 
         <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
+            <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-calendar-o"></i>
               </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-
-              
-                
-              
+              <span class="post-meta-item-text">Posted on</span>
 
               <time title="Created: 2018-05-10 14:55:53" itemprop="dateCreated datePublished" datetime="2018-05-10T14:55:53+08:00">2018-05-10</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
+            </span>
+              <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
-                
-                  <span class="post-meta-item-text">Edited on</span>
-                
+                <span class="post-meta-item-text">Edited on</span>
                 <time title="Modified: 2018-06-20 17:08:59" itemprop="dateModified" datetime="2018-06-20T17:08:59+08:00">2018-06-20</time>
-              
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
+              </span>
+            <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
               </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Algorithm/" itemprop="url" rel="index"><span itemprop="name">Algorithm</span></a></span>
-
-                
-                
-              
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Algorithm/" itemprop="url" rel="index">
+                    <span itemprop="name">Algorithm</span>
+                  </a>
+                </span>
             </span>
-          
 
           
-            
-            
-          
-
-          
-          
-            <span id="/2018/05/10/xavier-init/" class="leancloud_visitors" data-flag-title="Xavier 初始化">
-              <span class="post-meta-divider">|</span>
+            <span id="/2018/05/10/xavier-init/" class="post-meta-item leancloud_visitors" data-flag-title="Xavier 初始化" title="Views">
               <span class="post-meta-item-icon">
                 <i class="fa fa-eye"></i>
               </span>
-              
-                <span class="post-meta-item-text">Views: </span>
-              
-                <span class="leancloud-visitors-count"></span>
+              <span class="post-meta-item-text">Views: </span>
+              <span class="leancloud-visitors-count"></span>
             </span>
-          
-
-          
-
-          
-
-          
 
         </div>
       </header>
-    
 
     
     
@@ -410,630 +232,327 @@
     <div class="post-body" itemprop="articleBody">
 
       
-      
-
-      
         <p>最近在学习研究神经网络的时候，遇到一个 Xavier 初始化的问题，所以就做一个记录。</p>
 <a id="more"></a>
-<h2 id="xavier-由来">Xavier 由来</h2>
-<p>当我们在初始化网络的权重时，需要设置一个合理的随机值，避免出现 symmetry 的情况。一般我们会将其初始化为均值为 0 的随机分布（高斯或者均匀分布）。如果权重初始化过小(即选择的方差过小)，那么随着输入信号的改变，网络后端的改变也会过小。同样的，如果权重初始化过大，随着输入信号的改变，网络后端的改变则会过大。Xavier 方法提供了一个合理的方式来初始化权重。</p>
-<p>简单来说，就是将一个神经元的初始值权重初始化为均值为0，方差为 <span class="math inline">\(Var(w_i)=\frac 1 {n_{in}}\)</span> 的随机分布（高斯或者均匀分布）。其中 <span class="math inline">\(n_{in}\)</span> 是该神经元的输入数目。</p>
-<h2 id="xavier-推导">Xavier 推导</h2>
-<p>我们不考虑激活函数（假设它不存在）。对于一个没有经过激活函数的神经元，它的输出为 $ y=<em>{i=1}^{n</em>{in}}x_iw_i $。我们假设期望为 <span class="math inline">\(E(x_i)=E(w_i)=0\)</span>，且各个变量互相独立，那么 <span class="math inline">\(E(\sum_{i=1}^{n_{in}}x_iw_i)=0\)</span>。</p>
+
+<h2 id="Xavier-由来"><a href="#Xavier-由来" class="headerlink" title="Xavier 由来"></a>Xavier 由来</h2><p>当我们在初始化网络的权重时，需要设置一个合理的随机值，避免出现 symmetry 的情况。一般我们会将其初始化为均值为 0 的随机分布（高斯或者均匀分布）。如果权重初始化过小(即选择的方差过小)，那么随着输入信号的改变，网络后端的改变也会过小。同样的，如果权重初始化过大，随着输入信号的改变，网络后端的改变则会过大。Xavier 方法提供了一个合理的方式来初始化权重。</p>
+<p>简单来说，就是将一个神经元的初始值权重初始化为均值为0，方差为 $Var(w_i)=\frac 1 {n_{in}}$ 的随机分布（高斯或者均匀分布）。其中 $n_{in}$ 是该神经元的输入数目。</p>
+<h2 id="Xavier-推导"><a href="#Xavier-推导" class="headerlink" title="Xavier 推导"></a>Xavier 推导</h2><p>我们不考虑激活函数（假设它不存在）。对于一个没有经过激活函数的神经元，它的输出为 $ y=\sum_{i=1}^{n_{in}}x_iw_i $。我们假设期望为 $E(x_i)=E(w_i)=0$，且各个变量互相独立，那么 $E(\sum_{i=1}^{n_{in}}x_iw_i)=0$。</p>
 <p>因此我们可以写出方差的公式如下</p>
-<p><span class="math display">\[\begin{split}Var(w_ix_i)&amp;=[E(x_i)]^2 + [E(W_i)]^2 Var(x_i) + Var(w_i)Var(x_i) \\
-&amp;=Var(w_i)Var(x_i)\end{split}\]</span></p>
-<p>假设 <span class="math inline">\(wi,x_i\)</span> 服从同一分布，那么可以得到</p>
-<p><span class="math display">\[\begin{split} Var(y)&amp;=Var(\sum_{i=1}^{n_{in}}x_iw_i) \\
-&amp;=n_{in}Var(w_i)Var(x_i) \end{split}\]</span></p>
-<p>可以这么理解，对于一个神经元的输出（没有经过激活函数前），当其输入服从同一个分布时，其输出的方差为输入方差乘以输入数目。所以，如果我们希望其输出的方差同输入一致，便需要 <span class="math inline">\(Var(w_i)= \frac 1 {n_{in}}\)</span></p>
-<h2 id="xavier-变体">Xavier 变体</h2>
-<p>当使用反向传播时，同上，我们可以得到如果需要方差保持一致，需要</p>
-<p><span class="math display">\[Var(w_i)= \frac 1 {n_{out}}\]</span></p>
-<p><span class="math inline">\(n_{in}\)</span> 代表输入数目，<span class="math inline">\(n_{out}\)</span> 代表输出数目。显然当且仅当 <span class="math inline">\(n_{in}=n_{out}\)</span> 时，才能保证正向和反向的方差一致。当二者不一致时，综合一下可以使用下式</p>
-<p><span class="math display">\[Var(w_i) = \frac 2 {n_{in}+n_{out}}\]</span></p>
-<p>在实践中，采用 <span class="math inline">\(Var(w_i)= \frac 1 {n_{out}}\)</span> 和 <span class="math inline">\(Var(w_i) = \frac 2 {n_{in}+n_{out}}\)</span> 都有，不同的神经网络库都不太一样。</p>
-<h2 id="xavier-延伸探讨">Xavier 延伸探讨</h2>
-<p>我感觉 Xavier 初始化还是用了很多“大胆”的假设。比如它没有考虑到激活函数的非线性，也假设了所有的输入都是服从同一分布。但在实践中，它的确有用，能让收敛速度加快。</p>
+<p>$$\begin{split}Var(w_ix_i)&amp;=[E(x_i)]^2 + [E(W_i)]^2 Var(x_i) + Var(w_i)Var(x_i) \<br>&amp;=Var(w_i)Var(x_i)\end{split}$$</p>
+<p>假设 $wi,x_i$ 服从同一分布，那么可以得到</p>
+<p>$$\begin{split} Var(y)&amp;=Var(\sum_{i=1}^{n_{in}}x_iw_i) \<br>&amp;=n_{in}Var(w_i)Var(x_i) \end{split}$$</p>
+<p>可以这么理解，对于一个神经元的输出（没有经过激活函数前），当其输入服从同一个分布时，其输出的方差为输入方差乘以输入数目。所以，如果我们希望其输出的方差同输入一致，便需要 $Var(w_i)= \frac 1 {n_{in}}$</p>
+<h2 id="Xavier-变体"><a href="#Xavier-变体" class="headerlink" title="Xavier 变体"></a>Xavier 变体</h2><p>当使用反向传播时，同上，我们可以得到如果需要方差保持一致，需要</p>
+<p>$$Var(w_i)= \frac 1 {n_{out}}$$</p>
+<p>$n_{in}$ 代表输入数目，$n_{out}$ 代表输出数目。显然当且仅当 $n_{in}=n_{out}$ 时，才能保证正向和反向的方差一致。当二者不一致时，综合一下可以使用下式</p>
+<p>$$Var(w_i) = \frac 2 {n_{in}+n_{out}}$$</p>
+<p>在实践中，采用 $Var(w_i)= \frac 1 {n_{out}}$ 和 $Var(w_i) = \frac 2 {n_{in}+n_{out}}$ 都有，不同的神经网络库都不太一样。</p>
+<h2 id="Xavier-延伸探讨"><a href="#Xavier-延伸探讨" class="headerlink" title="Xavier 延伸探讨"></a>Xavier 延伸探讨</h2><p>我感觉 Xavier 初始化还是用了很多“大胆”的假设。比如它没有考虑到激活函数的非线性，也假设了所有的输入都是服从同一分布。但在实践中，它的确有用，能让收敛速度加快。</p>
 <p>实际上，我们假设了激活函数在输入为 0 附近时，其梯度为 1 。不过对于 ReLu 激活函数而言这就不成立了。因此对于使用 ReLu 激活函数，我们的初始化为</p>
-<p><span class="math display">\[Var(w_i)=\frac 2 {n_{in}}\]</span></p>
-<h2 id="参考资料">参考资料</h2>
-<ul>
+<p>$$Var(w_i)=\frac 2 {n_{in}}$$</p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
 <li><a href="http://proceedings.mlr.press/v9/glorot10a/glorot10a.pdf" target="_blank" rel="noopener">Understanding the difficulty of training deep feedforward neural networks</a></li>
-<li><a href="http://andyljones.tumblr.com/post/110998971763/an-explanation-of-xavier-initialization" target="_blank" rel="noopener">Andy's blog</a></li>
+<li><a href="http://andyljones.tumblr.com/post/110998971763/an-explanation-of-xavier-initialization" target="_blank" rel="noopener">Andy’s blog</a></li>
 </ul>
 
-      
     </div>
 
     
-
-    
-    
-    
-
-    
-
-    
-      
     
     
 
-    
-
-    <footer class="post-footer">
-      
-        <div class="post-tags">
-          
-            <a href="/tags/Algorithm/" rel="tag"># Algorithm</a>
-          
-            <a href="/tags/Machine-Learning/" rel="tag"># Machine Learning</a>
-          
-        </div>
-      
-
-      
-      
-      
-
-      
-        <div class="post-nav">
-          <div class="post-nav-next post-nav-item">
-            
-              <a href="/2018/04/11/wavelet-1/" rel="next" title="小波入门（一）">
-                <i class="fa fa-chevron-left"></i> 小波入门（一）
-              </a>
-            
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Algorithm/" rel="tag"># Algorithm</a>
+              <a href="/tags/Machine-Learning/" rel="tag"># Machine Learning</a>
           </div>
 
-          <span class="post-nav-divider"></span>
+        
 
-          <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/06/20/docker-run-cmd-entrypoint/" rel="prev" title="Docker 中 RUN/CMD/ENTRYPOINT 详解">
-                Docker 中 RUN/CMD/ENTRYPOINT 详解 <i class="fa fa-chevron-right"></i>
-              </a>
-            
-          </div>
-        </div>
-      
 
-      
-      
-    </footer>
-  </div>
-  
-  
-  
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2018/04/11/wavelet-1/" rel="prev" title="小波入门（一）">
+      <i class="fa fa-chevron-left"></i> 小波入门（一）
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2018/06/20/docker-run-cmd-entrypoint/" rel="next" title="Docker 中 RUN/CMD/ENTRYPOINT 详解">
+      Docker 中 RUN/CMD/ENTRYPOINT 详解 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
   </article>
-
+  
+  
+  
 
   </div>
 
 
           </div>
           
-
-  
-    <div class="comments" id="gitalk-container">
-    </div>
-
-  
-
-
-
-        </div>
-        
-          
-  
-  <div class="sidebar-toggle">
-    <div class="sidebar-toggle-line-wrap">
-      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
-    </div>
-  </div>
-
-  <aside id="sidebar" class="sidebar">
-    <div class="sidebar-inner">
-
-      
-
-      
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            Table of Contents
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
-            Overview
-          </li>
-        </ul>
-      
-
-      <div class="site-overview-wrap sidebar-panel">
-        <div class="site-overview">
-          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-            
-              <img class="site-author-image" itemprop="image" src="/images/avatar.png" alt="zjuturtle">
-            
-              <p class="site-author-name" itemprop="name">zjuturtle</p>
-              <div class="site-description motion-element" itemprop="description">瞎几把搞的幸运E</div>
-          </div>
-
-          
-            <nav class="site-state motion-element">
-              
-                <div class="site-state-item site-state-posts">
-                
-                  <a href="/archives/">
-                
-                    <span class="site-state-item-count">37</span>
-                    <span class="site-state-item-name">posts</span>
-                  </a>
-                </div>
-              
-
-              
-                
-                
-                <div class="site-state-item site-state-categories">
-                  
-                    
-                      <a href="/categories/">
-                    
-                  
-                    
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                    <span class="site-state-item-count">5</span>
-                    <span class="site-state-item-name">categories</span>
-                  </a>
-                </div>
-              
-
-              
-                
-                
-                <div class="site-state-item site-state-tags">
-                  
-                    
-                      <a href="/tags/">
-                    
-                  
-                    
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                    <span class="site-state-item-count">39</span>
-                    <span class="site-state-item-name">tags</span>
-                  </a>
-                </div>
-              
-            </nav>
-          
-
-          
-
-          
-
-          
-            <div class="links-of-author motion-element">
-              
-                <span class="links-of-author-item">
-                  
-                  
-                    
-                  
-                  
-                    
-                  
-                  <a href="https://github.com/zjuturtle" title="GitHub &rarr; https://github.com/zjuturtle" rel="noopener" target="_blank"><i class="fa fa-fw fa-globe"></i>GitHub</a>
-                </span>
-              
-                <span class="links-of-author-item">
-                  
-                  
-                    
-                  
-                  
-                    
-                  
-                  <a href="mailto:leijinghaog@gmail.com" title="E-Mail &rarr; mailto:leijinghaog@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
-                </span>
-              
-            </div>
-          
-
-          
-
-          
-          
-
-          
-            
-          
-          
-
-        </div>
-      </div>
-
-      
-      <!--noindex-->
-        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-            
-            
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#xavier-由来"><span class="nav-number">1.</span> <span class="nav-text">Xavier 由来</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#xavier-推导"><span class="nav-number">2.</span> <span class="nav-text">Xavier 推导</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#xavier-变体"><span class="nav-number">3.</span> <span class="nav-text">Xavier 变体</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#xavier-延伸探讨"><span class="nav-number">4.</span> <span class="nav-text">Xavier 延伸探讨</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考资料"><span class="nav-number">5.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
-            
-
-          </div>
-        </div>
-      <!--/noindex-->
-      
-
-      
-
-    </div>
-  </aside>
-  
-
-
-        
-      </div>
-    </main>
-
-    <footer id="footer" class="footer">
-      <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
-  <span class="with-love" id="animate">
-    <i class="fa fa-user"></i>
-  </span>
-  <span class="author" itemprop="copyrightHolder">zjuturtle</span>
-
-  
-
-  
-</div>
-
-
-  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> v3.9.0</div>
-
-
-
-  <span class="post-meta-divider">|</span>
-
-
-
-  <div class="theme-info">Theme – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.1.0</div>
-
-
-
-
-        
-
-
-
-
-  <script>
-    (function() {
-      var hm = document.createElement("script");
-      hm.src = "//tajs.qq.com/stats?sId=61683784";
-      var s = document.getElementsByTagName("script")[0];
-      s.parentNode.insertBefore(hm, s);
-    })();
-  </script>
-
-
-
-
-
-        
-      </div>
-    </footer>
-
-    
-      <div class="back-to-top">
-        <i class="fa fa-arrow-up"></i>
-        
-      </div>
-    
-
-    
-
-    
-
-    
-  </div>
-
-  
+    <div class="comments" id="gitalk-container"></div>
 
 <script>
-  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
-    window.Promise = null;
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
   }
 </script>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        </div>
+          
   
-  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
 
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Xavier-由来"><span class="nav-number">1.</span> <span class="nav-text">Xavier 由来</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Xavier-推导"><span class="nav-number">2.</span> <span class="nav-text">Xavier 推导</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Xavier-变体"><span class="nav-number">3.</span> <span class="nav-text">Xavier 变体</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Xavier-延伸探讨"><span class="nav-number">4.</span> <span class="nav-text">Xavier 延伸探讨</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考资料"><span class="nav-number">5.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="zjuturtle"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">zjuturtle</p>
+  <div class="site-description" itemprop="description">瞎几把搞的幸运E</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">43</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">47</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/zjuturtle" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;zjuturtle" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:leijinghaog@gmail.com" title="E-Mail → mailto:leijinghaog@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
   
-  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">zjuturtle</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v4.2.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">Theme – <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.7.0
+  </div>
 
-  
-  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
-
-
-  
-
-
-  <script src="/js/utils.js?v=7.1.0"></script>
-
-  <script src="/js/motion.js?v=7.1.0"></script>
-
-
-
-  
-  
-
-
-  <script src="/js/affix.js?v=7.1.0"></script>
-
-  <script src="/js/schemes/pisces.js?v=7.1.0"></script>
+        
 
 
 
 
-  
-  <script src="/js/scrollspy.js?v=7.1.0"></script>
-<script src="/js/post-details.js?v=7.1.0"></script>
 
 
-
-  
-
-
-  <script src="/js/next-boot.js?v=7.1.0"></script>
-
-
-  
-
-  
-
-  
-
-  
-
-
-  
-    
-
-  
-
-<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
-
-
-
-  
-
-<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
-
-
-
-  
-
-<script src="//cdn.jsdelivr.net/npm/js-md5@0/src/md5.min.js"></script>
-
-<script>
-  var gitalk = new Gitalk({
-    clientID: '08e86c9d0536ed791bf9',
-    clientSecret: '0982e8cb7b507eee3022547b44ebc4c4f6f2a944',
-    repo: 'Gitalk',
-    owner: 'AnotherZjuturtle',
-    admin: ['AnotherZjuturtle'],
-    id: md5(window.location.pathname),
-    
-      language: window.navigator.language || window.navigator.userLanguage,
-    
-    distractionFreeMode: 'true'
-  });
-  gitalk.render('gitalk-container');
-</script>
-
-  
-
-
-  
-
-
-
-
-  
-  
   <script>
-    
+  function leancloudSelector(url) {
+    url = encodeURI(url);
+    return document.getElementById(url).querySelector('.leancloud-visitors-count');
+  }
+  if (CONFIG.page.isPost) {
     function addCount(Counter) {
-      var $visitors = $('.leancloud_visitors');
-      var url = $visitors.attr('id').trim();
-      var title = $visitors.attr('data-flag-title').trim();
+      var visitors = document.querySelector('.leancloud_visitors');
+      var url = decodeURI(visitors.getAttribute('id'));
+      var title = visitors.getAttribute('data-flag-title');
 
-      Counter('get', '/classes/Counter', { where: JSON.stringify({ url }) })
-        .done(function({ results }) {
+      Counter('get', `/classes/Counter?where=${JSON.stringify({ url })}`)
+        .then(response => response.json())
+        .then(({ results }) => {
           if (results.length > 0) {
             var counter = results[0];
-            
-              var $element = $(document.getElementById(url));
-              $element.find('.leancloud-visitors-count').text(counter.time + 1);
-            
-            Counter('put', '/classes/Counter/' + counter.objectId, JSON.stringify({ time: { '__op': 'Increment', 'amount': 1 } }))
-            
-              .fail(function ({ responseJSON }) {
-                console.log('Failed to save Visitor num, with error message: ' + responseJSON.error);
+            Counter('put', '/classes/Counter/' + counter.objectId, { time: { '__op': 'Increment', 'amount': 1 } })
+              .then(response => response.json())
+              .then(() => {
+                leancloudSelector(url).innerText = counter.time + 1;
+              })
+              .catch(error => {
+                console.error('Failed to save visitor count', error);
               })
           } else {
-            
-              var $element = $(document.getElementById(url));
-              $element.find('.leancloud-visitors-count').text('Counter not initialized! More info at console err msg.');
+              leancloudSelector(url).innerText = 'Counter not initialized! More info at console err msg.';
               console.error('ATTENTION! LeanCloud counter has security bug, see how to solve it here: https://github.com/theme-next/hexo-leancloud-counter-security. \n However, you can still use LeanCloud without security, by setting `security` option to `false`.');
             
           }
         })
-        .fail(function ({ responseJSON }) {
-          console.log('LeanCloud Counter Error: ' + responseJSON.code + ' ' + responseJSON.error);
+        .catch(error => {
+          console.error('LeanCloud Counter Error', error);
         });
     }
-    
+  } else {
+    function showTime(Counter) {
+      var visitors = document.querySelectorAll('.leancloud_visitors');
+      var entries = [...visitors].map(element => {
+        return decodeURI(element.getAttribute('id'));
+      });
 
-    $(function() {
-      $.get('https://app-router.leancloud.cn/2/route?appId=' + 'WPxUE6YkPBut4XJcmskHhlvL-gzGzoHsz')
-        .done(function({ api_server }) {
-          var Counter = function(method, url, data) {
-            return $.ajax({
-              method: method,
-              url: 'https://' + api_server + '/1.1' + url,
-              headers: {
-                'X-LC-Id': 'WPxUE6YkPBut4XJcmskHhlvL-gzGzoHsz',
-                'X-LC-Key': 'oCVD6rCmlv3Nx4jcOX0UiWNW',
-                'Content-Type': 'application/json',
-              },
-              data: data
+      Counter('get', `/classes/Counter?where=${JSON.stringify({ url: { '$in': entries } })}`)
+        .then(response => response.json())
+        .then(({ results }) => {
+          if (results.length === 0) {
+            document.querySelectorAll('.leancloud_visitors .leancloud-visitors-count').forEach(element => {
+              element.innerText = 0;
             });
-          };
-          
-            addCount(Counter);
-          
+            return;
+          }
+          for (let item of results) {
+            let { url, time } = item;
+            leancloudSelector(url).innerText = time;
+          }
+          for (let url of entries) {
+            var element = leancloudSelector(url);
+            if (element.innerText == '') {
+              element.innerText = 0;
+            }
+          }
+        })
+        .catch(error => {
+          console.error('LeanCloud Counter Error', error);
         });
+    }
+  }
+
+  fetch('https://app-router.leancloud.cn/2/route?appId=WPxUE6YkPBut4XJcmskHhlvL-gzGzoHsz')
+    .then(response => response.json())
+    .then(({ api_server }) => {
+      var Counter = (method, url, data) => {
+        return fetch(`https://${api_server}/1.1${url}`, {
+          method: method,
+          headers: {
+            'X-LC-Id': 'WPxUE6YkPBut4XJcmskHhlvL-gzGzoHsz',
+            'X-LC-Key': 'oCVD6rCmlv3Nx4jcOX0UiWNW',
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data)
+        });
+      };
+      if (CONFIG.page.isPost) {
+        if (CONFIG.hostname !== location.hostname) return;
+        addCount(Counter);
+      } else if (document.querySelectorAll('.post-title-link').length >= 1) {
+        showTime(Counter);
+      }
     });
   </script>
 
 
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   
 
   
-  
-
-  
-  
-
-  
-    
-      <script type="text/x-mathjax-config">
-  
+      
+<script type="text/x-mathjax-config">
 
   MathJax.Hub.Config({
     tex2jax: {
@@ -1042,68 +561,66 @@
       skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
     },
     TeX: {
-      
       equationNumbers: {
         autoNumber: 'AMS'
       }
     }
   });
+
   MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
     MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
       if (data.display) {
         var next = data.script.nextSibling;
-        while (next && next.nodeName.toLowerCase() === '#text') { next = next.nextSibling }
-        if (next && next.nodeName.toLowerCase() === 'br') { next.parentNode.removeChild(next) }
+        while (next && next.nodeName.toLowerCase() === '#text') {
+          next = next.nextSibling;
+        }
+        if (next && next.nodeName.toLowerCase() === 'br') {
+          next.parentNode.removeChild(next);
+        }
       }
     });
   });
-</script>
 
-<script type="text/x-mathjax-config">
   MathJax.Hub.Queue(function() {
     var all = MathJax.Hub.getAllJax(), i;
     for (i = 0; i < all.length; i += 1) {
-      document.getElementById(all[i].inputID + '-Frame').parentNode.className += ' has-jax';
+      element = document.getElementById(all[i].inputID + '-Frame').parentNode;
+      if (element.nodeName.toLowerCase() == 'li') {
+        element = element.parentNode;
+      }
+      element.classList.add('has-jax');
     }
   });
 </script>
-<script src="//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML', () => {
+    MathJax.Hub.Typeset();
+  }, window.MathJax);
+</script>
 
     
-  
-
 
   
 
-  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
 
-  
-  <script>
-    (function(){
-      var bp = document.createElement('script');
-      var curProtocol = window.location.protocol.split(':')[0];
-      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
-      var s = document.getElementsByTagName("script")[0];
-      s.parentNode.insertBefore(bp, s);
-    })();
-  </script>
-
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID: '08e86c9d0536ed791bf9',
+      clientSecret: '0982e8cb7b507eee3022547b44ebc4c4f6f2a944',
+      repo: 'Gitalk',
+      owner: 'AnotherZjuturtle',
+      admin: ['AnotherZjuturtle'],
+      id: '3482b4e982e3a9d7ac08688529673cf6',
+        language: 'zh-CN',
+      distractionFreeMode: true
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
 
 </body>
 </html>

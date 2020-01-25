@@ -1,127 +1,72 @@
 <!DOCTYPE html>
-
-
-
-
-
-
-
-
-
-
-
-
-  
-
-
-<html class="theme-next gemini use-motion" lang="zh-Hans">
-<head><meta name="generator" content="Hexo 3.9.0">
+<html lang="zh-Hans">
+<head>
   <meta charset="UTF-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico">
+  <link rel="mask-icon" href="/images/favicon.ico" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
 
 
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
-
-<link rel="stylesheet" href="/css/main.css?v=7.1.0">
-
-
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.ico?v=7.1.0">
-
-
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=7.1.0">
-
-
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico?v=7.1.0">
-
-
-  <link rel="mask-icon" href="/images/favicon.ico?v=7.1.0" color="#222">
-
-
-
-
-
-
-
-<script id="hexo.configurations">
+<script id="hexo-configurations">
   var NexT = window.NexT || {};
   var CONFIG = {
+    hostname: new URL('http://zjuturtle.com').hostname,
     root: '/',
     scheme: 'Gemini',
-    version: '7.1.0',
-    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
-    back2top: true,
-    back2top_sidebar: false,
+    version: '7.7.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
     fancybox: false,
-    fastclick: false,
+    mediumzoom: false,
     lazyload: false,
-    tabs: true,
-    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},
     algolia: {
-      applicationID: '',
+      appID: '',
       apiKey: '',
       indexName: '',
       hits: {"per_page":10},
       labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
-    }
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
   };
 </script>
 
-
-  
-
-
-
-
   <meta name="description" content="今天让我来谈谈RSA非对称加密算法的具体实现和原理。其实绝大多数的博客上都谈了很多RSA算法的应用，主要是数字签名和SSL相关的。但其实很少有人深入原理去探讨阐述，最多就说明一下因为大质数分解很难所以可以认为RSA是安全的。花了一整天时间弄懂RSA后，我终于明白为什么很少有博客深入原理探讨了，因为这太特么烦了，需要的前置数学知识还挺多，大部分都是码农所不了解的。">
-<meta name="keywords" content="encryption">
 <meta property="og:type" content="article">
 <meta property="og:title" content="RSA非对称加密算法">
-<meta property="og:url" content="https://zjuturtle.com/2017/03/15/rsa/index.html">
+<meta property="og:url" content="http://zjuturtle.com/2017/03/15/rsa/index.html">
 <meta property="og:site_name" content="zjuturtle&#39;s blog">
 <meta property="og:description" content="今天让我来谈谈RSA非对称加密算法的具体实现和原理。其实绝大多数的博客上都谈了很多RSA算法的应用，主要是数字签名和SSL相关的。但其实很少有人深入原理去探讨阐述，最多就说明一下因为大质数分解很难所以可以认为RSA是安全的。花了一整天时间弄懂RSA后，我终于明白为什么很少有博客深入原理探讨了，因为这太特么烦了，需要的前置数学知识还挺多，大部分都是码农所不了解的。">
-<meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-06-20T09:08:59.933Z">
+<meta property="article:published_time" content="2017-03-15T08:42:29.000Z">
+<meta property="article:modified_time" content="2018-06-20T09:08:59.933Z">
+<meta property="article:author" content="zjuturtle">
+<meta property="article:tag" content="encryption">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="RSA非对称加密算法">
-<meta name="twitter:description" content="今天让我来谈谈RSA非对称加密算法的具体实现和原理。其实绝大多数的博客上都谈了很多RSA算法的应用，主要是数字签名和SSL相关的。但其实很少有人深入原理去探讨阐述，最多就说明一下因为大质数分解很难所以可以认为RSA是安全的。花了一整天时间弄懂RSA后，我终于明白为什么很少有博客深入原理探讨了，因为这太特么烦了，需要的前置数学知识还挺多，大部分都是码农所不了解的。">
+
+<link rel="canonical" href="http://zjuturtle.com/2017/03/15/rsa/">
 
 
-
-
-
-  
-  
-  <link rel="canonical" href="https://zjuturtle.com/2017/03/15/rsa/">
-
-
-
-<script id="page.configurations">
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
   CONFIG.page = {
     sidebar: "",
+    isHome: false,
+    isPost: true
   };
 </script>
 
@@ -133,15 +78,8 @@
 
 
 
-
-
-
-
-
-
   <noscript>
   <style>
-  .use-motion .motion-element,
   .use-motion .brand,
   .use-motion .menu-item,
   .sidebar-inner,
@@ -150,9 +88,8 @@
   .use-motion .comments,
   .use-motion .post-header,
   .use-motion .post-body,
-  .use-motion .collection-title { opacity: initial; }
+  .use-motion .collection-header { opacity: initial; }
 
-  .use-motion .logo,
   .use-motion .site-title,
   .use-motion .site-subtitle {
     opacity: initial;
@@ -166,243 +103,127 @@
 
 </head>
 
-<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
-
-  
-  
-    
-  
-
-  <div class="container sidebar-position-left page-post-detail">
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
     <div class="headband"></div>
 
-    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
-      <div class="header-inner"><div class="site-brand-wrapper">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
   <div class="site-meta">
-    
 
-    <div class="custom-logo-site-title">
+    <div>
       <a href="/" class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
         <span class="site-title">zjuturtle's blog</span>
         <span class="logo-line-after"><i></i></span>
       </a>
     </div>
-    
-    
   </div>
 
   <div class="site-nav-toggle">
-    <button aria-label="Toggle navigation bar">
-      <span class="btn-bar"></span>
-      <span class="btn-bar"></span>
-      <span class="btn-bar"></span>
-    </button>
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
   </div>
 </div>
-
 
 
 <nav class="site-nav">
   
-    <ul id="menu" class="menu">
-      
-        
-        
-        
-          
-          <li class="menu-item menu-item-home">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
 
-    
-    
-    
-      
-    
-
-    
-
-    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>Home</a>
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
 
   </li>
-        
-        
-        
-          
-          <li class="menu-item menu-item-archives">
+        <li class="menu-item menu-item-archives">
 
-    
-    
-    
-      
-    
-
-    
-
-    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>Archives</a>
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
 
   </li>
+  </ul>
 
-      
-      
-    </ul>
-  
-
-  
-
-  
 </nav>
-
-
-
-  
-
-
-
 </div>
     </header>
 
     
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
 
 
-    <main id="main" class="main">
+    <main class="main">
       <div class="main-inner">
         <div class="content-wrap">
           
+
+          <div class="content">
             
 
-          
-          <div id="content" class="content">
-            
-
-  <div id="posts" class="posts-expand">
-    
-
-  
-
+  <div class="posts-expand">
+      
   
   
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://zjuturtle.com/2017/03/15/rsa/">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://zjuturtle.com/2017/03/15/rsa/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
       <meta itemprop="name" content="zjuturtle">
       <meta itemprop="description" content="瞎几把搞的幸运E">
-      <meta itemprop="image" content="/images/avatar.png">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
       <meta itemprop="name" content="zjuturtle's blog">
     </span>
-
-    
       <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">RSA非对称加密算法
-
-              
-            
-          </h2>
-        
+        <h1 class="post-title" itemprop="name headline">
+          RSA非对称加密算法
+        </h1>
 
         <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
+            <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-calendar-o"></i>
               </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-
-              
-                
-              
+              <span class="post-meta-item-text">Posted on</span>
 
               <time title="Created: 2017-03-15 16:42:29" itemprop="dateCreated datePublished" datetime="2017-03-15T16:42:29+08:00">2017-03-15</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
+            </span>
+              <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
-                
-                  <span class="post-meta-item-text">Edited on</span>
-                
+                <span class="post-meta-item-text">Edited on</span>
                 <time title="Modified: 2018-06-20 17:08:59" itemprop="dateModified" datetime="2018-06-20T17:08:59+08:00">2018-06-20</time>
-              
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
+              </span>
+            <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
               </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Algorithm/" itemprop="url" rel="index"><span itemprop="name">Algorithm</span></a></span>
-
-                
-                
-              
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Algorithm/" itemprop="url" rel="index">
+                    <span itemprop="name">Algorithm</span>
+                  </a>
+                </span>
             </span>
-          
 
           
-            
-            
-          
-
-          
-          
-            <span id="/2017/03/15/rsa/" class="leancloud_visitors" data-flag-title="RSA非对称加密算法">
-              <span class="post-meta-divider">|</span>
+            <span id="/2017/03/15/rsa/" class="post-meta-item leancloud_visitors" data-flag-title="RSA非对称加密算法" title="Views">
               <span class="post-meta-item-icon">
                 <i class="fa fa-eye"></i>
               </span>
-              
-                <span class="post-meta-item-text">Views: </span>
-              
-                <span class="leancloud-visitors-count"></span>
+              <span class="post-meta-item-text">Views: </span>
+              <span class="leancloud-visitors-count"></span>
             </span>
-          
-
-          
-
-          
-
-          
 
         </div>
       </header>
-    
 
     
     
@@ -410,689 +231,382 @@
     <div class="post-body" itemprop="articleBody">
 
       
-      
-
-      
         <p>今天让我来谈谈RSA非对称加密算法的具体实现和原理。其实绝大多数的博客上都谈了很多RSA算法的应用，主要是数字签名和SSL相关的。但其实很少有人深入原理去探讨阐述，最多就说明一下因为大质数分解很难所以可以认为RSA是安全的。花了一整天时间弄懂RSA后，我终于明白为什么很少有博客深入原理探讨了，因为这太特么烦了，需要的前置数学知识还挺多，大部分都是码农所不了解的。</p>
 <a id="more"></a>
-<h2 id="rsa算法历史">RSA算法历史</h2>
-<p>以下内容来自<a href="https://zh.wikipedia.org/wiki/RSA%E5%8A%A0%E5%AF%86%E6%BC%94%E7%AE%97%E6%B3%95" target="_blank" rel="noopener">维基</a>。感觉麻省好贱，这么好的东西居然要藏着掖着。</p>
+
+<h2 id="RSA算法历史"><a href="#RSA算法历史" class="headerlink" title="RSA算法历史"></a>RSA算法历史</h2><p>以下内容来自<a href="https://zh.wikipedia.org/wiki/RSA%E5%8A%A0%E5%AF%86%E6%BC%94%E7%AE%97%E6%B3%95" target="_blank" rel="noopener">维基</a>。感觉麻省好贱，这么好的东西居然要藏着掖着。</p>
 <blockquote>
-<p>RSA是1977年由罗纳德·李维斯特（Ron Rivest）、阿迪·萨莫尔（Adi Shamir）和伦纳德·阿德曼（Leonard Adleman）一起提出的。当时他们三人都在麻省理工学院工作。RSA就是他们三人姓氏开头字母拼在一起组成的。 1973年，在英国政府通讯总部工作的数学家克利福德·柯克斯（Clifford Cocks）在一个内部文件中提出了一个相同的算法，但他的发现被列入机密，一直到1997年才被发表。 对极大整数做因数分解的难度决定了RSA算法的可靠性。换言之，对一极大整数做因数分解愈困难，RSA算法愈可靠。假如有人找到一种快速因数分解的算法的话，那么用RSA加密的信息的可靠性就肯定会极度下降。但找到这样的算法的可能性是非常小的。今天只有短的RSA钥匙才可能被强力方式解破。到目前为止，世界上还没有任何可靠的攻击RSA算法的方式。只要其钥匙的长度足够长，用RSA加密的信息实际上是不能被解破的。 1983年麻省理工学院在美国为RSA算法申请了专利。这个专利2000年9月21日失效。由于该算法在申请专利前就已经被发表了，在世界上大多数其它地区这个专利权不被承认。</p>
+<p>RSA是1977年由罗纳德·李维斯特（Ron Rivest）、阿迪·萨莫尔（Adi Shamir）和伦纳德·阿德曼（Leonard Adleman）一起提出的。当时他们三人都在麻省理工学院工作。RSA就是他们三人姓氏开头字母拼在一起组成的。<br>1973年，在英国政府通讯总部工作的数学家克利福德·柯克斯（Clifford Cocks）在一个内部文件中提出了一个相同的算法，但他的发现被列入机密，一直到1997年才被发表。<br>对极大整数做因数分解的难度决定了RSA算法的可靠性。换言之，对一极大整数做因数分解愈困难，RSA算法愈可靠。假如有人找到一种快速因数分解的算法的话，那么用RSA加密的信息的可靠性就肯定会极度下降。但找到这样的算法的可能性是非常小的。今天只有短的RSA钥匙才可能被强力方式解破。到目前为止，世界上还没有任何可靠的攻击RSA算法的方式。只要其钥匙的长度足够长，用RSA加密的信息实际上是不能被解破的。<br>1983年麻省理工学院在美国为RSA算法申请了专利。这个专利2000年9月21日失效。由于该算法在申请专利前就已经被发表了，在世界上大多数其它地区这个专利权不被承认。</p>
 </blockquote>
-<h2 id="前置知识">前置知识</h2>
-<h3 id="totient-function">totient function</h3>
-<p>这里引入一个totient function（怎么这么像厕所函数）<span class="math inline">\(\phi (n)\)</span></p>
-<p>这又特么叫欧拉函数（所以欧拉函数在这个世界上到底有多少个啊？）。根据<a href="http://mathworld.wolfram.com/TotientFunction.html" target="_blank" rel="noopener">wolfram</a>上的定义，它定义了与正整数<span class="math inline">\(n\)</span>互质且<span class="math inline">\(\leq n\)</span>的正整数个数。而显然1与所有的正整数互质。举个栗子来说<span class="math inline">\(\phi (24)=8\)</span>，因为与24互质的有1、5、7、11、13、17、19、23</p>
-<h3 id="congruence">Congruence</h3>
-<p>另引入一个Congruence同余的概念，见<a href="http://mathworld.wolfram.com/Congruence.html" target="_blank" rel="noopener">wolfram</a></p>
-<p>如果两个数字<span class="math inline">\(b\)</span>和<span class="math inline">\(c\)</span>有如下特性：<span class="math inline">\(b-c\)</span>可以被<span class="math inline">\(m\)</span>整除，那么就可以说<span class="math inline">\(b\)</span>和<span class="math inline">\(c\)</span>模<span class="math inline">\(m\)</span>同余（<span class="math inline">\(b\)</span> and <span class="math inline">\(c\)</span> are said to be "congruent modulo <span class="math inline">\(m\)</span>."），记为</p>
-<p><span class="math display">\[b \equiv c(mod \ m)\]</span></p>
+<h2 id="前置知识"><a href="#前置知识" class="headerlink" title="前置知识"></a>前置知识</h2><h3 id="totient-function"><a href="#totient-function" class="headerlink" title="totient function"></a>totient function</h3><p>这里引入一个totient function（怎么这么像厕所函数）$\phi (n)$</p>
+<p>这又特么叫欧拉函数（所以欧拉函数在这个世界上到底有多少个啊？）。根据<a href="http://mathworld.wolfram.com/TotientFunction.html" target="_blank" rel="noopener">wolfram</a>上的定义，它定义了与正整数$n$互质且$\leq n$的正整数个数。而显然1与所有的正整数互质。举个栗子来说$\phi (24)=8$，因为与24互质的有1、5、7、11、13、17、19、23</p>
+<h3 id="Congruence"><a href="#Congruence" class="headerlink" title="Congruence"></a>Congruence</h3><p>另引入一个Congruence同余的概念，见<a href="http://mathworld.wolfram.com/Congruence.html" target="_blank" rel="noopener">wolfram</a></p>
+<p>如果两个数字$b$和$c$有如下特性：$b-c$可以被$m$整除，那么就可以说$b$和$c$模$m$同余（$b$ and $c$ are said to be “congruent modulo $m$.”），记为</p>
+<p>$$b \equiv c(mod \ m)$$</p>
 <p>关于Congruence，有一个性质接下来会使用到</p>
-<p><span class="math display">\[a \equiv b(mod \ m) \ AND \ c \equiv d(mod \ m) \Rightarrow ac \equiv bd(mod \ m)\]</span></p>
+<p>$$a \equiv b(mod \ m) \ AND \ c \equiv d(mod \ m) \Rightarrow ac \equiv bd(mod \ m)$$</p>
 <p>简单证明一下，根据Congruence的性质，可以有</p>
-<p><span class="math display">\[a - k_1m = b - k_2m \\ c - k_3m = d - k_4m\]</span></p>
-<p>其中<span class="math inline">\(k_1,k_2,k_3,k_4\)</span>均为整数</p>
+<p>$$a - k_1m = b - k_2m \ c - k_3m = d - k_4m$$</p>
+<p>其中$k_1,k_2,k_3,k_4$均为整数</p>
 <p>则二者相乘得</p>
-<p><span class="math display">\[(a - k_1m)(c- k_3m)=(b-k_2m)(d-k_4m) \\ ac - m(...)=bd-m(...)\]</span></p>
+<p>$$(a - k_1m)(c- k_3m)=(b-k_2m)(d-k_4m) \ ac - m(…)=bd-m(…)$$</p>
 <p>得证。</p>
-<h3 id="eulers-theorem">Euler's theorem</h3>
-<p>在数论中，欧拉定理，也称费马-欧拉定理（又特么是欧拉），见<a href="https://zh.wikipedia.org/wiki/%E6%AC%A7%E6%8B%89%E5%AE%9A%E7%90%86_(%E6%95%B0%E8%AE%BA)" target="_blank" rel="noopener">wiki</a>，描述如下：</p>
-<p>若<span class="math inline">\(n\)</span>和<span class="math inline">\(a\)</span>为正整数，且<span class="math inline">\(n\)</span>、<span class="math inline">\(a\)</span>互素，则有</p>
-<p><span class="math display">\[a^{\phi(n)} \equiv 1 (mod \ n)\]</span></p>
+<h3 id="Euler’s-theorem"><a href="#Euler’s-theorem" class="headerlink" title="Euler’s theorem"></a>Euler’s theorem</h3><p>在数论中，欧拉定理，也称费马-欧拉定理（又特么是欧拉），见<a href="https://zh.wikipedia.org/wiki/%E6%AC%A7%E6%8B%89%E5%AE%9A%E7%90%86_(%E6%95%B0%E8%AE%BA)" target="_blank" rel="noopener">wiki</a>，描述如下：</p>
+<p>若$n$和$a$为正整数，且$n$、$a$互素，则有</p>
+<p>$$a^{\phi(n)} \equiv 1 (mod \ n)$$</p>
 <p>它实际上是<a href="https://zh.wikipedia.org/wiki/%E8%B4%B9%E9%A9%AC%E5%B0%8F%E5%AE%9A%E7%90%86" target="_blank" rel="noopener">费马小定理</a>的推广。</p>
 <p>不过这个定理的证明看得我云里雾里。尝试理（chao）解（xie）一下：</p>
-<p>首先，我们需要“所有与<span class="math inline">\(n\)</span>互质的同余类构成一个乘法群”这个性质。哦在这停顿，解释一下<a href="https://zh.wikipedia.org/wiki/%E5%90%8C%E9%A4%98" target="_blank" rel="noopener">同余类</a>和<a href="https://zh.wikipedia.org/wiki/%E7%BE%A4" target="_blank" rel="noopener">群</a>的概念。</p>
+<p>首先，我们需要“所有与$n$互质的同余类构成一个乘法群”这个性质。哦在这停顿，解释一下<a href="https://zh.wikipedia.org/wiki/%E5%90%8C%E9%A4%98" target="_blank" rel="noopener">同余类</a>和<a href="https://zh.wikipedia.org/wiki/%E7%BE%A4" target="_blank" rel="noopener">群</a>的概念。</p>
 <blockquote>
 <p>同余类</p>
 </blockquote>
 <blockquote>
-<p>如同任何同余关系，对于模<span class="math inline">\(n\)</span>同余是一种等价关系，整数<span class="math inline">\(a\)</span>的等价类是一个集合<span class="math inline">\(\{...,a-2n,a-n,a,a+n,a+2n,...\}\)</span>，标记为<span class="math inline">\(\overline{a_n}\)</span>。由对于模<span class="math inline">\(n\)</span>同余的所有整数组成的这个集合称为同余类</p>
+<p>如同任何同余关系，对于模$n$同余是一种等价关系，整数$a$的等价类是一个集合${…,a-2n,a-n,a,a+n,a+2n,…}$，标记为$\overline{a_n}$。由对于模$n$同余的所有整数组成的这个集合称为同余类</p>
 </blockquote>
 <blockquote>
 <p>群</p>
 </blockquote>
 <blockquote>
-<p>群是一个集合<span class="math inline">\(G\)</span>，连同一个运算"<span class="math inline">\(·\)</span>"，它结合任何两个元素<span class="math inline">\(a\)</span>和<span class="math inline">\(b\)</span>而形成另一个元素，记为<span class="math inline">\(a·b\)</span>，且满足如下性质：</p>
+<p>群是一个集合$G$，连同一个运算”$·$”，它结合任何两个元素$a$和$b$而形成另一个元素，记为$a·b$，且满足如下性质：</p>
 </blockquote>
 <blockquote>
 <ul>
-<li>封闭性:对于所有<span class="math inline">\(G\)</span>中<span class="math inline">\(a\)</span>, <span class="math inline">\(b\)</span>，运算<span class="math inline">\(a·b\)</span>的结果也在<span class="math inline">\(G\)</span>中</li>
-<li>结合性:对于所有<span class="math inline">\(G\)</span>中的<span class="math inline">\(a\)</span>, <span class="math inline">\(b\)</span>和<span class="math inline">\(c\)</span>，等式 <span class="math inline">\((a·b)·c = a· (b·c)\)</span>成立</li>
-<li>单位元:存在<span class="math inline">\(G\)</span>中的一个元素<span class="math inline">\(e\)</span>，使得对于所有<span class="math inline">\(G\)</span>中的元素<span class="math inline">\(a\)</span>，等式<span class="math inline">\(e·a = a·e = a\)</span>成立</li>
-<li>逆元: 对于每个<span class="math inline">\(G\)</span>中的<span class="math inline">\(a\)</span>，存在<span class="math inline">\(G\)</span>中的一个元素<span class="math inline">\(b\)</span>使得<span class="math inline">\(a·b = b·a = e\)</span>，这里的<span class="math inline">\(e\)</span>是单位元</li>
+<li>封闭性:对于所有$G$中$a$, $b$，运算$a·b$的结果也在$G$中</li>
+<li>结合性:对于所有$G$中的$a$, $b$和$c$，等式 $(a·b)·c = a· (b·c)$成立</li>
+<li>单位元:存在$G$中的一个元素$e$，使得对于所有$G$中的元素$a$，等式$e·a = a·e = a$成立</li>
+<li>逆元:  对于每个$G$中的$a$，存在$G$中的一个元素$b$使得$a·b = b·a = e$，这里的$e$是单位元</li>
 </ul>
 </blockquote>
-<p>也就是说，设<span class="math inline">\(\{ \overline{a_1}, \overline{a_2},...,\overline{a_{\phi(n)}} \}\)</span>是比<span class="math inline">\(n\)</span>小的正整数中所有与<span class="math inline">\(n\)</span>互质的数对应的同余类组成的集合（这个集合也称为模<span class="math inline">\(n\)</span>的简化剩余系）。这些同余类构成一个群，称为整数模<span class="math inline">\(n\)</span>触发群。所以当对这些数进行变换<span class="math inline">\(\overline{a_i} \rightarrow \overline{a \cdot a_i} = \overline{a} \cdot \overline{a_i}\)</span>时（<span class="math inline">\(a\)</span>是和<span class="math inline">\(n\)</span>互质的一个数，从而也属于某个同余类），变换所得的同余类集合仍然是原来的<span class="math inline">\(\overline{a_1}, \overline{a_2},...,\overline{a_{\phi(n)}}\)</span>。即，集合<span class="math inline">\(\{ \overline{a_1}, \overline{a_2},...,\overline{a_{\phi(n)}} \}\)</span>和<span class="math inline">\(\{ \overline{aa_1}, \overline{aa_2},...,\overline{aa_{\phi(n)}} \}\)</span>相同。</p>
-<p>因此，<span class="math inline">\(a^{\phi(n)}a_1a_2\cdots a_{\phi(n)} \equiv (aa_1)(aa_2) \cdots (aa_{\phi(n)}) \equiv a_1a_2 \cdots a_{\phi(n)} \ (mod \ n)\)</span></p>
-<p>从而<span class="math inline">\(a^{\phi(n)} \equiv 1 \ (mod \ n)\)</span></p>
+<p>也就是说，设${ \overline{a_1}, \overline{a_2},…,\overline{a_{\phi(n)}} }$是比$n$小的正整数中所有与$n$互质的数对应的同余类组成的集合（这个集合也称为模$n$的简化剩余系）。这些同余类构成一个群，称为整数模$n$触发群。所以当对这些数进行变换$\overline{a_i} \rightarrow \overline{a \cdot a_i} = \overline{a} \cdot \overline{a_i}$时（$a$是和$n$互质的一个数，从而也属于某个同余类），变换所得的同余类集合仍然是原来的$\overline{a_1}, \overline{a_2},…,\overline{a_{\phi(n)}}$。即，集合${ \overline{a_1}, \overline{a_2},…,\overline{a_{\phi(n)}} }$和${ \overline{aa_1}, \overline{aa_2},…,\overline{aa_{\phi(n)}} }$相同。</p>
+<p>因此，$a^{\phi(n)}a_1a_2\cdots a_{\phi(n)} \equiv (aa_1)(aa_2) \cdots (aa_{\phi(n)}) \equiv a_1a_2 \cdots a_{\phi(n)} \ (mod \ n)$</p>
+<p>从而$a^{\phi(n)} \equiv 1 \ (mod \ n)$</p>
 <p>（好吧我承认我毛都没看懂）</p>
-<h2 id="rsa算法步骤">RSA算法步骤</h2>
-<h3 id="step-1">Step 1</h3>
-<p>首先需要选择两个足够大的质数<span class="math inline">\(p\)</span>和<span class="math inline">\(q\)</span>，并将它们的乘积记为<span class="math inline">\(n\)</span></p>
-<p><span class="math display">\[n \equiv pq \\ (e,\phi(n))=1\]</span></p>
-<p>其中<span class="math inline">\((e,\phi(n))\)</span>指最大公约数，因此<span class="math inline">\((e,\phi(n))=1\)</span>指的是<span class="math inline">\(e\)</span>和<span class="math inline">\(\phi(n)\)</span>互质</p>
-<p>然后定义私钥<span class="math inline">\(d\)</span>和公钥<span class="math inline">\(e\)</span>使得</p>
-<p><span class="math display">\[d \ e \equiv 1(mod \ \phi(n))\]</span></p>
+<h2 id="RSA算法步骤"><a href="#RSA算法步骤" class="headerlink" title="RSA算法步骤"></a>RSA算法步骤</h2><h3 id="Step-1"><a href="#Step-1" class="headerlink" title="Step 1"></a>Step 1</h3><p>首先需要选择两个足够大的质数$p$和$q$，并将它们的乘积记为$n$</p>
+<p>$$n \equiv pq \ (e,\phi(n))=1$$</p>
+<p>其中$(e,\phi(n))$指最大公约数，因此$(e,\phi(n))=1$指的是$e$和$\phi(n)$互质</p>
+<p>然后定义私钥$d$和公钥$e$使得</p>
+<p>$$d \ e \equiv 1(mod \ \phi(n))$$</p>
 <p>根据totient function的性质，可以有</p>
-<p><span class="math display">\[\phi(n)=(p-1)(q-1)\]</span></p>
-<p>因此公钥即为<span class="math inline">\((e,n)\)</span>，私钥即为<span class="math inline">\((d,n)\)</span></p>
+<p>$$\phi(n)=(p-1)(q-1)$$</p>
+<p>因此公钥即为$(e,n)$，私钥即为$(d,n)$</p>
 <hr>
-<h3 id="step-2">Step 2</h3>
-<p>设需要加密的信息为数字<span class="math inline">\(M\)</span>，那么加密方使用公钥<span class="math inline">\(e\)</span>和<span class="math inline">\(n\)</span>进行加密</p>
-<p><span class="math display">\[E=M^e(mod \ n)\]</span></p>
-<p>解密使用私钥<span class="math inline">\(d\)</span>解密，注意这里使用了欧拉定理</p>
-<p><span class="math display">\[E^d \equiv (M^e)^d (mod \ n)\equiv M^{ed} (mod \ n)\equiv M^{N \phi(n)+1} (mod \ n) \\ \equiv [M \cdot {(M^{\phi(n)})}^N](mod \ n)   \equiv [M \cdot 1(mod \ n)](mod \ n) \equiv M(mod \ n) \]</span></p>
+<h3 id="Step-2"><a href="#Step-2" class="headerlink" title="Step 2"></a>Step 2</h3><p>设需要加密的信息为数字$M$，那么加密方使用公钥$e$和$n$进行加密</p>
+<p>$$E=M^e(mod \ n)$$</p>
+<p>解密使用私钥$d$解密，注意这里使用了欧拉定理</p>
+<p>$$E^d \equiv (M^e)^d (mod \ n)\equiv M^{ed} (mod \ n)\equiv M^{N \phi(n)+1} (mod \ n) \ \equiv [M \cdot {(M^{\phi(n)})}^N](mod \ n)   \equiv [M \cdot 1(mod \ n)](mod \ n) \equiv M(mod \ n) $$</p>
 <hr>
-<h3 id="step-3">Step 3</h3>
-<p>可以注意到，如果需要破解得到消息，则可以通过得到<span class="math inline">\(d\)</span>。最直接的方法就是对<span class="math inline">\(n\)</span>进行因式分解。显然这很困难。不过，这里有一些比较坑爹的事实：</p>
+<h3 id="Step-3"><a href="#Step-3" class="headerlink" title="Step 3"></a>Step 3</h3><p>可以注意到，如果需要破解得到消息，则可以通过得到$d$。最直接的方法就是对$n$进行因式分解。显然这很困难。不过，这里有一些比较坑爹的事实：</p>
 <ul>
 <li>至今为止还没有人找到一个多项式时间的算法来分解一个大的整数的因子，同时也还没有人能够证明这种算法不存在</li>
-<li>至今为止也没有人能够证明对<span class="math inline">\(n\)</span>进行因数分解是唯一的从<span class="math inline">\(E\)</span>导出<span class="math inline">\(M\)</span>的方法，但今天还没有找到比它更简单的方法。（至少没有公开的方法。）</li>
+<li>至今为止也没有人能够证明对$n$进行因数分解是唯一的从$E$导出$M$的方法，但今天还没有找到比它更简单的方法。（至少没有公开的方法。）</li>
 </ul>
 <p>也就是说，虽然RSA真的很屌，但它还是没有被证明确实是unfuckable的。这不禁让我想起一个又一个被日穿的摘要算法。。。</p>
 <hr>
-<h3 id="step-4">Step 4</h3>
-<p>实际上在真正的RSA算法实现中，因为码农和数学家之间的巨大鸿沟（欧拉大爷们求你不要再吊打我的智商了），有特别多的坑。关于这一点，已经有人在吐槽这帮傻比码农了，见<a href="https://zhuanlan.zhihu.com/p/20354745" target="_blank" rel="noopener">知乎专栏</a>。</p>
+<h3 id="Step-4"><a href="#Step-4" class="headerlink" title="Step 4"></a>Step 4</h3><p>实际上在真正的RSA算法实现中，因为码农和数学家之间的巨大鸿沟（欧拉大爷们求你不要再吊打我的智商了），有特别多的坑。关于这一点，已经有人在吐槽这帮傻比码农了，见<a href="https://zhuanlan.zhihu.com/p/20354745" target="_blank" rel="noopener">知乎专栏</a>。</p>
 <p>除开知乎专栏外，wolfram也提到了一些需要注意的地方：</p>
-<p><span class="math inline">\(p\)</span>和<span class="math inline">\(q\)</span>的挑选必须小心，保证<span class="math inline">\(p \pm 1\)</span>和<span class="math inline">\(q \pm 1\)</span>能被大质数整除，否则容易被<a href="http://mathworld.wolfram.com/Pollardp-1FactorizationMethod.html" target="_blank" rel="noopener">Pollard p-1 factorization method</a>和<a href="http://mathworld.wolfram.com/WilliamspPlus1FactorizationMethod.html" target="_blank" rel="noopener">Williams p+1 factorization method</a>因式分解出<span class="math inline">\(n\)</span>导致被日。同时<span class="math inline">\(\phi(\phi(pq))\)</span>也必须够大且能够被大质数整除（wolfram没说为啥）</p>
+<p>$p$和$q$的挑选必须小心，保证$p \pm 1$和$q \pm 1$能被大质数整除，否则容易被<a href="http://mathworld.wolfram.com/Pollardp-1FactorizationMethod.html" target="_blank" rel="noopener">Pollard p-1 factorization method</a>和<a href="http://mathworld.wolfram.com/WilliamspPlus1FactorizationMethod.html" target="_blank" rel="noopener">Williams p+1 factorization method</a>因式分解出$n$导致被日。同时$\phi(\phi(pq))$也必须够大且能够被大质数整除（wolfram没说为啥）</p>
 <p>wolfram上还提到了需要注意的地方，然而我并没有看懂（所以就不贴了），涉及到群环域的知识。</p>
-<h2 id="总结">总结</h2>
-<p>扒完RSA后，我的感想就是：大规模应用一个理论上尚未证明完备的东西，而且在应用上也花式掉链子，人类真是一种贼胆大的生物。</p>
-<h2 id="参考资料">参考资料</h2>
-<p><a href="http://mathworld.wolfram.com/RSAEncryption.html" target="_blank" rel="noopener">wolfram</a></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>扒完RSA后，我的感想就是：大规模应用一个理论上尚未证明完备的东西，而且在应用上也花式掉链子，人类真是一种贼胆大的生物。</p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p><a href="http://mathworld.wolfram.com/RSAEncryption.html" target="_blank" rel="noopener">wolfram</a></p>
 <p><a href="https://zh.wikipedia.org/wiki/RSA%E5%8A%A0%E5%AF%86%E6%BC%94%E7%AE%97%E6%B3%95" target="_blank" rel="noopener">wiki</a></p>
 <p><a href="https://zhuanlan.zhihu.com/p/20354745" target="_blank" rel="noopener">知乎</a></p>
 
-      
     </div>
 
     
-
-    
-    
-    
-
-    
-
-    
-      
     
     
 
-    
-
-    <footer class="post-footer">
-      
-        <div class="post-tags">
-          
-            <a href="/tags/encryption/" rel="tag"># encryption</a>
-          
-        </div>
-      
-
-      
-      
-      
-
-      
-        <div class="post-nav">
-          <div class="post-nav-next post-nav-item">
-            
-              <a href="/2017/02/09/new_linux/" rel="next" title="Ubuntu的开箱工作">
-                <i class="fa fa-chevron-left"></i> Ubuntu的开箱工作
-              </a>
-            
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/encryption/" rel="tag"># encryption</a>
           </div>
 
-          <span class="post-nav-divider"></span>
+        
 
-          <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/04/13/blog-rebuild/" rel="prev" title="Hexo博客改造记">
-                Hexo博客改造记 <i class="fa fa-chevron-right"></i>
-              </a>
-            
-          </div>
-        </div>
-      
 
-      
-      
-    </footer>
-  </div>
-  
-  
-  
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2017/02/09/new_linux/" rel="prev" title="Ubuntu的开箱工作">
+      <i class="fa fa-chevron-left"></i> Ubuntu的开箱工作
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2017/04/13/blog-rebuild/" rel="next" title="Hexo博客改造记">
+      Hexo博客改造记 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
   </article>
-
+  
+  
+  
 
   </div>
 
 
           </div>
           
-
-  
-    <div class="comments" id="gitalk-container">
-    </div>
-
-  
-
-
-
-        </div>
-        
-          
-  
-  <div class="sidebar-toggle">
-    <div class="sidebar-toggle-line-wrap">
-      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
-    </div>
-  </div>
-
-  <aside id="sidebar" class="sidebar">
-    <div class="sidebar-inner">
-
-      
-
-      
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            Table of Contents
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
-            Overview
-          </li>
-        </ul>
-      
-
-      <div class="site-overview-wrap sidebar-panel">
-        <div class="site-overview">
-          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-            
-              <img class="site-author-image" itemprop="image" src="/images/avatar.png" alt="zjuturtle">
-            
-              <p class="site-author-name" itemprop="name">zjuturtle</p>
-              <div class="site-description motion-element" itemprop="description">瞎几把搞的幸运E</div>
-          </div>
-
-          
-            <nav class="site-state motion-element">
-              
-                <div class="site-state-item site-state-posts">
-                
-                  <a href="/archives/">
-                
-                    <span class="site-state-item-count">37</span>
-                    <span class="site-state-item-name">posts</span>
-                  </a>
-                </div>
-              
-
-              
-                
-                
-                <div class="site-state-item site-state-categories">
-                  
-                    
-                      <a href="/categories/">
-                    
-                  
-                    
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                    <span class="site-state-item-count">5</span>
-                    <span class="site-state-item-name">categories</span>
-                  </a>
-                </div>
-              
-
-              
-                
-                
-                <div class="site-state-item site-state-tags">
-                  
-                    
-                      <a href="/tags/">
-                    
-                  
-                    
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                    <span class="site-state-item-count">39</span>
-                    <span class="site-state-item-name">tags</span>
-                  </a>
-                </div>
-              
-            </nav>
-          
-
-          
-
-          
-
-          
-            <div class="links-of-author motion-element">
-              
-                <span class="links-of-author-item">
-                  
-                  
-                    
-                  
-                  
-                    
-                  
-                  <a href="https://github.com/zjuturtle" title="GitHub &rarr; https://github.com/zjuturtle" rel="noopener" target="_blank"><i class="fa fa-fw fa-globe"></i>GitHub</a>
-                </span>
-              
-                <span class="links-of-author-item">
-                  
-                  
-                    
-                  
-                  
-                    
-                  
-                  <a href="mailto:leijinghaog@gmail.com" title="E-Mail &rarr; mailto:leijinghaog@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
-                </span>
-              
-            </div>
-          
-
-          
-
-          
-          
-
-          
-            
-          
-          
-
-        </div>
-      </div>
-
-      
-      <!--noindex-->
-        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-            
-            
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#rsa算法历史"><span class="nav-number">1.</span> <span class="nav-text">RSA算法历史</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#前置知识"><span class="nav-number">2.</span> <span class="nav-text">前置知识</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#totient-function"><span class="nav-number">2.1.</span> <span class="nav-text">totient function</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#congruence"><span class="nav-number">2.2.</span> <span class="nav-text">Congruence</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#eulers-theorem"><span class="nav-number">2.3.</span> <span class="nav-text">Euler&#39;s theorem</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#rsa算法步骤"><span class="nav-number">3.</span> <span class="nav-text">RSA算法步骤</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#step-1"><span class="nav-number">3.1.</span> <span class="nav-text">Step 1</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#step-2"><span class="nav-number">3.2.</span> <span class="nav-text">Step 2</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#step-3"><span class="nav-number">3.3.</span> <span class="nav-text">Step 3</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#step-4"><span class="nav-number">3.4.</span> <span class="nav-text">Step 4</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">4.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考资料"><span class="nav-number">5.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
-            
-
-          </div>
-        </div>
-      <!--/noindex-->
-      
-
-      
-
-    </div>
-  </aside>
-  
-
-
-        
-      </div>
-    </main>
-
-    <footer id="footer" class="footer">
-      <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
-  <span class="with-love" id="animate">
-    <i class="fa fa-user"></i>
-  </span>
-  <span class="author" itemprop="copyrightHolder">zjuturtle</span>
-
-  
-
-  
-</div>
-
-
-  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> v3.9.0</div>
-
-
-
-  <span class="post-meta-divider">|</span>
-
-
-
-  <div class="theme-info">Theme – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.1.0</div>
-
-
-
-
-        
-
-
-
-
-  <script>
-    (function() {
-      var hm = document.createElement("script");
-      hm.src = "//tajs.qq.com/stats?sId=61683784";
-      var s = document.getElementsByTagName("script")[0];
-      s.parentNode.insertBefore(hm, s);
-    })();
-  </script>
-
-
-
-
-
-        
-      </div>
-    </footer>
-
-    
-      <div class="back-to-top">
-        <i class="fa fa-arrow-up"></i>
-        
-      </div>
-    
-
-    
-
-    
-
-    
-  </div>
-
-  
+    <div class="comments" id="gitalk-container"></div>
 
 <script>
-  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
-    window.Promise = null;
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
   }
 </script>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        </div>
+          
   
-  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
 
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#RSA算法历史"><span class="nav-number">1.</span> <span class="nav-text">RSA算法历史</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#前置知识"><span class="nav-number">2.</span> <span class="nav-text">前置知识</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#totient-function"><span class="nav-number">2.1.</span> <span class="nav-text">totient function</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Congruence"><span class="nav-number">2.2.</span> <span class="nav-text">Congruence</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Euler’s-theorem"><span class="nav-number">2.3.</span> <span class="nav-text">Euler’s theorem</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RSA算法步骤"><span class="nav-number">3.</span> <span class="nav-text">RSA算法步骤</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Step-1"><span class="nav-number">3.1.</span> <span class="nav-text">Step 1</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Step-2"><span class="nav-number">3.2.</span> <span class="nav-text">Step 2</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Step-3"><span class="nav-number">3.3.</span> <span class="nav-text">Step 3</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Step-4"><span class="nav-number">3.4.</span> <span class="nav-text">Step 4</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">4.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考资料"><span class="nav-number">5.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="zjuturtle"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">zjuturtle</p>
+  <div class="site-description" itemprop="description">瞎几把搞的幸运E</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">43</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">47</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/zjuturtle" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;zjuturtle" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:leijinghaog@gmail.com" title="E-Mail → mailto:leijinghaog@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
   
-  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">zjuturtle</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v4.2.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">Theme – <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.7.0
+  </div>
 
-  
-  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
-
-
-  
-
-
-  <script src="/js/utils.js?v=7.1.0"></script>
-
-  <script src="/js/motion.js?v=7.1.0"></script>
-
-
-
-  
-  
-
-
-  <script src="/js/affix.js?v=7.1.0"></script>
-
-  <script src="/js/schemes/pisces.js?v=7.1.0"></script>
+        
 
 
 
 
-  
-  <script src="/js/scrollspy.js?v=7.1.0"></script>
-<script src="/js/post-details.js?v=7.1.0"></script>
 
 
-
-  
-
-
-  <script src="/js/next-boot.js?v=7.1.0"></script>
-
-
-  
-
-  
-
-  
-
-  
-
-
-  
-    
-
-  
-
-<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
-
-
-
-  
-
-<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
-
-
-
-  
-
-<script src="//cdn.jsdelivr.net/npm/js-md5@0/src/md5.min.js"></script>
-
-<script>
-  var gitalk = new Gitalk({
-    clientID: '08e86c9d0536ed791bf9',
-    clientSecret: '0982e8cb7b507eee3022547b44ebc4c4f6f2a944',
-    repo: 'Gitalk',
-    owner: 'AnotherZjuturtle',
-    admin: ['AnotherZjuturtle'],
-    id: md5(window.location.pathname),
-    
-      language: window.navigator.language || window.navigator.userLanguage,
-    
-    distractionFreeMode: 'true'
-  });
-  gitalk.render('gitalk-container');
-</script>
-
-  
-
-
-  
-
-
-
-
-  
-  
   <script>
-    
+  function leancloudSelector(url) {
+    url = encodeURI(url);
+    return document.getElementById(url).querySelector('.leancloud-visitors-count');
+  }
+  if (CONFIG.page.isPost) {
     function addCount(Counter) {
-      var $visitors = $('.leancloud_visitors');
-      var url = $visitors.attr('id').trim();
-      var title = $visitors.attr('data-flag-title').trim();
+      var visitors = document.querySelector('.leancloud_visitors');
+      var url = decodeURI(visitors.getAttribute('id'));
+      var title = visitors.getAttribute('data-flag-title');
 
-      Counter('get', '/classes/Counter', { where: JSON.stringify({ url }) })
-        .done(function({ results }) {
+      Counter('get', `/classes/Counter?where=${JSON.stringify({ url })}`)
+        .then(response => response.json())
+        .then(({ results }) => {
           if (results.length > 0) {
             var counter = results[0];
-            
-              var $element = $(document.getElementById(url));
-              $element.find('.leancloud-visitors-count').text(counter.time + 1);
-            
-            Counter('put', '/classes/Counter/' + counter.objectId, JSON.stringify({ time: { '__op': 'Increment', 'amount': 1 } }))
-            
-              .fail(function ({ responseJSON }) {
-                console.log('Failed to save Visitor num, with error message: ' + responseJSON.error);
+            Counter('put', '/classes/Counter/' + counter.objectId, { time: { '__op': 'Increment', 'amount': 1 } })
+              .then(response => response.json())
+              .then(() => {
+                leancloudSelector(url).innerText = counter.time + 1;
+              })
+              .catch(error => {
+                console.error('Failed to save visitor count', error);
               })
           } else {
-            
-              var $element = $(document.getElementById(url));
-              $element.find('.leancloud-visitors-count').text('Counter not initialized! More info at console err msg.');
+              leancloudSelector(url).innerText = 'Counter not initialized! More info at console err msg.';
               console.error('ATTENTION! LeanCloud counter has security bug, see how to solve it here: https://github.com/theme-next/hexo-leancloud-counter-security. \n However, you can still use LeanCloud without security, by setting `security` option to `false`.');
             
           }
         })
-        .fail(function ({ responseJSON }) {
-          console.log('LeanCloud Counter Error: ' + responseJSON.code + ' ' + responseJSON.error);
+        .catch(error => {
+          console.error('LeanCloud Counter Error', error);
         });
     }
-    
+  } else {
+    function showTime(Counter) {
+      var visitors = document.querySelectorAll('.leancloud_visitors');
+      var entries = [...visitors].map(element => {
+        return decodeURI(element.getAttribute('id'));
+      });
 
-    $(function() {
-      $.get('https://app-router.leancloud.cn/2/route?appId=' + 'WPxUE6YkPBut4XJcmskHhlvL-gzGzoHsz')
-        .done(function({ api_server }) {
-          var Counter = function(method, url, data) {
-            return $.ajax({
-              method: method,
-              url: 'https://' + api_server + '/1.1' + url,
-              headers: {
-                'X-LC-Id': 'WPxUE6YkPBut4XJcmskHhlvL-gzGzoHsz',
-                'X-LC-Key': 'oCVD6rCmlv3Nx4jcOX0UiWNW',
-                'Content-Type': 'application/json',
-              },
-              data: data
+      Counter('get', `/classes/Counter?where=${JSON.stringify({ url: { '$in': entries } })}`)
+        .then(response => response.json())
+        .then(({ results }) => {
+          if (results.length === 0) {
+            document.querySelectorAll('.leancloud_visitors .leancloud-visitors-count').forEach(element => {
+              element.innerText = 0;
             });
-          };
-          
-            addCount(Counter);
-          
+            return;
+          }
+          for (let item of results) {
+            let { url, time } = item;
+            leancloudSelector(url).innerText = time;
+          }
+          for (let url of entries) {
+            var element = leancloudSelector(url);
+            if (element.innerText == '') {
+              element.innerText = 0;
+            }
+          }
+        })
+        .catch(error => {
+          console.error('LeanCloud Counter Error', error);
         });
+    }
+  }
+
+  fetch('https://app-router.leancloud.cn/2/route?appId=WPxUE6YkPBut4XJcmskHhlvL-gzGzoHsz')
+    .then(response => response.json())
+    .then(({ api_server }) => {
+      var Counter = (method, url, data) => {
+        return fetch(`https://${api_server}/1.1${url}`, {
+          method: method,
+          headers: {
+            'X-LC-Id': 'WPxUE6YkPBut4XJcmskHhlvL-gzGzoHsz',
+            'X-LC-Key': 'oCVD6rCmlv3Nx4jcOX0UiWNW',
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data)
+        });
+      };
+      if (CONFIG.page.isPost) {
+        if (CONFIG.hostname !== location.hostname) return;
+        addCount(Counter);
+      } else if (document.querySelectorAll('.post-title-link').length >= 1) {
+        showTime(Counter);
+      }
     });
   </script>
 
 
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   
 
   
-  
-
-  
-  
-
-  
-    
-      <script type="text/x-mathjax-config">
-  
+      
+<script type="text/x-mathjax-config">
 
   MathJax.Hub.Config({
     tex2jax: {
@@ -1101,68 +615,66 @@
       skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
     },
     TeX: {
-      
       equationNumbers: {
         autoNumber: 'AMS'
       }
     }
   });
+
   MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
     MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
       if (data.display) {
         var next = data.script.nextSibling;
-        while (next && next.nodeName.toLowerCase() === '#text') { next = next.nextSibling }
-        if (next && next.nodeName.toLowerCase() === 'br') { next.parentNode.removeChild(next) }
+        while (next && next.nodeName.toLowerCase() === '#text') {
+          next = next.nextSibling;
+        }
+        if (next && next.nodeName.toLowerCase() === 'br') {
+          next.parentNode.removeChild(next);
+        }
       }
     });
   });
-</script>
 
-<script type="text/x-mathjax-config">
   MathJax.Hub.Queue(function() {
     var all = MathJax.Hub.getAllJax(), i;
     for (i = 0; i < all.length; i += 1) {
-      document.getElementById(all[i].inputID + '-Frame').parentNode.className += ' has-jax';
+      element = document.getElementById(all[i].inputID + '-Frame').parentNode;
+      if (element.nodeName.toLowerCase() == 'li') {
+        element = element.parentNode;
+      }
+      element.classList.add('has-jax');
     }
   });
 </script>
-<script src="//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML', () => {
+    MathJax.Hub.Typeset();
+  }, window.MathJax);
+</script>
 
     
-  
-
 
   
 
-  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
 
-  
-  <script>
-    (function(){
-      var bp = document.createElement('script');
-      var curProtocol = window.location.protocol.split(':')[0];
-      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
-      var s = document.getElementsByTagName("script")[0];
-      s.parentNode.insertBefore(bp, s);
-    })();
-  </script>
-
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID: '08e86c9d0536ed791bf9',
+      clientSecret: '0982e8cb7b507eee3022547b44ebc4c4f6f2a944',
+      repo: 'Gitalk',
+      owner: 'AnotherZjuturtle',
+      admin: ['AnotherZjuturtle'],
+      id: '62c3a0ade0f0fb5000b320308000e0b9',
+        language: 'zh-CN',
+      distractionFreeMode: true
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
 
 </body>
 </html>

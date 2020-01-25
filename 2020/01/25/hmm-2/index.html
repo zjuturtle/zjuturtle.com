@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico">
+  <link rel="mask-icon" href="/images/favicon.ico" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('http://zjuturtle.com').hostname,
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.7.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="上一篇我们讲了隐马尔可夫模型（HMM）的推导计算。对于一个单高斯隐马尔可夫模型而言，其参数集合包含 \(A&#x3D;[a_{ij}]\) 转移概率矩阵，高斯分布均值向量 \(\boldsymbol{\mu}_{i,m}\)，高斯分布的协方差 \(\boldsymbol{\Sigma}_{i,m}\)。 这一篇我们来讲讲如何从数据中训练得到这些参数。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="隐马尔可夫模型参数训练">
+<meta property="og:url" content="http://zjuturtle.com/2020/01/25/hmm-2/index.html">
+<meta property="og:site_name" content="zjuturtle&#39;s blog">
+<meta property="og:description" content="上一篇我们讲了隐马尔可夫模型（HMM）的推导计算。对于一个单高斯隐马尔可夫模型而言，其参数集合包含 \(A&#x3D;[a_{ij}]\) 转移概率矩阵，高斯分布均值向量 \(\boldsymbol{\mu}_{i,m}\)，高斯分布的协方差 \(\boldsymbol{\Sigma}_{i,m}\)。 这一篇我们来讲讲如何从数据中训练得到这些参数。">
+<meta property="article:published_time" content="2020-01-25T12:28:20.000Z">
+<meta property="article:modified_time" content="2020-01-25T12:27:52.813Z">
+<meta property="article:author" content="zjuturtle">
+<meta property="article:tag" content="Algorithm">
+<meta property="article:tag" content="HMM">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://zjuturtle.com/2020/01/25/hmm-2/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>隐马尔可夫模型参数训练 | zjuturtle's blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">zjuturtle's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://zjuturtle.com/2020/01/25/hmm-2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="zjuturtle">
+      <meta itemprop="description" content="瞎几把搞的幸运E">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="zjuturtle's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          隐马尔可夫模型参数训练
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2020-01-25 20:28:20 / Modified: 20:27:52" itemprop="dateCreated datePublished" datetime="2020-01-25T20:28:20+08:00">2020-01-25</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Algorithm/" itemprop="url" rel="index">
+                    <span itemprop="name">Algorithm</span>
+                  </a>
+                </span>
+            </span>
+
+          
+            <span id="/2020/01/25/hmm-2/" class="post-meta-item leancloud_visitors" data-flag-title="隐马尔可夫模型参数训练" title="Views">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">Views: </span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>上一篇我们讲了隐马尔可夫模型（HMM）的推导计算。对于一个单高斯隐马尔可夫模型而言，其参数集合包含 <span class="math inline">\(A=[a_{ij}]\)</span> 转移概率矩阵，高斯分布均值向量 <span class="math inline">\(\boldsymbol{\mu}_{i,m}\)</span>，高斯分布的协方差 <span class="math inline">\(\boldsymbol{\Sigma}_{i,m}\)</span>。 这一篇我们来讲讲如何从数据中训练得到这些参数。</p>
+<a id="more"></a>
+<p>我们假定我们的完整数据是 <span class="math inline">\(\boldsymbol{y}=\{\boldsymbol{o},\boldsymbol{h}\}\)</span>。<span class="math inline">\(\boldsymbol{o}\)</span> 是观测数据，<span class="math inline">\(\boldsymbol{h}\)</span> 是无法观测的隐马尔可夫状态。设我们需要训练的参数是 <span class="math inline">\(\theta\)</span>，那么我们就是需要最大化 <span class="math inline">\(\log p(\boldsymbol{y};\theta )\)</span>。显然因为隐藏量 <span class="math inline">\(\boldsymbol{h}\)</span> 的存在，我们不能直接去求取 <span class="math inline">\(\theta\)</span> 。但假如我们已经有了关于 <span class="math inline">\(\theta\)</span> 的一个比较好的估计，我们就可以计算在该估计值和观测数据条件下的 <span class="math inline">\(\log p(\boldsymbol{y};\theta)\)</span> 如下（ <span class="math inline">\(\theta_0\)</span> 是上一个估计）</p>
+<p><span class="math display">\[Q(\theta | \theta_0)=E_{\boldsymbol{h}|\boldsymbol{o}}[\log p(\boldsymbol{y};\theta)|\boldsymbol{o};\theta_0] = E[\log p(\boldsymbol{o};\boldsymbol{h})|\boldsymbol{o};\theta_0]\]</span></p>
+<p>我们的隐藏量 <span class="math inline">\(\boldsymbol{h}\)</span> 是离散的状态量，我们有</p>
+<p><span class="math display">\[Q(\theta|\theta_0)=\sum_{\boldsymbol{h}} P(\boldsymbol{h}|\boldsymbol{o};\theta_0) \log p(\boldsymbol{y};\theta)\]</span></p>
+<p>不断地迭代操作 E 步骤（计算期望）/ M 步骤（最大化期望），便可以找到 <span class="math inline">\(\theta\)</span> 的局部最优解。</p>
+<h2 id="baum-whlch-算法">Baum-Whlch 算法</h2>
+<p>Baum-Whlch 算法是用于解决 GMM-HMM 参数学习的算法。根据上面的叙述，我们先写出辅助函数（或者说条件期望值）。</p>
+<p>根据上一篇，我们有</p>
+<p><span class="math display">\[Q(\theta|\theta_0)=E[\log P(\boldsymbol{o}^T,\boldsymbol{q}^T|\theta)| \boldsymbol{o}^T,\theta_0]\]</span></p>
+<p><span class="math inline">\(\boldsymbol{q}^T\)</span> 是隐藏的状态量，无法观测。</p>
+<h3 id="e-步骤">E 步骤</h3>
+<p>先写出条件期望表达式</p>
+<p><span class="math display">\[Q(\theta|\theta_0)=\sum_{\boldsymbol{q}_1^T}P(\boldsymbol{q}_1^T|\boldsymbol{o}_1^T,\theta_0) \log P(\boldsymbol{o}_1^T,\boldsymbol{q}_1^T|\theta)\]</span></p>
+<p>状态 <span class="math inline">\(i\)</span> 下的观测服从单高斯分布 $P_{<em>t}(i) N(</em>{i,m},_{i,m}) $ 然后我们写出状态 <span class="math inline">\(i\)</span> 的对数高斯 PDF</p>
+<p><span class="math display">\[N_t(i)=\log P_{\boldsymbol{o}_t}(i) = -\frac D2\log (2 \pi) -\frac12 \log|\Sigma_i|-\frac12(\boldsymbol{o}_t-\boldsymbol{\mu}_i)^T \boldsymbol{\Sigma}^{-1}_i(\boldsymbol{o}_t-\boldsymbol{\mu}_i)\]</span></p>
+<p>在继续之前我们引入一个概念叫克罗内克函数 <span class="math inline">\(\delta_{ij}\)</span> 如下</p>
+<p><span class="math display">\[\delta_{ij}=\begin{cases} 0 \ i\ne j  \\ 1\ i=j \end{cases}\]</span></p>
+<p>由 <span class="math inline">\(P(\boldsymbol{q}_1^T)=\prod^{T-1}_{t=1}a_{q_tq_{t+1}}\)</span> 和 <span class="math inline">\(P(\boldsymbol{o}_1^T,\boldsymbol{q}_1^T)=P(\boldsymbol{o}_1^T|\boldsymbol{q}_1^T)P(\boldsymbol{q}_1^T)\)</span> 接下来我们有</p>
+<p><span class="math display">\[\log P(\boldsymbol{o_1^T},\boldsymbol{q_1^T}|\theta)=\sum^T_{t=1}N_t{q_t}+\sum^{T-1}_{t=1}\log a_{q_tq_{t+1}}\]</span></p>
+<p>所以我们可以重写 <span class="math inline">\(Q(\theta|\theta_0)\)</span> 如下</p>
+<p><span class="math display">\[\begin{aligned} Q(\theta | \theta_0) &amp;= \sum_{\boldsymbol{q}_1^T}P(\boldsymbol{o_1^T},\boldsymbol{q_1^T}|\theta_0)\sum_{t=1}^TN_t(q_t)+\sum_{\boldsymbol{q}_q^T}P(\boldsymbol{o_1^T},\boldsymbol{q_1^T}|\theta_0)\sum_{t=1}^{T-1}\log a_{q_tq_{t+1}}  \\
+&amp;=Q_1(\theta|\theta_0)+Q_2(\theta|\theta_0) \end{aligned}\]</span></p>
+<p>其中</p>
+<p><span class="math display">\[\begin{aligned} Q_1(\theta|\theta_0)&amp;=\sum^N_{i=1}\{ \sum_{\boldsymbol{q}_1^T}P(\boldsymbol{q}_1^T|\boldsymbol{o}_1^T,\theta_0)\sum_{t=1}^TN_t(q_t) \}\delta_{q_t,i} \\
+Q_2(\theta|\theta_0)&amp;=\sum^N_{i=1}\sum^N_{j=1}\{\sum_{\boldsymbol{q}_1^T}P(\boldsymbol{q_1^T}|\boldsymbol{o_1^T},\theta_0)\sum^{T-1}_{t=1}\log a_{q_tq_{t+1}} \}\delta_{q_t,i} \delta_{q_{t+1},j} \end{aligned}\]</span></p>
+<p>将 <span class="math inline">\(\sum_{\boldsymbol{q}_1^T}P(\boldsymbol{q}_1^T|\boldsymbol{o}_1^T,\theta_0)\delta_{q_t,i}=P(\boldsymbol{q}_1^T=i|\boldsymbol{q}_1^T,\theta_0)\)</span> 带入<span class="math inline">\(Q_1(\theta|\theta_0)\)</span>我们有</p>
+<p><span class="math display">\[Q_1(\theta|\theta_0)=\sum_{i=1}^N\sum_{t=1}^TP(\boldsymbol{q}_1^T=i|\boldsymbol{q}_1^T,\theta_0)N_t(i)\]</span></p>
+<p>类似的我们有</p>
+<p><span class="math display">\[Q_2(\theta|\theta_0)=\sum_{i=1}^N\sum_{j=1}^N\sum_{t=1}^{T-1}P(q_t=i,q_{t+1}=j|\boldsymbol{o}_1^T,\theta_0)\log a_{ij}\]</span></p>
+<p>在给定观测序列 <span class="math inline">\(\boldsymbol{q}_1^T\)</span> 和参数 <span class="math inline">\(\theta_0\)</span> 的情况下，在时间 <span class="math inline">\(t\)</span> 状态是 <span class="math inline">\(i\)</span>，在时间 <span class="math inline">\(t+1\)</span> 状态是 <span class="math inline">\(j\)</span> 的概率是</p>
+<p><span class="math display">\[\begin{aligned} \xi_t(i,j)&amp;=P(q_t=i,q_{t+1}=j|\boldsymbol{o}_1^T,\theta_0)=\frac{P(q_t=i,q_{t+1}=j,\boldsymbol{o}_1^T|\theta_0)}{P(\boldsymbol{o}_1^T|\theta_0)} \\ 
+&amp;=\frac{\alpha_t(i)\beta_{t+1}(j)a_{ij}\exp(N_{t+1}(j))}{P(\boldsymbol{o}_1^T|\theta_0)} \end{aligned}\]</span></p>
+<p>这里文字解释一下（我这里推导卡了好久，MMP）推导过程。第一个等号用的贝叶斯条件概率 <span class="math inline">\(P(A|B)=\frac{P(AB)}{P(B)}\)</span> 就可以。第二个等号主要是 <span class="math inline">\(P(q_t=i,q_{t+1}=j,\boldsymbol{o}_1^T|\theta_0)=\alpha_t(i)\beta_{t+1}(j)a_{ij}\exp(N_{t+1}(j))\)</span> 解释一下：<span class="math inline">\(\alpha_t(i)\)</span> 指的是时刻 <span class="math inline">\(t\)</span> 的状态为 <span class="math inline">\(i\)</span>， 时刻 1 到 <span class="math inline">\(t\)</span> 的观测概率，<span class="math inline">\(\beta_{t+1}(j)\)</span> 则是在时刻 <span class="math inline">\(t+1\)</span> 的状态为 <span class="math inline">\(j\)</span>，时刻 <span class="math inline">\(t+2\)</span> 到 <span class="math inline">\(T\)</span> 的观测概率，<span class="math inline">\(a_{ij}\exp(N_{t+1}(j))\)</span> 则是从状态 <span class="math inline">\(i\)</span> 变化到 <span class="math inline">\(j\)</span>，时刻 <span class="math inline">\(t+1\)</span> 的观测概率。不过要注意这里 <span class="math inline">\(\xi_T(i,j)\)</span> 没有定义。</p>
+<p>在给定观测序列 <span class="math inline">\(\boldsymbol{q}_1^T\)</span> 和参数 <span class="math inline">\(\theta_0\)</span> 的情况下，在时间 <span class="math inline">\(t\)</span> 状态是 <span class="math inline">\(i\)</span> 的概率是</p>
+<p><span class="math display">\[\gamma_t(i)=\sum_{j=1}^N\xi_t(i,j)\]</span></p>
+<p>而对于 <span class="math inline">\(t=T\)</span> 的情况，我们可以用它的特定定义得到</p>
+<p><span class="math display">\[\gamma_T(i)=P(q_T=i|\boldsymbol{o}_1^T,\theta_0)=\frac{P(q_T=i,\boldsymbol{o}_1^T|\theta_0)}{P(\boldsymbol{o}_1^T|\theta_0)}=\frac{\alpha_T(i)}{P(\boldsymbol{o}_1^T|\theta_0)}\]</span></p>
+<h3 id="m-步骤">M 步骤</h3>
+<h4 id="最大化-q_2">最大化 <span class="math inline">\(Q_2\)</span></h4>
+<p>我们要最大化 <span class="math inline">\(Q_2\)</span> ，同时需要满足条件 <span class="math inline">\(\sum^N_{j=1}a_{ij}=1\)</span>。可以应用拉格朗日乘子法使得重估公式变为</p>
+<p><span class="math display">\[\hat{a}_{ij}=\frac{\sum^{T-1}_{t=1}\xi_t(i,j)}{\sum^{T-1}_{t=1}\gamma_t(i)}\]</span></p>
+<p>什么鬼！让我们还是先来复习一下什么叫拉格朗日乘子法吧。设函数 <span class="math inline">\(f(x,y)\)</span> 在 <span class="math inline">\(A\)</span> 点处有极值 <span class="math inline">\(\kappa\)</span>，且在 <span class="math inline">\(A\)</span> 点的邻域内连续，则在 <span class="math inline">\(A\)</span> 点有 <span class="math inline">\(f(x,y)=\kappa\)</span>。另有常值函数 <span class="math inline">\(g(x,y)=c\)</span>，则两个函数在 <span class="math inline">\(A\)</span> 点的全微分如下</p>
+<p><span class="math display">\[\mathrm{d}f=\frac{\partial f}{\partial x}\mathrm{d}x+\frac{\partial f}{\partial y}\mathrm{d}y\]</span></p>
+<p><span class="math display">\[\mathrm{d}g=\frac{\partial g}{\partial x}\mathrm{d}x+\frac{\partial g}{\partial y}\mathrm{d}y\]</span></p>
+<p>由于 <span class="math inline">\(\mathrm{d}x\)</span> 和 <span class="math inline">\(\mathrm{d}y\)</span> 是任意无穷小量，故该线性方程组的系数成比例</p>
+<p><span class="math display">\[\frac{\frac{\partial f}{\partial x}}{\frac{\partial g}{\partial x}}=\frac{\frac{\partial f}{\partial y}}{\frac{\partial g}{\partial y}}=-\lambda\]</span></p>
+<p>即</p>
+<p><span class="math display">\[\frac{\partial f}{\partial x}+\lambda\frac{\partial g}{\partial x}=0\]</span></p>
+<p><span class="math display">\[\frac{\partial f}{\partial y}+\lambda\frac{\partial g}{\partial y}=0\]</span></p>
+<p>将上二式分别乘以 <span class="math inline">\(\mathrm{d}x\)</span> 和 <span class="math inline">\(\mathrm{d}y\)</span>，再相加积分，得到拉格朗日函数如下，求原函数极值的问题就转化为求该函数极值的问题。</p>
+<p><span class="math display">\[L(x,y,\lambda)=f(x,y)+\lambda (g(x,y)-c) \]</span></p>
+<p>回到刚刚的求 <span class="math inline">\(Q_2\)</span> 极值的问题，我们应用拉格朗日乘子法如下</p>
+<p><span class="math display">\[\sum_{i=1}^N\sum_{j=1}^N\sum_{t=1}^{T-1}\xi_t(i,j)\log a_{ij}+\lambda(\sum_j a_{ij}-1)\]</span></p>
+<p>对 <span class="math inline">\(a_{ij}\)</span> 求偏导，然后令其为 0</p>
+<p><span class="math display">\[\begin{aligned} \frac{\sum_{t=1}^{T-1}\xi_t(i,j)}{a_{ij}} + \lambda &amp;= 0 \\
+\sum_{t=1}^{T-1}\xi_t(i,j)+{a_{ij}}  \lambda &amp;= 0 \\
+\sum_{j=1}^N( \sum_{t=1}^{T-1}\xi_t(i,j)+{a_{ij}}  \lambda) &amp;= 0 \\
+\sum_{t=1}^{T-1} \gamma_t(i) + \lambda &amp;= 0
+\end{aligned}\]</span></p>
+<p>再代入原来的式子，就有</p>
+<p><span class="math display">\[\hat{a}_{ij} = \frac{\sum_{t=1}^{T-1} \xi_t(i,j)}{\sum_{t=1}^{T-1}\gamma_t(i)}\]</span></p>
+<h4 id="最大化-q_1">最大化 <span class="math inline">\(Q_1\)</span></h4>
+<p>去掉 <span class="math inline">\(Q_1\)</span> 中与优化无关的式子，得到下面的目标函数</p>
+<p><span class="math display">\[Q_1(\boldsymbol{\mu}_i,\boldsymbol{\Sigma}_i)=\sum_{i=1}^N\sum_{t=1}^T\gamma_t(i)(\boldsymbol{o}_t-\boldsymbol{\mu}_i)^T \boldsymbol{\Sigma_t^{-1}}(\boldsymbol{o}_t-\boldsymbol{\mu}_i)-\frac12\log |\boldsymbol{\Sigma}_i|\]</span></p>
+<p>同样根据 <span class="math inline">\(\frac{\partial Q_1}{\partial \boldsymbol{\Sigma}_i}=0\)</span> 来得到重估计公式如下(懒得去推导了。。。抄书抄书)</p>
+<p><span class="math display">\[\hat{\boldsymbol{\Sigma}}_i=\frac{\sum_{t=1}^T \gamma_t(i)(\boldsymbol{o}_t-\hat{\boldsymbol{\mu}}_i)(\boldsymbol{o}_t-\hat{\boldsymbol{\mu}}_i)^T}{\sum_{t=1}^T \gamma_t(i)}\]</span></p>
+<p><span class="math display">\[\hat{\boldsymbol{\mu}}_i=\frac{\sum_{t=1}^T\gamma_t(i)\boldsymbol{o}_t}{\sum_{t=1}^T \gamma_t(i)}\]</span></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Algorithm/" rel="tag"># Algorithm</a>
+              <a href="/tags/HMM/" rel="tag"># HMM</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/01/25/hmm-1/" rel="prev" title="隐马尔可夫模型">
+      <i class="fa fa-chevron-left"></i> 隐马尔可夫模型
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="gitalk-container"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#baum-whlch-算法"><span class="nav-number">1.</span> <span class="nav-text">Baum-Whlch 算法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#e-步骤"><span class="nav-number">1.1.</span> <span class="nav-text">E 步骤</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#m-步骤"><span class="nav-number">1.2.</span> <span class="nav-text">M 步骤</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#最大化-q_2"><span class="nav-number">1.2.1.</span> <span class="nav-text">最大化 \(Q_2\)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#最大化-q_1"><span class="nav-number">1.2.2.</span> <span class="nav-text">最大化 \(Q_1\)</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="zjuturtle"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">zjuturtle</p>
+  <div class="site-description" itemprop="description">瞎几把搞的幸运E</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">43</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">47</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/zjuturtle" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;zjuturtle" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:leijinghaog@gmail.com" title="E-Mail → mailto:leijinghaog@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">zjuturtle</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v4.2.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">Theme – <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.7.0
+  </div>
+
+        
+
+
+
+
+
+
+  <script>
+  function leancloudSelector(url) {
+    url = encodeURI(url);
+    return document.getElementById(url).querySelector('.leancloud-visitors-count');
+  }
+  if (CONFIG.page.isPost) {
+    function addCount(Counter) {
+      var visitors = document.querySelector('.leancloud_visitors');
+      var url = decodeURI(visitors.getAttribute('id'));
+      var title = visitors.getAttribute('data-flag-title');
+
+      Counter('get', `/classes/Counter?where=${JSON.stringify({ url })}`)
+        .then(response => response.json())
+        .then(({ results }) => {
+          if (results.length > 0) {
+            var counter = results[0];
+            Counter('put', '/classes/Counter/' + counter.objectId, { time: { '__op': 'Increment', 'amount': 1 } })
+              .then(response => response.json())
+              .then(() => {
+                leancloudSelector(url).innerText = counter.time + 1;
+              })
+              .catch(error => {
+                console.error('Failed to save visitor count', error);
+              })
+          } else {
+              leancloudSelector(url).innerText = 'Counter not initialized! More info at console err msg.';
+              console.error('ATTENTION! LeanCloud counter has security bug, see how to solve it here: https://github.com/theme-next/hexo-leancloud-counter-security. \n However, you can still use LeanCloud without security, by setting `security` option to `false`.');
+            
+          }
+        })
+        .catch(error => {
+          console.error('LeanCloud Counter Error', error);
+        });
+    }
+  } else {
+    function showTime(Counter) {
+      var visitors = document.querySelectorAll('.leancloud_visitors');
+      var entries = [...visitors].map(element => {
+        return decodeURI(element.getAttribute('id'));
+      });
+
+      Counter('get', `/classes/Counter?where=${JSON.stringify({ url: { '$in': entries } })}`)
+        .then(response => response.json())
+        .then(({ results }) => {
+          if (results.length === 0) {
+            document.querySelectorAll('.leancloud_visitors .leancloud-visitors-count').forEach(element => {
+              element.innerText = 0;
+            });
+            return;
+          }
+          for (let item of results) {
+            let { url, time } = item;
+            leancloudSelector(url).innerText = time;
+          }
+          for (let url of entries) {
+            var element = leancloudSelector(url);
+            if (element.innerText == '') {
+              element.innerText = 0;
+            }
+          }
+        })
+        .catch(error => {
+          console.error('LeanCloud Counter Error', error);
+        });
+    }
+  }
+
+  fetch('https://app-router.leancloud.cn/2/route?appId=WPxUE6YkPBut4XJcmskHhlvL-gzGzoHsz')
+    .then(response => response.json())
+    .then(({ api_server }) => {
+      var Counter = (method, url, data) => {
+        return fetch(`https://${api_server}/1.1${url}`, {
+          method: method,
+          headers: {
+            'X-LC-Id': 'WPxUE6YkPBut4XJcmskHhlvL-gzGzoHsz',
+            'X-LC-Key': 'oCVD6rCmlv3Nx4jcOX0UiWNW',
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data)
+        });
+      };
+      if (CONFIG.page.isPost) {
+        if (CONFIG.hostname !== location.hostname) return;
+        addCount(Counter);
+      } else if (document.querySelectorAll('.post-title-link').length >= 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+<script type="text/x-mathjax-config">
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') {
+          next = next.nextSibling;
+        }
+        if (next && next.nodeName.toLowerCase() === 'br') {
+          next.parentNode.removeChild(next);
+        }
+      }
+    });
+  });
+
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      element = document.getElementById(all[i].inputID + '-Frame').parentNode;
+      if (element.nodeName.toLowerCase() == 'li') {
+        element = element.parentNode;
+      }
+      element.classList.add('has-jax');
+    }
+  });
+</script>
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML', () => {
+    MathJax.Hub.Typeset();
+  }, window.MathJax);
+</script>
+
+    
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID: '08e86c9d0536ed791bf9',
+      clientSecret: '0982e8cb7b507eee3022547b44ebc4c4f6f2a944',
+      repo: 'Gitalk',
+      owner: 'AnotherZjuturtle',
+      admin: ['AnotherZjuturtle'],
+      id: '1956c800d49305787dd1c46595a8aa2e',
+        language: 'zh-CN',
+      distractionFreeMode: true
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
+
+</body>
+</html>

@@ -1,127 +1,72 @@
 <!DOCTYPE html>
-
-
-
-
-
-
-
-
-
-
-
-
-  
-
-
-<html class="theme-next gemini use-motion" lang="zh-Hans">
-<head><meta name="generator" content="Hexo 3.9.0">
+<html lang="zh-Hans">
+<head>
   <meta charset="UTF-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico">
+  <link rel="mask-icon" href="/images/favicon.ico" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
 
 
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
-
-<link rel="stylesheet" href="/css/main.css?v=7.1.0">
-
-
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.ico?v=7.1.0">
-
-
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=7.1.0">
-
-
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico?v=7.1.0">
-
-
-  <link rel="mask-icon" href="/images/favicon.ico?v=7.1.0" color="#222">
-
-
-
-
-
-
-
-<script id="hexo.configurations">
+<script id="hexo-configurations">
   var NexT = window.NexT || {};
   var CONFIG = {
+    hostname: new URL('http://zjuturtle.com').hostname,
     root: '/',
     scheme: 'Gemini',
-    version: '7.1.0',
-    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
-    back2top: true,
-    back2top_sidebar: false,
+    version: '7.7.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
     fancybox: false,
-    fastclick: false,
+    mediumzoom: false,
     lazyload: false,
-    tabs: true,
-    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},
     algolia: {
-      applicationID: '',
+      appID: '',
       apiKey: '',
       indexName: '',
       hits: {"per_page":10},
       labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
-    }
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
   };
 </script>
 
-
-  
-
-
-
-
   <meta name="description" content="在即将结课的斯坦福算法公开课上我遇到了一些特别难的题目（画风突变的那种难），觉得还蛮有意思，因此做一个随手的记录。">
-<meta name="keywords" content="Algorithm">
 <meta property="og:type" content="article">
 <meta property="og:title" content="集合覆盖贪心算法">
-<meta property="og:url" content="https://zjuturtle.com/2018/03/22/set-cover/index.html">
+<meta property="og:url" content="http://zjuturtle.com/2018/03/22/set-cover/index.html">
 <meta property="og:site_name" content="zjuturtle&#39;s blog">
 <meta property="og:description" content="在即将结课的斯坦福算法公开课上我遇到了一些特别难的题目（画风突变的那种难），觉得还蛮有意思，因此做一个随手的记录。">
-<meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-06-20T09:08:59.963Z">
+<meta property="article:published_time" content="2018-03-22T03:28:11.000Z">
+<meta property="article:modified_time" content="2018-06-20T09:08:59.963Z">
+<meta property="article:author" content="zjuturtle">
+<meta property="article:tag" content="Algorithm">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="集合覆盖贪心算法">
-<meta name="twitter:description" content="在即将结课的斯坦福算法公开课上我遇到了一些特别难的题目（画风突变的那种难），觉得还蛮有意思，因此做一个随手的记录。">
+
+<link rel="canonical" href="http://zjuturtle.com/2018/03/22/set-cover/">
 
 
-
-
-
-  
-  
-  <link rel="canonical" href="https://zjuturtle.com/2018/03/22/set-cover/">
-
-
-
-<script id="page.configurations">
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
   CONFIG.page = {
     sidebar: "",
+    isHome: false,
+    isPost: true
   };
 </script>
 
@@ -133,15 +78,8 @@
 
 
 
-
-
-
-
-
-
   <noscript>
   <style>
-  .use-motion .motion-element,
   .use-motion .brand,
   .use-motion .menu-item,
   .sidebar-inner,
@@ -150,9 +88,8 @@
   .use-motion .comments,
   .use-motion .post-header,
   .use-motion .post-body,
-  .use-motion .collection-title { opacity: initial; }
+  .use-motion .collection-header { opacity: initial; }
 
-  .use-motion .logo,
   .use-motion .site-title,
   .use-motion .site-subtitle {
     opacity: initial;
@@ -166,243 +103,127 @@
 
 </head>
 
-<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
-
-  
-  
-    
-  
-
-  <div class="container sidebar-position-left page-post-detail">
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
     <div class="headband"></div>
 
-    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
-      <div class="header-inner"><div class="site-brand-wrapper">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
   <div class="site-meta">
-    
 
-    <div class="custom-logo-site-title">
+    <div>
       <a href="/" class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
         <span class="site-title">zjuturtle's blog</span>
         <span class="logo-line-after"><i></i></span>
       </a>
     </div>
-    
-    
   </div>
 
   <div class="site-nav-toggle">
-    <button aria-label="Toggle navigation bar">
-      <span class="btn-bar"></span>
-      <span class="btn-bar"></span>
-      <span class="btn-bar"></span>
-    </button>
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
   </div>
 </div>
-
 
 
 <nav class="site-nav">
   
-    <ul id="menu" class="menu">
-      
-        
-        
-        
-          
-          <li class="menu-item menu-item-home">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
 
-    
-    
-    
-      
-    
-
-    
-
-    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>Home</a>
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
 
   </li>
-        
-        
-        
-          
-          <li class="menu-item menu-item-archives">
+        <li class="menu-item menu-item-archives">
 
-    
-    
-    
-      
-    
-
-    
-
-    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>Archives</a>
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
 
   </li>
+  </ul>
 
-      
-      
-    </ul>
-  
-
-  
-
-  
 </nav>
-
-
-
-  
-
-
-
 </div>
     </header>
 
     
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
 
 
-    <main id="main" class="main">
+    <main class="main">
       <div class="main-inner">
         <div class="content-wrap">
           
+
+          <div class="content">
             
 
-          
-          <div id="content" class="content">
-            
-
-  <div id="posts" class="posts-expand">
-    
-
-  
-
+  <div class="posts-expand">
+      
   
   
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://zjuturtle.com/2018/03/22/set-cover/">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://zjuturtle.com/2018/03/22/set-cover/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
       <meta itemprop="name" content="zjuturtle">
       <meta itemprop="description" content="瞎几把搞的幸运E">
-      <meta itemprop="image" content="/images/avatar.png">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
       <meta itemprop="name" content="zjuturtle's blog">
     </span>
-
-    
       <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">集合覆盖贪心算法
-
-              
-            
-          </h2>
-        
+        <h1 class="post-title" itemprop="name headline">
+          集合覆盖贪心算法
+        </h1>
 
         <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
+            <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-calendar-o"></i>
               </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-
-              
-                
-              
+              <span class="post-meta-item-text">Posted on</span>
 
               <time title="Created: 2018-03-22 11:28:11" itemprop="dateCreated datePublished" datetime="2018-03-22T11:28:11+08:00">2018-03-22</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
+            </span>
+              <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
-                
-                  <span class="post-meta-item-text">Edited on</span>
-                
+                <span class="post-meta-item-text">Edited on</span>
                 <time title="Modified: 2018-06-20 17:08:59" itemprop="dateModified" datetime="2018-06-20T17:08:59+08:00">2018-06-20</time>
-              
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
+              </span>
+            <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
               </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Algorithm/" itemprop="url" rel="index"><span itemprop="name">Algorithm</span></a></span>
-
-                
-                
-              
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Algorithm/" itemprop="url" rel="index">
+                    <span itemprop="name">Algorithm</span>
+                  </a>
+                </span>
             </span>
-          
 
           
-            
-            
-          
-
-          
-          
-            <span id="/2018/03/22/set-cover/" class="leancloud_visitors" data-flag-title="集合覆盖贪心算法">
-              <span class="post-meta-divider">|</span>
+            <span id="/2018/03/22/set-cover/" class="post-meta-item leancloud_visitors" data-flag-title="集合覆盖贪心算法" title="Views">
               <span class="post-meta-item-icon">
                 <i class="fa fa-eye"></i>
               </span>
-              
-                <span class="post-meta-item-text">Views: </span>
-              
-                <span class="leancloud-visitors-count"></span>
+              <span class="post-meta-item-text">Views: </span>
+              <span class="leancloud-visitors-count"></span>
             </span>
-          
-
-          
-
-          
-
-          
 
         </div>
       </header>
-    
 
     
     
@@ -410,674 +231,352 @@
     <div class="post-body" itemprop="articleBody">
 
       
-      
-
-      
         <p>在即将结课的斯坦福算法公开课上我遇到了一些特别难的题目（画风突变的那种难），觉得还蛮有意思，因此做一个随手的记录。</p>
 <a id="more"></a>
-<h2 id="问题-1">问题 1</h2>
-<h3 id="问题描述">问题描述</h3>
-<p>In the set cover problem, you are given m sets $ S_1,...,S_m$ each a subset of a common set <span class="math inline">\(U\)</span> with size <span class="math inline">\(|U|=n\)</span>. The goal is to select as few of these sets as possible, subject to the constraint that the union of the chosen sets is all of <span class="math inline">\(U\)</span>. (You can assume that $ ∪^m_{i=1} S_i=U $.) For example, if the given sets are {1,2}, {2,3}, and {3,4}, then the optimal solution consists of the sets {1,2} and {3,4}.</p>
-<p>Here is a natural iterative greedy algorithm. First, initialize <span class="math inline">\(C=\emptyset\)</span>, where <span class="math inline">\(C\)</span> denotes the sets chosen so far. The main loop is: as long as the union <span class="math inline">\(∪_{S \in C}S\)</span> of the sets chosen so far is not the entire set <span class="math inline">\(U\)</span>:</p>
-<p>Let <span class="math inline">\(S_i\)</span> be a set that includes the maximum-possible number of elements not in previously-chosen sets (i.e., that maximizes <span class="math inline">\(|S_i−∪_{S \in C}S|\)</span>). Add <span class="math inline">\(S_i\)</span> to <span class="math inline">\(C\)</span>.</p>
-<p>Consider the following statement: for every instance of the set cover problem (with <span class="math inline">\(|U|=n\)</span>), this greedy algorithm returns a set cover with size at most <span class="math inline">\(f(n)\)</span> times that of an optimal (minimum-size) set cover. Which of the following is the smallest choice of the function <span class="math inline">\(f(n)\)</span> for which this statement is true?</p>
+
+<h2 id="问题-1"><a href="#问题-1" class="headerlink" title="问题 1"></a>问题 1</h2><h3 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h3><p>In the set cover problem, you are given m sets $ S_1,…,S_m$ each a subset of a common set $U$ with size $|U|=n$. The goal is to select as few of these sets as possible, subject to the constraint that the union of the chosen sets is all of $U$. (You can assume that $ ∪^m_{i=1} S_i=U $.) For example, if the given sets are {1,2}, {2,3}, and {3,4}, then the optimal solution consists of the sets {1,2} and {3,4}.</p>
+<p>Here is a natural iterative greedy algorithm. First, initialize $C=\emptyset$, where $C$ denotes the sets chosen so far. The main loop is: as long as the union $∪_{S \in C}S$ of the sets chosen so far is not the entire set $U$:</p>
+<p>Let $S_i$ be a set that includes the maximum-possible number of elements not in previously-chosen sets (i.e., that maximizes $|S_i−∪_{S \in C}S|$).<br>Add $S_i$ to $C$.</p>
+<p>Consider the following statement: for every instance of the set cover problem (with $|U|=n$), this greedy algorithm returns a set cover with size at most $f(n)$ times that of an optimal (minimum-size) set cover. Which of the following is the smallest choice of the function $f(n)$ for which this statement is true?</p>
 <ul>
 <li>2</li>
-<li><span class="math inline">\(O(log \ n)\)</span></li>
-<li><span class="math inline">\(O(\sqrt{n})\)</span></li>
-<li><span class="math inline">\(O(n)\)</span></li>
+<li>$O(log \ n)$</li>
+<li>$O(\sqrt{n})$</li>
+<li>$O(n)$</li>
 </ul>
-<h3 id="例子">例子</h3>
-<p>首先来个例子</p>
-<p><span class="math display">\[\begin{split} U&amp;=[1,16],U \in N \\\ 
-S_1 &amp;= \{1\} \\\
-S_2 &amp;= \{16\} \\\
-S_3 &amp;= \{2,15\} \\\
-S_4 &amp;= \{3,4,13,14\} \\\
-S_5 &amp;= \{5,6,7,8,9,10,11,12\} \\\
-S_6 &amp;= \{9,10,11,12,13,14,15,16\} \\\
-S_7 &amp;= \{1,2,3,4,5,6,7,8\}\end{split}\]</span></p>
-<p>显然，最优解应该是集合 <span class="math inline">\(S_6,S_7\)</span>。但在 Greedy algorithm 中，我们可能会依次选择 <span class="math inline">\(S_5,S_4,S_3,S_2,S_1\)</span>。直觉上我们基本可以判断 <span class="math inline">\(f(n)=O(log \ n)\)</span></p>
-<h3 id="解答">解答</h3>
-<p>证明的关键在于 Greedy algorithm 每一次迭代中能新包含的元素个数与最优解的不等关系。我们设最优解（在上面例子中是 2，因为选择了 <span class="math inline">\(S_6,S_7\)</span> 两个集合）为 <span class="math inline">\(OPT\)</span>。设在第 <span class="math inline">\(i\)</span> 次迭代运算之前，尚未包含的元素个数为 <span class="math inline">\(x_i\)</span>，在 <span class="math inline">\(i\)</span> 次迭代运算时，选择的集合为 <span class="math inline">\(S_i\)</span>，新包含的元素个数为 <span class="math inline">\(y_i\)</span>，注意 <span class="math inline">\(y_i \le |S_i|,x_{i+1}=x_i-y_i\)</span>。Greedy algorithm 经过 <span class="math inline">\(k\)</span> 次运算，最终得到的结果是 <span class="math inline">\(k\)</span>，即结果为 <span class="math inline">\({S_1,S_2,...,S_k}\)</span></p>
-<h4 id="引理">引理</h4>
-<p><span class="math display">\[\frac{x_i}{OPT} \le y_i\]</span></p>
-<p>证明：当 <span class="math inline">\(i=1\)</span> 时，此时 <span class="math inline">\(C=\emptyset\)</span>， Greedy algorithm 会选择包含元素最大的子集，记为 <span class="math inline">\(S_1=S_{max}\)</span>，那么此时 <span class="math inline">\(y_1=|S_{max}|\)</span></p>
-<p>因为 <span class="math inline">\(|S_{max}| \ge S_1,S_2,...,S_m\)</span> 且 <span class="math inline">\(x_1=n\)</span>，显然有 <span class="math inline">\(\frac{x_1}{OPT} \le y_1\)</span></p>
-<p>接下来只要证明当 <span class="math inline">\(\frac{x_i}{OPT} \le y_i\)</span> 时，<span class="math inline">\(\frac{x_{i+1}}{OPT} \le y_{i+1}\)</span> 即可。</p>
-<p>假设我们已经进行了 <span class="math inline">\(i\)</span> 次迭代。我们定义一个子问题，记 <span class="math inline">\(S = S_1 \bigcup S_2 \bigcup ...S_i\)</span>，<span class="math inline">\(\hat{S_{i+1}}= S_{i+1}-S,\hat{S_{i+2}}= S_{i+2}-S,...\hat{S_{m}}= S_{m}-S\)</span>。子问题即在这些子集 <span class="math inline">\(\hat{S_{i+1}},\hat{S_{i+2}},...\hat{S_{m}}\)</span> 求最小覆盖。定义该子问题的最优解为 <span class="math inline">\(\hat{OPT}\)</span>，显然我们有 <span class="math inline">\(OPT \ge \hat{OPT}\)</span>。根据前述，我们有 <span class="math inline">\(\frac{\hat{x_1}}{\hat{OPT}} \le \hat{y_1}\)</span>。而且根据子问题定义有 <span class="math inline">\(x_{i+1}=\hat{x_1},y_{i+1}=\hat{y_1}\)</span>，所以</p>
-<p><span class="math display">\[\frac{x_{i+1}}{OPT} \le \frac{x_{i+1}}{\hat{OPT}} =\frac{\hat{x_1}}{\hat{OPT}} \le \hat{y_1} = y_{i+1}\]</span></p>
+<h3 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h3><p>首先来个例子</p>
+<p>$$\begin{split} U&amp;=[1,16],U \in N \\<br>S_1 &amp;= {1} \<br>S_2 &amp;= {16} \<br>S_3 &amp;= {2,15} \<br>S_4 &amp;= {3,4,13,14} \<br>S_5 &amp;= {5,6,7,8,9,10,11,12} \<br>S_6 &amp;= {9,10,11,12,13,14,15,16} \<br>S_7 &amp;= {1,2,3,4,5,6,7,8}\end{split}$$</p>
+<p>显然，最优解应该是集合 $S_6,S_7$。但在 Greedy algorithm 中，我们可能会依次选择 $S_5,S_4,S_3,S_2,S_1$。直觉上我们基本可以判断 $f(n)=O(log \ n)$</p>
+<h3 id="解答"><a href="#解答" class="headerlink" title="解答"></a>解答</h3><p>证明的关键在于 Greedy algorithm 每一次迭代中能新包含的元素个数与最优解的不等关系。我们设最优解（在上面例子中是 2，因为选择了 $S_6,S_7$ 两个集合）为 $OPT$。设在第 $i$ 次迭代运算之前，尚未包含的元素个数为 $x_i$，在 $i$ 次迭代运算时，选择的集合为 $S_i$，新包含的元素个数为 $y_i$，注意 $y_i \le |S_i|,x_{i+1}=x_i-y_i$。Greedy algorithm 经过 $k$ 次运算，最终得到的结果是 $k$，即结果为 ${S_1,S_2,…,S_k}$</p>
+<h4 id="引理"><a href="#引理" class="headerlink" title="引理"></a>引理</h4><p>$$\frac{x_i}{OPT} \le y_i$$</p>
+<p>证明：当 $i=1$ 时，此时 $C=\emptyset$， Greedy algorithm 会选择包含元素最大的子集，记为 $S_1=S_{max}$，那么此时 $y_1=|S_{max}|$</p>
+<p>因为 $|S_{max}| \ge S_1,S_2,…,S_m$ 且 $x_1=n$，显然有 $\frac{x_1}{OPT} \le y_1$</p>
+<p>接下来只要证明当 $\frac{x_i}{OPT} \le y_i$ 时，$\frac{x_{i+1}}{OPT} \le y_{i+1}$ 即可。</p>
+<p>假设我们已经进行了 $i$ 次迭代。我们定义一个子问题，记 $S = S_1 \bigcup S_2 \bigcup …S_i$，$\hat{S_{i+1}}= S_{i+1}-S,\hat{S_{i+2}}= S_{i+2}-S,…\hat{S_{m}}= S_{m}-S$。子问题即在这些子集 $\hat{S_{i+1}},\hat{S_{i+2}},…\hat{S_{m}}$ 求最小覆盖。定义该子问题的最优解为 $\hat{OPT}$，显然我们有 $OPT \ge \hat{OPT}$。根据前述，我们有 $\frac{\hat{x_1}}{\hat{OPT}} \le \hat{y_1}$。而且根据子问题定义有 $x_{i+1}=\hat{x_1},y_{i+1}=\hat{y_1}$，所以</p>
+<p>$$\frac{x_{i+1}}{OPT} \le \frac{x_{i+1}}{\hat{OPT}} =\frac{\hat{x_1}}{\hat{OPT}} \le \hat{y_1} = y_{i+1}$$</p>
 <p>证毕。</p>
-<h4 id="计算">计算</h4>
-<p>对于引理，我们可以理解为每一次迭代都会新包含剩下未包含元素的 <span class="math inline">\(\frac 1{OPT}\)</span> 。那么有</p>
-<p><span class="math display">\[\begin{split} n(1-\frac 1{OPT})^k &lt; 1 \\\
-n(1- \frac 1{OPT})^{k-1} &gt; 1\\\
-n(1-\frac 1{OPT})^k \approx 1 \\\
-n(1- \frac 1{OPT})^{OPT} \approx n \frac 1 e \end{split}\]</span></p>
-<p>上述的最后两个式子取 <span class="math inline">\(log\)</span> 再相除就有 <span class="math inline">\(f(n) = \frac k {OPT} = O(log \ n)\)</span></p>
-<h2 id="问题-2">问题 2</h2>
-<p>Suppose you are given m sets $ S_1,...,S_m$, each a subset of a common set <span class="math inline">\(U\)</span>. The goal is to choose 2 of the m sets, <span class="math inline">\(S_i\)</span> and <span class="math inline">\(S_j\)</span>, to maximize the size <span class="math inline">\(|S_i∪S_j|\)</span> of their union. One natural heuristic is to use a greedy algorithm:</p>
-<ol type="i">
-<li><p>choose the first set <span class="math inline">\(S_i\)</span> to be as large as possible, breaking ties arbitrarily;</p></li>
-<li><p>choose the second set Sj to maximize <span class="math inline">\(|S_i∪S_j|\)</span> (i.e., as the set that includes as many elements as possible that are not already in <span class="math inline">\(S_i\)</span>), again breaking ties arbitrarily.</p></li>
-</ol>
-<p>For example, if the given sets are {1,2}, {2,3}, and {3,4}, then the algorithm might pick the set {1,2} in the first step; if it does so, it definitely picks the set {3,4} in the second step (for an objective function value of 4).</p>
-<p>Consider the following statement: for every instance of the above problem, the greedy algorithm above chooses two sets <span class="math inline">\(S_i,S_j\)</span> such that <span class="math inline">\(|S_i∪S_j|\)</span> is at least <span class="math inline">\(c\)</span> times the maximum size of the union of two of the given sets. Which of the following is the largest choice of the constant <span class="math inline">\(c\)</span> for which this statement is true?</p>
+<h4 id="计算"><a href="#计算" class="headerlink" title="计算"></a>计算</h4><p>对于引理，我们可以理解为每一次迭代都会新包含剩下未包含元素的 $\frac 1{OPT}$ 。那么有</p>
+<p>$$\begin{split} n(1-\frac 1{OPT})^k &lt; 1 \<br>n(1- \frac 1{OPT})^{k-1} &gt; 1\<br>n(1-\frac 1{OPT})^k \approx 1 \<br>n(1- \frac 1{OPT})^{OPT} \approx n \frac 1 e \end{split}$$</p>
+<p>上述的最后两个式子取 $log$ 再相除就有 $f(n) = \frac k {OPT} = O(log \ n)$</p>
+<h2 id="问题-2"><a href="#问题-2" class="headerlink" title="问题 2"></a>问题 2</h2><p>Suppose you are given m sets $ S_1,…,S_m$, each a subset of a common set $U$. The goal is to choose 2 of the m sets, $S_i$ and $S_j$, to maximize the size $|S_i∪S_j|$ of their union. One natural heuristic is to use a greedy algorithm:</p>
+<p> (i) choose the first set $S_i$ to be as large as possible, breaking ties arbitrarily; </p>
+<p> (ii) choose the second set Sj to maximize $|S_i∪S_j|$ (i.e., as the set that includes as many elements as possible that are not already in $S_i$), again breaking ties arbitrarily. </p>
+<p> For example, if the given sets are {1,2}, {2,3}, and {3,4}, then the algorithm might pick the set {1,2} in the first step; if it does so, it definitely picks the set {3,4} in the second step (for an objective function value of 4).</p>
+<p>Consider the following statement: for every instance of the above problem, the greedy algorithm above chooses two sets $S_i,S_j$ such that $|S_i∪S_j|$ is at least $c$ times the maximum size of the union of two of the given sets. Which of the following is the largest choice of the constant $c$ for which this statement is true?</p>
 <ul>
 <li>2/3</li>
 <li>1</li>
 <li>1/2</li>
 <li>3/4</li>
 </ul>
-<h3 id="例子-1">例子</h3>
-<p>还是先来一个例子说明一下。</p>
-<p><span class="math display">\[\begin{split} U&amp;=[1,8],U \in N \\\ 
-S_1 &amp;= \{2,7\} \\\
-S_2 &amp;= \{3,4,5,6\} \\\
-S_3 &amp;= \{1,2,3,4\} \\\
-S_4 &amp;= \{5,6,7,8\} \end{split}\]</span></p>
-<p>最优解为 <span class="math inline">\(|S_3 \bigcup S_4|=8\)</span>，但是在 Greedy algorithm 中，我们可能会依次选择 <span class="math inline">\(|S_2 \bigcup S_1|=6\)</span>。直觉上，我们可以判断 3/4 是正确答案。</p>
-<h3 id="解答-1">解答</h3>
-<p>设最优解其选择的集合为 <span class="math inline">\(S_i,S_j\)</span>。在 Greedy algorithm 中，选择的集合依次是 <span class="math inline">\(S_1,S_2\)</span>。根据定义，<span class="math inline">\(S_1\)</span> 是所有集合中最包含元素最多的。那么就有</p>
-<p>实际上这里问题 2 可以转化为问题 1。即只要记 <span class="math inline">\(U = S_1 \bigcup S_2 \bigcup S_i \bigcup S_j\)</span>。此时，问题 1 中的 <span class="math inline">\(OPT=2\)</span>。根据之前的结论我们有</p>
-<p><span class="math display">\[\begin{split} \frac {x_1}2 \le y_1 \\\
-  \frac {x_2}2 \le y_2 \end{split}\]</span></p>
-<p>其中 <span class="math inline">\(x_1 = |S_i \bigcup S_j|,y_1 = |S_1|,x_2 = |S_i \bigcup S_j|-|S_1|,y_2=|S_1 \bigcup S_2| - |S_1|\)</span>，所以有</p>
-<p><span class="math display">\[\begin{split} |S_1| \ge \frac{|S_i \bigcup S_j|}2 \\
-   2|S_1 \bigcup S_2| - |S_1| \ge |S_i \bigcup S_j|\end{split}\]</span></p>
-<p>将上式相加</p>
-<p><span class="math display">\[2 |S_1 \bigcup S_2| \ge \frac32 |S_i \bigcup S_j|\]</span></p>
-<p>因此得到答案 3/4</p>
+<h3 id="例子-1"><a href="#例子-1" class="headerlink" title="例子"></a>例子</h3><p>还是先来一个例子说明一下。</p>
+<p>$$\begin{split} U&amp;=[1,8],U \in N \\<br>S_1 &amp;= {2,7} \<br>S_2 &amp;= {3,4,5,6} \<br>S_3 &amp;= {1,2,3,4} \<br>S_4 &amp;= {5,6,7,8} \end{split}$$</p>
+<p>最优解为 $|S_3 \bigcup S_4|=8$，但是在 Greedy algorithm 中，我们可能会依次选择 $|S_2 \bigcup S_1|=6$。直觉上，我们可以判断 3/4 是正确答案。</p>
+<h3 id="解答-1"><a href="#解答-1" class="headerlink" title="解答"></a>解答</h3><p>设最优解其选择的集合为 $S_i,S_j$。在 Greedy algorithm 中，选择的集合依次是 $S_1,S_2$。根据定义，$S_1$ 是所有集合中最包含元素最多的。那么就有</p>
+<p>实际上这里问题 2 可以转化为问题 1。即只要记 $U = S_1 \bigcup S_2 \bigcup S_i \bigcup S_j$。此时，问题 1 中的 $OPT=2$。根据之前的结论我们有</p>
+<p>$$\begin{split} \frac {x_1}2 \le y_1 \<br>  \frac {x_2}2 \le y_2 \end{split}$$</p>
+<p>  其中 $x_1 = |S_i \bigcup S_j|,y_1 = |S_1|,x_2 = |S_i \bigcup S_j|-|S_1|,y_2=|S_1 \bigcup S_2| - |S_1|$，所以有</p>
+<p>  $$\begin{split} |S_1| \ge \frac{|S_i \bigcup S_j|}2 \<br>   2|S_1 \bigcup S_2| - |S_1| \ge |S_i \bigcup S_j|\end{split}$$</p>
+<p>  将上式相加</p>
+<p>  $$2 |S_1 \bigcup S_2| \ge \frac32 |S_i \bigcup S_j|$$</p>
+<p>  因此得到答案 3/4</p>
 
-      
     </div>
 
     
-
-    
-    
-    
-
-    
-
-    
-      
     
     
 
-    
-
-    <footer class="post-footer">
-      
-        <div class="post-tags">
-          
-            <a href="/tags/Algorithm/" rel="tag"># Algorithm</a>
-          
-        </div>
-      
-
-      
-      
-      
-
-      
-        <div class="post-nav">
-          <div class="post-nav-next post-nav-item">
-            
-              <a href="/2018/03/15/dsp-3/" rel="next" title="信号处理笔记（三）">
-                <i class="fa fa-chevron-left"></i> 信号处理笔记（三）
-              </a>
-            
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Algorithm/" rel="tag"># Algorithm</a>
           </div>
 
-          <span class="post-nav-divider"></span>
+        
 
-          <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/04/03/fuck-GFW/" rel="prev" title="科学爱国">
-                科学爱国 <i class="fa fa-chevron-right"></i>
-              </a>
-            
-          </div>
-        </div>
-      
 
-      
-      
-    </footer>
-  </div>
-  
-  
-  
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2018/03/15/dsp-3/" rel="prev" title="信号处理笔记（三）">
+      <i class="fa fa-chevron-left"></i> 信号处理笔记（三）
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2018/04/03/fuck-GFW/" rel="next" title="科学爱国">
+      科学爱国 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
   </article>
-
+  
+  
+  
 
   </div>
 
 
           </div>
           
-
-  
-    <div class="comments" id="gitalk-container">
-    </div>
-
-  
-
-
-
-        </div>
-        
-          
-  
-  <div class="sidebar-toggle">
-    <div class="sidebar-toggle-line-wrap">
-      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
-    </div>
-  </div>
-
-  <aside id="sidebar" class="sidebar">
-    <div class="sidebar-inner">
-
-      
-
-      
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            Table of Contents
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
-            Overview
-          </li>
-        </ul>
-      
-
-      <div class="site-overview-wrap sidebar-panel">
-        <div class="site-overview">
-          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-            
-              <img class="site-author-image" itemprop="image" src="/images/avatar.png" alt="zjuturtle">
-            
-              <p class="site-author-name" itemprop="name">zjuturtle</p>
-              <div class="site-description motion-element" itemprop="description">瞎几把搞的幸运E</div>
-          </div>
-
-          
-            <nav class="site-state motion-element">
-              
-                <div class="site-state-item site-state-posts">
-                
-                  <a href="/archives/">
-                
-                    <span class="site-state-item-count">37</span>
-                    <span class="site-state-item-name">posts</span>
-                  </a>
-                </div>
-              
-
-              
-                
-                
-                <div class="site-state-item site-state-categories">
-                  
-                    
-                      <a href="/categories/">
-                    
-                  
-                    
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                    <span class="site-state-item-count">5</span>
-                    <span class="site-state-item-name">categories</span>
-                  </a>
-                </div>
-              
-
-              
-                
-                
-                <div class="site-state-item site-state-tags">
-                  
-                    
-                      <a href="/tags/">
-                    
-                  
-                    
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                    <span class="site-state-item-count">39</span>
-                    <span class="site-state-item-name">tags</span>
-                  </a>
-                </div>
-              
-            </nav>
-          
-
-          
-
-          
-
-          
-            <div class="links-of-author motion-element">
-              
-                <span class="links-of-author-item">
-                  
-                  
-                    
-                  
-                  
-                    
-                  
-                  <a href="https://github.com/zjuturtle" title="GitHub &rarr; https://github.com/zjuturtle" rel="noopener" target="_blank"><i class="fa fa-fw fa-globe"></i>GitHub</a>
-                </span>
-              
-                <span class="links-of-author-item">
-                  
-                  
-                    
-                  
-                  
-                    
-                  
-                  <a href="mailto:leijinghaog@gmail.com" title="E-Mail &rarr; mailto:leijinghaog@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
-                </span>
-              
-            </div>
-          
-
-          
-
-          
-          
-
-          
-            
-          
-          
-
-        </div>
-      </div>
-
-      
-      <!--noindex-->
-        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-            
-            
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#问题-1"><span class="nav-number">1.</span> <span class="nav-text">问题 1</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#问题描述"><span class="nav-number">1.1.</span> <span class="nav-text">问题描述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#例子"><span class="nav-number">1.2.</span> <span class="nav-text">例子</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#解答"><span class="nav-number">1.3.</span> <span class="nav-text">解答</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#引理"><span class="nav-number">1.3.1.</span> <span class="nav-text">引理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#计算"><span class="nav-number">1.3.2.</span> <span class="nav-text">计算</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#问题-2"><span class="nav-number">2.</span> <span class="nav-text">问题 2</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#例子-1"><span class="nav-number">2.1.</span> <span class="nav-text">例子</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#解答-1"><span class="nav-number">2.2.</span> <span class="nav-text">解答</span></a></li></ol></li></ol></div>
-            
-
-          </div>
-        </div>
-      <!--/noindex-->
-      
-
-      
-
-    </div>
-  </aside>
-  
-
-
-        
-      </div>
-    </main>
-
-    <footer id="footer" class="footer">
-      <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
-  <span class="with-love" id="animate">
-    <i class="fa fa-user"></i>
-  </span>
-  <span class="author" itemprop="copyrightHolder">zjuturtle</span>
-
-  
-
-  
-</div>
-
-
-  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> v3.9.0</div>
-
-
-
-  <span class="post-meta-divider">|</span>
-
-
-
-  <div class="theme-info">Theme – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.1.0</div>
-
-
-
-
-        
-
-
-
-
-  <script>
-    (function() {
-      var hm = document.createElement("script");
-      hm.src = "//tajs.qq.com/stats?sId=61683784";
-      var s = document.getElementsByTagName("script")[0];
-      s.parentNode.insertBefore(hm, s);
-    })();
-  </script>
-
-
-
-
-
-        
-      </div>
-    </footer>
-
-    
-      <div class="back-to-top">
-        <i class="fa fa-arrow-up"></i>
-        
-      </div>
-    
-
-    
-
-    
-
-    
-  </div>
-
-  
+    <div class="comments" id="gitalk-container"></div>
 
 <script>
-  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
-    window.Promise = null;
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
   }
 </script>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        </div>
+          
   
-  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
 
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#问题-1"><span class="nav-number">1.</span> <span class="nav-text">问题 1</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#问题描述"><span class="nav-number">1.1.</span> <span class="nav-text">问题描述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#例子"><span class="nav-number">1.2.</span> <span class="nav-text">例子</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#解答"><span class="nav-number">1.3.</span> <span class="nav-text">解答</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#引理"><span class="nav-number">1.3.1.</span> <span class="nav-text">引理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#计算"><span class="nav-number">1.3.2.</span> <span class="nav-text">计算</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#问题-2"><span class="nav-number">2.</span> <span class="nav-text">问题 2</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#例子-1"><span class="nav-number">2.1.</span> <span class="nav-text">例子</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#解答-1"><span class="nav-number">2.2.</span> <span class="nav-text">解答</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="zjuturtle"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">zjuturtle</p>
+  <div class="site-description" itemprop="description">瞎几把搞的幸运E</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">43</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">47</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/zjuturtle" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;zjuturtle" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:leijinghaog@gmail.com" title="E-Mail → mailto:leijinghaog@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
   
-  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">zjuturtle</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v4.2.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">Theme – <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.7.0
+  </div>
 
-  
-  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
-
-
-  
-
-
-  <script src="/js/utils.js?v=7.1.0"></script>
-
-  <script src="/js/motion.js?v=7.1.0"></script>
-
-
-
-  
-  
-
-
-  <script src="/js/affix.js?v=7.1.0"></script>
-
-  <script src="/js/schemes/pisces.js?v=7.1.0"></script>
+        
 
 
 
 
-  
-  <script src="/js/scrollspy.js?v=7.1.0"></script>
-<script src="/js/post-details.js?v=7.1.0"></script>
 
 
-
-  
-
-
-  <script src="/js/next-boot.js?v=7.1.0"></script>
-
-
-  
-
-  
-
-  
-
-  
-
-
-  
-    
-
-  
-
-<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
-
-
-
-  
-
-<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
-
-
-
-  
-
-<script src="//cdn.jsdelivr.net/npm/js-md5@0/src/md5.min.js"></script>
-
-<script>
-  var gitalk = new Gitalk({
-    clientID: '08e86c9d0536ed791bf9',
-    clientSecret: '0982e8cb7b507eee3022547b44ebc4c4f6f2a944',
-    repo: 'Gitalk',
-    owner: 'AnotherZjuturtle',
-    admin: ['AnotherZjuturtle'],
-    id: md5(window.location.pathname),
-    
-      language: window.navigator.language || window.navigator.userLanguage,
-    
-    distractionFreeMode: 'true'
-  });
-  gitalk.render('gitalk-container');
-</script>
-
-  
-
-
-  
-
-
-
-
-  
-  
   <script>
-    
+  function leancloudSelector(url) {
+    url = encodeURI(url);
+    return document.getElementById(url).querySelector('.leancloud-visitors-count');
+  }
+  if (CONFIG.page.isPost) {
     function addCount(Counter) {
-      var $visitors = $('.leancloud_visitors');
-      var url = $visitors.attr('id').trim();
-      var title = $visitors.attr('data-flag-title').trim();
+      var visitors = document.querySelector('.leancloud_visitors');
+      var url = decodeURI(visitors.getAttribute('id'));
+      var title = visitors.getAttribute('data-flag-title');
 
-      Counter('get', '/classes/Counter', { where: JSON.stringify({ url }) })
-        .done(function({ results }) {
+      Counter('get', `/classes/Counter?where=${JSON.stringify({ url })}`)
+        .then(response => response.json())
+        .then(({ results }) => {
           if (results.length > 0) {
             var counter = results[0];
-            
-              var $element = $(document.getElementById(url));
-              $element.find('.leancloud-visitors-count').text(counter.time + 1);
-            
-            Counter('put', '/classes/Counter/' + counter.objectId, JSON.stringify({ time: { '__op': 'Increment', 'amount': 1 } }))
-            
-              .fail(function ({ responseJSON }) {
-                console.log('Failed to save Visitor num, with error message: ' + responseJSON.error);
+            Counter('put', '/classes/Counter/' + counter.objectId, { time: { '__op': 'Increment', 'amount': 1 } })
+              .then(response => response.json())
+              .then(() => {
+                leancloudSelector(url).innerText = counter.time + 1;
+              })
+              .catch(error => {
+                console.error('Failed to save visitor count', error);
               })
           } else {
-            
-              var $element = $(document.getElementById(url));
-              $element.find('.leancloud-visitors-count').text('Counter not initialized! More info at console err msg.');
+              leancloudSelector(url).innerText = 'Counter not initialized! More info at console err msg.';
               console.error('ATTENTION! LeanCloud counter has security bug, see how to solve it here: https://github.com/theme-next/hexo-leancloud-counter-security. \n However, you can still use LeanCloud without security, by setting `security` option to `false`.');
             
           }
         })
-        .fail(function ({ responseJSON }) {
-          console.log('LeanCloud Counter Error: ' + responseJSON.code + ' ' + responseJSON.error);
+        .catch(error => {
+          console.error('LeanCloud Counter Error', error);
         });
     }
-    
+  } else {
+    function showTime(Counter) {
+      var visitors = document.querySelectorAll('.leancloud_visitors');
+      var entries = [...visitors].map(element => {
+        return decodeURI(element.getAttribute('id'));
+      });
 
-    $(function() {
-      $.get('https://app-router.leancloud.cn/2/route?appId=' + 'WPxUE6YkPBut4XJcmskHhlvL-gzGzoHsz')
-        .done(function({ api_server }) {
-          var Counter = function(method, url, data) {
-            return $.ajax({
-              method: method,
-              url: 'https://' + api_server + '/1.1' + url,
-              headers: {
-                'X-LC-Id': 'WPxUE6YkPBut4XJcmskHhlvL-gzGzoHsz',
-                'X-LC-Key': 'oCVD6rCmlv3Nx4jcOX0UiWNW',
-                'Content-Type': 'application/json',
-              },
-              data: data
+      Counter('get', `/classes/Counter?where=${JSON.stringify({ url: { '$in': entries } })}`)
+        .then(response => response.json())
+        .then(({ results }) => {
+          if (results.length === 0) {
+            document.querySelectorAll('.leancloud_visitors .leancloud-visitors-count').forEach(element => {
+              element.innerText = 0;
             });
-          };
-          
-            addCount(Counter);
-          
+            return;
+          }
+          for (let item of results) {
+            let { url, time } = item;
+            leancloudSelector(url).innerText = time;
+          }
+          for (let url of entries) {
+            var element = leancloudSelector(url);
+            if (element.innerText == '') {
+              element.innerText = 0;
+            }
+          }
+        })
+        .catch(error => {
+          console.error('LeanCloud Counter Error', error);
         });
+    }
+  }
+
+  fetch('https://app-router.leancloud.cn/2/route?appId=WPxUE6YkPBut4XJcmskHhlvL-gzGzoHsz')
+    .then(response => response.json())
+    .then(({ api_server }) => {
+      var Counter = (method, url, data) => {
+        return fetch(`https://${api_server}/1.1${url}`, {
+          method: method,
+          headers: {
+            'X-LC-Id': 'WPxUE6YkPBut4XJcmskHhlvL-gzGzoHsz',
+            'X-LC-Key': 'oCVD6rCmlv3Nx4jcOX0UiWNW',
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data)
+        });
+      };
+      if (CONFIG.page.isPost) {
+        if (CONFIG.hostname !== location.hostname) return;
+        addCount(Counter);
+      } else if (document.querySelectorAll('.post-title-link').length >= 1) {
+        showTime(Counter);
+      }
     });
   </script>
 
 
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   
 
   
-  
-
-  
-  
-
-  
-    
-      <script type="text/x-mathjax-config">
-  
+      
+<script type="text/x-mathjax-config">
 
   MathJax.Hub.Config({
     tex2jax: {
@@ -1086,68 +585,66 @@ S_4 &amp;= \{5,6,7,8\} \end{split}\]</span></p>
       skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
     },
     TeX: {
-      
       equationNumbers: {
         autoNumber: 'AMS'
       }
     }
   });
+
   MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
     MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
       if (data.display) {
         var next = data.script.nextSibling;
-        while (next && next.nodeName.toLowerCase() === '#text') { next = next.nextSibling }
-        if (next && next.nodeName.toLowerCase() === 'br') { next.parentNode.removeChild(next) }
+        while (next && next.nodeName.toLowerCase() === '#text') {
+          next = next.nextSibling;
+        }
+        if (next && next.nodeName.toLowerCase() === 'br') {
+          next.parentNode.removeChild(next);
+        }
       }
     });
   });
-</script>
 
-<script type="text/x-mathjax-config">
   MathJax.Hub.Queue(function() {
     var all = MathJax.Hub.getAllJax(), i;
     for (i = 0; i < all.length; i += 1) {
-      document.getElementById(all[i].inputID + '-Frame').parentNode.className += ' has-jax';
+      element = document.getElementById(all[i].inputID + '-Frame').parentNode;
+      if (element.nodeName.toLowerCase() == 'li') {
+        element = element.parentNode;
+      }
+      element.classList.add('has-jax');
     }
   });
 </script>
-<script src="//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML', () => {
+    MathJax.Hub.Typeset();
+  }, window.MathJax);
+</script>
 
     
-  
-
 
   
 
-  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
 
-  
-  <script>
-    (function(){
-      var bp = document.createElement('script');
-      var curProtocol = window.location.protocol.split(':')[0];
-      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
-      var s = document.getElementsByTagName("script")[0];
-      s.parentNode.insertBefore(bp, s);
-    })();
-  </script>
-
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID: '08e86c9d0536ed791bf9',
+      clientSecret: '0982e8cb7b507eee3022547b44ebc4c4f6f2a944',
+      repo: 'Gitalk',
+      owner: 'AnotherZjuturtle',
+      admin: ['AnotherZjuturtle'],
+      id: 'eeadea50747bc4408080f021e74e119e',
+        language: 'zh-CN',
+      distractionFreeMode: true
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
 
 </body>
 </html>
