@@ -53,7 +53,7 @@
 <meta property="og:site_name" content="zjuturtle&#39;s blog">
 <meta property="og:description" content="上一篇我们讲了隐马尔可夫模型（HMM）的推导计算。对于一个单高斯隐马尔可夫模型而言，其参数集合包含 \(A&#x3D;[a_{ij}]\) 转移概率矩阵，高斯分布均值向量 \(\boldsymbol{\mu}_{i,m}\)，高斯分布的协方差 \(\boldsymbol{\Sigma}_{i,m}\)。 这一篇我们来讲讲如何从数据中训练得到这些参数。">
 <meta property="article:published_time" content="2020-01-25T12:28:20.000Z">
-<meta property="article:modified_time" content="2020-01-25T12:27:52.813Z">
+<meta property="article:modified_time" content="2020-01-25T12:39:25.826Z">
 <meta property="article:author" content="zjuturtle">
 <meta property="article:tag" content="Algorithm">
 <meta property="article:tag" content="HMM">
@@ -194,7 +194,7 @@
               <span class="post-meta-item-text">Posted on</span>
               
 
-              <time title="Created: 2020-01-25 20:28:20 / Modified: 20:27:52" itemprop="dateCreated datePublished" datetime="2020-01-25T20:28:20+08:00">2020-01-25</time>
+              <time title="Created: 2020-01-25 20:28:20 / Modified: 20:39:25" itemprop="dateCreated datePublished" datetime="2020-01-25T20:28:20+08:00">2020-01-25</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -241,7 +241,7 @@
 <h3 id="e-步骤">E 步骤</h3>
 <p>先写出条件期望表达式</p>
 <p><span class="math display">\[Q(\theta|\theta_0)=\sum_{\boldsymbol{q}_1^T}P(\boldsymbol{q}_1^T|\boldsymbol{o}_1^T,\theta_0) \log P(\boldsymbol{o}_1^T,\boldsymbol{q}_1^T|\theta)\]</span></p>
-<p>状态 <span class="math inline">\(i\)</span> 下的观测服从单高斯分布 $P_{<em>t}(i) N(</em>{i,m},_{i,m}) $ 然后我们写出状态 <span class="math inline">\(i\)</span> 的对数高斯 PDF</p>
+<p>状态 <span class="math inline">\(i\)</span> 下的观测服从单高斯分布 <span class="math inline">\(P_{\boldsymbol{o}_t}(i) \sim N(\boldsymbol{\mu}_{i,m},\boldsymbol{\Sigma}_{i,m})\)</span> 然后我们写出状态 <span class="math inline">\(i\)</span> 的对数高斯 PDF</p>
 <p><span class="math display">\[N_t(i)=\log P_{\boldsymbol{o}_t}(i) = -\frac D2\log (2 \pi) -\frac12 \log|\Sigma_i|-\frac12(\boldsymbol{o}_t-\boldsymbol{\mu}_i)^T \boldsymbol{\Sigma}^{-1}_i(\boldsymbol{o}_t-\boldsymbol{\mu}_i)\]</span></p>
 <p>在继续之前我们引入一个概念叫克罗内克函数 <span class="math inline">\(\delta_{ij}\)</span> 如下</p>
 <p><span class="math display">\[\delta_{ij}=\begin{cases} 0 \ i\ne j  \\ 1\ i=j \end{cases}\]</span></p>

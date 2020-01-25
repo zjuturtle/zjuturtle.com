@@ -234,55 +234,62 @@
       
         <p>第三部分主要讨论 LSI 系统的转移函数</p>
 <a id="more"></a>
-
-<h2 id="转移函数定义"><a href="#转移函数定义" class="headerlink" title="转移函数定义"></a>转移函数定义</h2><p>对于一个 LSI 系统（输入为 $x(n)$，经过冲激响应 $h(n)$ 后，输出为 $y(n)$），可以有4种描述方法</p>
+<h2 id="转移函数定义">转移函数定义</h2>
+<p>对于一个 LSI 系统（输入为 <span class="math inline">\(x(n)\)</span>，经过冲激响应 <span class="math inline">\(h(n)\)</span> 后，输出为 <span class="math inline">\(y(n)\)</span>），可以有4种描述方法</p>
 <ul>
 <li>频率响应</li>
 </ul>
-<p>$$H(e^{j \omega}) = \sum_{n=0}^{\infty}h(n)e^{-j \omega n}$$</p>
+<p><span class="math display">\[H(e^{j \omega}) = \sum_{n=0}^{\infty}h(n)e^{-j \omega n}\]</span></p>
 <ul>
 <li>转移函数</li>
 </ul>
-<p>$$H(z)=\sum_{n=0}^{\infty}h(n)z^{-n}$$</p>
+<p><span class="math display">\[H(z)=\sum_{n=0}^{\infty}h(n)z^{-n}\]</span></p>
 <ul>
 <li>差分方程</li>
 </ul>
-<p>$$y(n)=-\sum_{k=1}^{N}a(k)y(n-k)+\sum_{r=0}^{M}b(r)x(n-r)$$</p>
+<p><span class="math display">\[y(n)=-\sum_{k=1}^{N}a(k)y(n-k)+\sum_{r=0}^{M}b(r)x(n-r)\]</span></p>
 <ul>
 <li>卷积关系</li>
 </ul>
-<p>$$y(n)=\sum_{k=-\infty}^{\infty}x(k)h(n-k) = x(n)*h(n)$$</p>
-<p>上述的差分方程中， $a(k)$ 序列指的当前输出与之前输出间的线性关系，$b(r)$ 序列为当前输出与之前输入间的线性关系。我们对差分方程两边取 z 变换有</p>
-<p>$$Y(z) = -Y(z)\sum_{k=1}^Na(k)z^{-k}+X(z)\sum_{r=0}^Mb(r)z^{-r}$$</p>
-<p>同时我们有 $Y(z)=X(z)H(z)$，因此有</p>
-<p>$$H(z) = \frac{Y(z)}{X(z)}=\frac{\sum_{r=0}^{M}b(r)z^{-r}}{1+\sum_{k=1}^Na(k)z^{-k}}$$</p>
-<p>这里的 $H(z)$ 称为系统的转移函数。既可以定义为 LSI 系统抽样响应 $h(n)$ 的 z 变换，也可以定义为系统输入输出 z 变换之比。</p>
-<p>同样，在差分方程中 $a(k)=0,k=1,2,…,N，b(0)=1$。物理意义上，该系统没有“记忆性”，即当前输出只和之前的输入有关，而与之前的输出无关，没有反馈性。那么转移函数为</p>
-<p>$$H(z)=1+ \sum_{r=1}^{M}b(r)z^{-r}$$</p>
+<p><span class="math display">\[y(n)=\sum_{k=-\infty}^{\infty}x(k)h(n-k) = x(n)*h(n)\]</span></p>
+<p>上述的差分方程中， <span class="math inline">\(a(k)\)</span> 序列指的当前输出与之前输出间的线性关系，<span class="math inline">\(b(r)\)</span> 序列为当前输出与之前输入间的线性关系。我们对差分方程两边取 z 变换有</p>
+<p><span class="math display">\[Y(z) = -Y(z)\sum_{k=1}^Na(k)z^{-k}+X(z)\sum_{r=0}^Mb(r)z^{-r}\]</span></p>
+<p>同时我们有 <span class="math inline">\(Y(z)=X(z)H(z)\)</span>，因此有</p>
+<p><span class="math display">\[H(z) = \frac{Y(z)}{X(z)}=\frac{\sum_{r=0}^{M}b(r)z^{-r}}{1+\sum_{k=1}^Na(k)z^{-k}}\]</span></p>
+<p>这里的 <span class="math inline">\(H(z)\)</span> 称为系统的转移函数。既可以定义为 LSI 系统抽样响应 <span class="math inline">\(h(n)\)</span> 的 z 变换，也可以定义为系统输入输出 z 变换之比。</p>
+<p>同样，在差分方程中 <span class="math inline">\(a(k)=0,k=1,2,...,N，b(0)=1\)</span>。物理意义上，该系统没有“记忆性”，即当前输出只和之前的输入有关，而与之前的输出无关，没有反馈性。那么转移函数为</p>
+<p><span class="math display">\[H(z)=1+ \sum_{r=1}^{M}b(r)z^{-r}\]</span></p>
 <p>对应的差分方程</p>
-<p>$$y(n)=\sum_{r=1}^Mb(r)x(n-r)+x(n)$$</p>
+<p><span class="math display">\[y(n)=\sum_{r=1}^Mb(r)x(n-r)+x(n)\]</span></p>
 <p>其抽样响应为</p>
-<p>$$h(n)=\sum_{r=0}^Mb(r) \sigma(n-r) $$</p>
-<p>即有 $h(0)=b(0),h(1)=b(1),…,h(M)=b(m), h(n)=0 ,n&gt;M$。显然该系统是 FIR 系统，因此不会有无限长的冲激响应。但如果 $a(k)$ 不全为0，那么输入端将包含输出端的反馈，为 IIR 系统，$h(n)$ 将是无限长，存在稳定性问题。</p>
+<p><span class="math display">\[h(n)=\sum_{r=0}^Mb(r) \sigma(n-r) \]</span></p>
+<p>即有 <span class="math inline">\(h(0)=b(0),h(1)=b(1),...,h(M)=b(m), h(n)=0 ,n&gt;M\)</span>。显然该系统是 FIR 系统，因此不会有无限长的冲激响应。但如果 <span class="math inline">\(a(k)\)</span> 不全为0，那么输入端将包含输出端的反馈，为 IIR 系统，<span class="math inline">\(h(n)\)</span> 将是无限长，存在稳定性问题。</p>
 <p>总结一下，对于一个 LSI 系统，给定其转移函数，可以求出差分方程（时域表示）；同样给出差分方程，也能求出转移函数（频域表示）。</p>
-<h2 id="离散系统的极零点分析"><a href="#离散系统的极零点分析" class="headerlink" title="离散系统的极零点分析"></a>离散系统的极零点分析</h2><p>将转移函数进行因式分解，有</p>
-<p>$$H(z)=gz^{N-M} \frac{\prod_{r=1}^M(z-z_r)}{\prod_{k=1}^N(z-p_k)}$$</p>
-<p>式中 $g$ 称为系统的增益因子，本式中 $g=b(0)$。使分母多项式等于 0 的 $z$ 值，即 $p_k(k=1,2,…,N)$ 称为系统的极点。使分子多项式等于 0 的 $z$ 值，即 $z_r(r=1,2,…,M)$，称为系统的零点。</p>
-<h3 id="系统的稳定性判据"><a href="#系统的稳定性判据" class="headerlink" title="系统的稳定性判据"></a>系统的稳定性判据</h3><p>对一个 LSI 系统而言，将转移函数继续分解，得到</p>
-<p>$$H(z)=\sum_{k=1}^N \frac{C_kz}{z-p_k}$$</p>
+<h2 id="离散系统的极零点分析">离散系统的极零点分析</h2>
+<p>将转移函数进行因式分解，有</p>
+<p><span class="math display">\[H(z)=gz^{N-M} \frac{\prod_{r=1}^M(z-z_r)}{\prod_{k=1}^N(z-p_k)}\]</span></p>
+<p>式中 <span class="math inline">\(g\)</span> 称为系统的增益因子，本式中 <span class="math inline">\(g=b(0)\)</span>。使分母多项式等于 0 的 <span class="math inline">\(z\)</span> 值，即 <span class="math inline">\(p_k(k=1,2,...,N)\)</span> 称为系统的极点。使分子多项式等于 0 的 <span class="math inline">\(z\)</span> 值，即 <span class="math inline">\(z_r(r=1,2,...,M)\)</span>，称为系统的零点。</p>
+<h3 id="系统的稳定性判据">系统的稳定性判据</h3>
+<p>对一个 LSI 系统而言，将转移函数继续分解，得到</p>
+<p><span class="math display">\[H(z)=\sum_{k=1}^N \frac{C_kz}{z-p_k}\]</span></p>
 <p>这个式子还是稍微证明一下，我反正是看了半天才推导出来。逆向推导会相对容易</p>
-<p>$$\begin{split} &amp; \sum_{k=1}^N \frac{C_kz}{z-p_k} \<br>=&amp; \frac{C_1z \frac{\prod_{k=1}^N(z-p_k)}{z-p_1}+C_2z \frac{\prod_{k=1}^N(z-p_k)}{z-p_2}+…+C_Nz \frac{\prod_{k=1}^N(z-p_k)}{z-p_N}}{(z-p_1)(z-p_2)…(z-p_N)} \<br>=&amp; \frac{E_Nz^N+E_{N-1}z^{N-1}+…+E_1z}{z^N+D_{N-1}z^{N-1}+…D_1 z + D_0} \<br>=&amp; \frac{\sum_{r=0}^Mb(r)z^{-r}}{1+\sum_{k=1}^{N}a(k)z^{-k}} \end{split}$$</p>
-<p>每个因式 $\frac{C_iz}{z-p_i}$ 对应一个时域序列 $C_ip_i^n$，因此 $H(z)$ 对应的 $h(n) = \sum_{k=1}^NC_kp_k^n$</p>
-<p>对于因果系统而言 $h(n)=0, n&lt;0$。因此系统稳定的条件为 $\sum_{n=0}^{\infty} |h(n)| &lt; \infty $，则有</p>
-<p>$\sum_{n=0}^{\infty} \lvert h(n) \rvert = \sum_{n=0}^{\infty} \lvert \sum_{k=1}^N C_kp_k^n \rvert \leq \sum_{k=1}^N \lvert C_k \rvert \sum_{n=0}^{\infty} \lvert p_k^n \rvert $</p>
-<p>因为 $\lvert C_k \rvert$ 是常数项，因此若要右边小于 $\infty$，则必须有</p>
-<p>$$\lvert p_k \rvert &lt; 1, k=1,2,…,N$$</p>
+<p><span class="math display">\[\begin{split} &amp; \sum_{k=1}^N \frac{C_kz}{z-p_k} \\\
+=&amp; \frac{C_1z \frac{\prod_{k=1}^N(z-p_k)}{z-p_1}+C_2z \frac{\prod_{k=1}^N(z-p_k)}{z-p_2}+...+C_Nz \frac{\prod_{k=1}^N(z-p_k)}{z-p_N}}{(z-p_1)(z-p_2)...(z-p_N)} \\\
+=&amp; \frac{E_Nz^N+E_{N-1}z^{N-1}+...+E_1z}{z^N+D_{N-1}z^{N-1}+...D_1 z + D_0} \\\
+=&amp; \frac{\sum_{r=0}^Mb(r)z^{-r}}{1+\sum_{k=1}^{N}a(k)z^{-k}} \end{split}\]</span></p>
+<p>每个因式 <span class="math inline">\(\frac{C_iz}{z-p_i}\)</span> 对应一个时域序列 <span class="math inline">\(C_ip_i^n\)</span>，因此 <span class="math inline">\(H(z)\)</span> 对应的 <span class="math inline">\(h(n) = \sum_{k=1}^NC_kp_k^n\)</span></p>
+<p>对于因果系统而言 <span class="math inline">\(h(n)=0, n&lt;0\)</span>。因此系统稳定的条件为 $_{n=0}^{} |h(n)| &lt; $，则有</p>
+<p>$<em>{n=0}^{} h(n) = </em>{n=0}^{} <em>{k=1}^N C_kp_k^n </em>{k=1}^N C_k _{n=0}^{} p_k^n $</p>
+<p>因为 <span class="math inline">\(\lvert C_k \rvert\)</span> 是常数项，因此若要右边小于 <span class="math inline">\(\infty\)</span>，则必须有</p>
+<p><span class="math display">\[\lvert p_k \rvert &lt; 1, k=1,2,...,N\]</span></p>
 <p>一般我们接触的系统都是因果系统，所以上面的判据也够用了。但对于广义的 LSI 系统而言，其稳定的充要条件是收敛域包含单位圆。</p>
-<h3 id="由极零图估计系统的频率响应"><a href="#由极零图估计系统的频率响应" class="headerlink" title="由极零图估计系统的频率响应"></a>由极零图估计系统的频率响应</h3><p>将 $H(z)$ 的极点和零点画在 z 平面上得到的图形称为极零图。令 $z=e^{j \omega}$，即 $z$ 在 s 平面的单位圆上取值。转移函数变为</p>
-<p>$$H(e^{j \omega})=ge^{j(N-M) \omega} \frac{\prod_{r=1}^M(e^{j \omega}-z_r)}{\prod_{k=1}^N(e^{j \omega}-p_k)}$$</p>
-<p>可以将 $e^{j \omega}$ 看作单位圆上的一点（或从原点到$e^{j \omega}$ 的向量）。$z_r$ 是平面上的零点，因此 $e^{j \omega}-z_r$ 表示由零点 $z_r$ 到 $e^{j \omega}$ 的向量，$e^{j \omega}-p_k$ 表示由极点 $p_k$ 到 $e^{j \omega}$ 的向量。那么系统的幅频响应和相频响应为</p>
-<p>$$\begin{split} \lvert H(e^{j \omega}) \rvert &amp;= \frac{g \prod_{r=1}^M \lvert e^{- j\omega}-z_r \rvert}{\prod_{k=1}^N \lvert e^{j \omega}-p_k \rvert} \<br>\varphi(e^{j \omega}) &amp;= arg[e^{j(N-M) \omega }]+\sum_{r=1}^M[arg(e^{j \omega}-z_r )] - \sum_{r=1}^N[arg(e^{j \omega}-p_k )]\end{split}$$</p>
-<p>对于相频响应曲线，因为反三角函数的计算特点，可能会在某些地方有 $2 \pi$ 的跳变。可以通过解卷绕的方式修正这个问题，即在跳变以后的各处都加上（或减去）$2 \pi$。</p>
+<h3 id="由极零图估计系统的频率响应">由极零图估计系统的频率响应</h3>
+<p>将 <span class="math inline">\(H(z)\)</span> 的极点和零点画在 z 平面上得到的图形称为极零图。令 <span class="math inline">\(z=e^{j \omega}\)</span>，即 <span class="math inline">\(z\)</span> 在 s 平面的单位圆上取值。转移函数变为</p>
+<p><span class="math display">\[H(e^{j \omega})=ge^{j(N-M) \omega} \frac{\prod_{r=1}^M(e^{j \omega}-z_r)}{\prod_{k=1}^N(e^{j \omega}-p_k)}\]</span></p>
+<p>可以将 <span class="math inline">\(e^{j \omega}\)</span> 看作单位圆上的一点（或从原点到<span class="math inline">\(e^{j \omega}\)</span> 的向量）。<span class="math inline">\(z_r\)</span> 是平面上的零点，因此 <span class="math inline">\(e^{j \omega}-z_r\)</span> 表示由零点 <span class="math inline">\(z_r\)</span> 到 <span class="math inline">\(e^{j \omega}\)</span> 的向量，<span class="math inline">\(e^{j \omega}-p_k\)</span> 表示由极点 <span class="math inline">\(p_k\)</span> 到 <span class="math inline">\(e^{j \omega}\)</span> 的向量。那么系统的幅频响应和相频响应为</p>
+<p><span class="math display">\[\begin{split} \lvert H(e^{j \omega}) \rvert &amp;= \frac{g \prod_{r=1}^M \lvert e^{- j\omega}-z_r \rvert}{\prod_{k=1}^N \lvert e^{j \omega}-p_k \rvert} \\\
+\varphi(e^{j \omega}) &amp;= arg[e^{j(N-M) \omega }]+\sum_{r=1}^M[arg(e^{j \omega}-z_r )] - \sum_{r=1}^N[arg(e^{j \omega}-p_k )]\end{split}\]</span></p>
+<p>对于相频响应曲线，因为反三角函数的计算特点，可能会在某些地方有 <span class="math inline">\(2 \pi\)</span> 的跳变。可以通过解卷绕的方式修正这个问题，即在跳变以后的各处都加上（或减去）<span class="math inline">\(2 \pi\)</span>。</p>
 
     </div>
 

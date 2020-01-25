@@ -235,34 +235,31 @@
       
         <p>在年初搭博客的时候其实就有一堆的遗留问题，这两天一并解决了，顺带记录一下。</p>
 <a id="more"></a>
-
-<h2 id="公式兼容"><a href="#公式兼容" class="headerlink" title="公式兼容"></a>公式兼容</h2><p>其实在上一篇的博文里我遇到一个比较蛋疼的问题是公式的显示。我所使用的Hexo主题<a href="http://theme-next.iissnan.com/" target="_blank" rel="noopener">Next</a>是本身支持<a href="https://www.mathjax.org/" target="_blank" rel="noopener">MathJax</a>显示，只要在它原来的主题配置文件里面打开一个开关就可以了，蛋疼之处在于Hexo自己的渲染引擎和MathJax的语法冲突。因此直接替换了Hexo自带的渲染引擎，使用了<a href="http://pandoc.org/" target="_blank" rel="noopener">Pandoc</a></p>
+<h2 id="公式兼容">公式兼容</h2>
+<p>其实在上一篇的博文里我遇到一个比较蛋疼的问题是公式的显示。我所使用的Hexo主题<a href="http://theme-next.iissnan.com/" target="_blank" rel="noopener">Next</a>是本身支持<a href="https://www.mathjax.org/" target="_blank" rel="noopener">MathJax</a>显示，只要在它原来的主题配置文件里面打开一个开关就可以了，蛋疼之处在于Hexo自己的渲染引擎和MathJax的语法冲突。因此直接替换了Hexo自带的渲染引擎，使用了<a href="http://pandoc.org/" target="_blank" rel="noopener">Pandoc</a></p>
 <p>操作也非常的无脑，首先根据<a href="http://pandoc.org/installing.html" target="_blank" rel="noopener">Pandoc安装指南</a>在机子上安装Pandoc</p>
 <p>然后cd到Hexo网站根目录，卸载Hexo自带的渲染引擎</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm uninstall hexo-renderer-marked --save</span><br></pre></td></tr></table></figure>
-
 <p>再安装pandoc的渲染引擎</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo-renderer-pandoc --save</span><br></pre></td></tr></table></figure>
-
 <p>搞定</p>
-<h2 id="多说替换为云跟帖"><a href="#多说替换为云跟帖" class="headerlink" title="多说替换为云跟帖"></a>多说替换为云跟帖</h2><p>我刚用多说才没几个月，它就要下线了（估计是这个项目实在赚不到什么钱吧）。能让广大群众免费这么久也是不容易，在此对多说说一声谢谢。只能说自己没有赶上好时候啊。</p>
+<h2 id="多说替换为云跟帖">多说替换为云跟帖</h2>
+<p>我刚用多说才没几个月，它就要下线了（估计是这个项目实在赚不到什么钱吧）。能让广大群众免费这么久也是不容易，在此对多说说一声谢谢。只能说自己没有赶上好时候啊。</p>
 <p>我想网易养猪场的<a href="https://gentie.163.com/" target="_blank" rel="noopener">云跟贴</a>应该不那么容易倒闭吧，所以就把多说删了迁移到网易上来了（其实好像也没人评论囧），只希望对小站用户能一直免费下去吧。也是该一行代码就完事。具体参照<a href="http://theme-next.iissnan.com/third-party-services.html" target="_blank" rel="noopener">Next第三方服务接入说明</a></p>
-<h2 id="流量统计"><a href="#流量统计" class="headerlink" title="流量统计"></a>流量统计</h2><p>在流量统计上，加上了大疼讯的<a href="http://ta.qq.com/" target="_blank" rel="noopener">腾讯分析</a>。也是在Next主题里修改一行代码就好，参照<a href="http://theme-next.iissnan.com/third-party-services.html" target="_blank" rel="noopener">Next第三方服务接入说明</a>。</p>
+<h2 id="流量统计">流量统计</h2>
+<p>在流量统计上，加上了大疼讯的<a href="http://ta.qq.com/" target="_blank" rel="noopener">腾讯分析</a>。也是在Next主题里修改一行代码就好，参照<a href="http://theme-next.iissnan.com/third-party-services.html" target="_blank" rel="noopener">Next第三方服务接入说明</a>。</p>
 <p>同时加上了基于LeanCloud的阅读量统计。讲真LeanCloud这家公司还是挺不错的，它的<a href="https://open.leancloud.cn/" target="_blank" rel="noopener">开放资源</a>很赞，看得出来这是一家有心做事的公司。最早先的时候公司后端我曾经考虑直接架在LeanCloud上，后面因为可扩展性的考虑还是用了阿里云。现在自己的博客上搭上了它，也算是念念不忘必有回响吧。接入方法参考<a href="https://notes.wanghao.work/2015-10-21-%E4%B8%BANexT%E4%B8%BB%E9%A2%98%E6%B7%BB%E5%8A%A0%E6%96%87%E7%AB%A0%E9%98%85%E8%AF%BB%E9%87%8F%E7%BB%9F%E8%AE%A1%E5%8A%9F%E8%83%BD.html#%E9%85%8D%E7%BD%AELeanCloud" target="_blank" rel="noopener">Next接入LeanCloud统计</a>。</p>
 <p><a href="http://theme-next.iissnan.com/" target="_blank" rel="noopener">Next</a>真是便利啊！</p>
-<h2 id="全站https"><a href="#全站https" class="headerlink" title="全站https"></a>全站https</h2><p>我打算使用<a href="letsencrypt.org">Let’s Encrypt</a>结合<a href="https://www.nginx.com" target="_blank" rel="noopener">Nginx</a>来实现全站https。根据指引直接使用了<a href="https://github.com/kshcherban/acme-nginx" target="_blank" rel="noopener">acme-nginx</a></p>
+<h2 id="全站https">全站https</h2>
+<p>我打算使用<a href="letsencrypt.org">Let's Encrypt</a>结合<a href="https://www.nginx.com" target="_blank" rel="noopener">Nginx</a>来实现全站https。根据指引直接使用了<a href="https://github.com/kshcherban/acme-nginx" target="_blank" rel="noopener">acme-nginx</a></p>
 <p>安装<a href="https://github.com/kshcherban/acme-nginx" target="_blank" rel="noopener">acme-nginx</a></p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install acme-nginx</span><br></pre></td></tr></table></figure>
-
 <p>使用</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo acme-nginx -d zjuturtle.com</span><br></pre></td></tr></table></figure>
-
 <p>然后修改Nginx的配置，注意这里使用重定向强制http的访问变成了https</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">    # listen to 80 HTTP port</span><br><span class="line">    listen 80;</span><br><span class="line">    server_name zjuturtle.com;</span><br><span class="line">    return 301 https:&#x2F;&#x2F;$server_name$request_uri;</span><br><span class="line">&#125;</span><br><span class="line">server &#123;</span><br><span class="line">        # listen 80 default_server;</span><br><span class="line">        # listen [::]:80 default_server;</span><br><span class="line"></span><br><span class="line">        # SSL configuration</span><br><span class="line">        #</span><br><span class="line">        listen 443 ssl default_server;</span><br><span class="line">        ssl on;</span><br><span class="line">        listen [::]:443 ssl default_server;</span><br><span class="line">        ssl_certificate &#x2F;etc&#x2F;ssl&#x2F;private&#x2F;letsencrypt-domain.pem;</span><br><span class="line">        ssl_certificate_key &#x2F;etc&#x2F;ssl&#x2F;private&#x2F;letsencrypt-domain.key;</span><br><span class="line">        ssl_protocols TLSv1 TLSv1.1 TLSv1.2;</span><br><span class="line">        ...</span><br></pre></td></tr></table></figure>
-
-<p>最后，因为<a href="letsencrypt.org">Let’s Encrypt</a>的证书3个月就过期，因此再加一个排期的任务，每月自动续签。即在/etc/下新建一个文件，填入如下内容</p>
+<p>最后，因为<a href="letsencrypt.org">Let's Encrypt</a>的证书3个月就过期，因此再加一个排期的任务，每月自动续签。即在/etc/下新建一个文件，填入如下内容</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">12 11 10 * * root &#x2F;usr&#x2F;local&#x2F;bin&#x2F;acme-nginx -d zjuturtle.com &gt;&gt; &#x2F;var&#x2F;log&#x2F;letsencrypt.log</span><br></pre></td></tr></table></figure>
-
 <p>真的好方便。。。</p>
 
     </div>

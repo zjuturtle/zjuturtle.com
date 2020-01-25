@@ -233,21 +233,23 @@
       
         <p>闲的时候捧起《C++ primer》重新复习了下类相关概念，主要是一些以前没有特别明确的。</p>
 <a id="more"></a>
-
-<h2 id="类定义"><a href="#类定义" class="headerlink" title="类定义"></a>类定义</h2><h3 id="class-vs-struct"><a href="#class-vs-struct" class="headerlink" title="class vs struct"></a>class vs struct</h3><p>以前的C里是没有class这个关键字的，struct只用于一些数据类型的结合。在C++里，这两个关键字的唯一区别是默认访问权限不同。</p>
+<h2 id="类定义">类定义</h2>
+<h3 id="class-vs-struct">class vs struct</h3>
+<p>以前的C里是没有class这个关键字的，struct只用于一些数据类型的结合。在C++里，这两个关键字的唯一区别是默认访问权限不同。</p>
 <ul>
 <li>class默认是private</li>
 <li>struct默认是public</li>
 </ul>
 <p>在我的个人习惯里，struct仍然只有一般数据聚合的作用，并且最好是定长的，不包含任何其他方法，而class则用于定义类</p>
-<h3 id="this指针"><a href="#this指针" class="headerlink" title="this指针"></a>this指针</h3><p>成员函数可以通过this指针来访问调用它的对象，在成员函数内部可以省略</p>
+<h3 id="this指针">this指针</h3>
+<p>成员函数可以通过this指针来访问调用它的对象，在成员函数内部可以省略</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="built_in">std</span>::<span class="built_in">string</span> <span class="title">isbn</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> <span class="keyword">this</span>-&gt;bookNo; &#125;</span><br></pre></td></tr></table></figure>
-
-
-<h3 id="const成员函数"><a href="#const成员函数" class="headerlink" title="const成员函数"></a>const成员函数</h3><p>在类的成员函数末尾的cost关键字，可以修改this指针为const指针，可以避免成员函数修改类成员变量</p>
+<h3 id="const成员函数">const成员函数</h3>
+<p>在类的成员函数末尾的cost关键字，可以修改this指针为const指针，可以避免成员函数修改类成员变量</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="built_in">std</span>::<span class="built_in">string</span> <span class="title">isbn</span><span class="params">()</span> <span class="keyword">const</span> </span>&#123; <span class="keyword">return</span> <span class="keyword">this</span>-&gt;bookNo; &#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="构造函数"><a href="#构造函数" class="headerlink" title="构造函数"></a>构造函数</h2><h3 id="默认构造函数"><a href="#默认构造函数" class="headerlink" title="默认构造函数"></a>默认构造函数</h3><p>如果没有为对象提供构造函数，则编译器会自动创建构造函数，称为合成的默认构造函数。<br>合成默认构造函数规则：</p>
+<h2 id="构造函数">构造函数</h2>
+<h3 id="默认构造函数">默认构造函数</h3>
+<p>如果没有为对象提供构造函数，则编译器会自动创建构造函数，称为合成的默认构造函数。 合成默认构造函数规则：</p>
 <ul>
 <li>如果存在类内的初始值，则用初始值初始化类的数据成员</li>
 <li>默认初始化该成员</li>
@@ -258,29 +260,30 @@
 <li>合成的默认构造函数可能执行错误的操作（内置类型或复合类型默认初始化，则它们的值将是未定义的，似乎和C的兼容有关）</li>
 <li>有时编译器不能为某些类提供默认构造函数，因为类中包含的其他类型的成员包含了非默认构造函数</li>
 </ul>
-<h3 id="default的含义"><a href="#default的含义" class="headerlink" title="=default的含义"></a>=default的含义</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SalesData</span>&#123;</span></span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">string</span> _bookNo;</span><br><span class="line">    SalesData() = <span class="keyword">default</span>;</span><br><span class="line">    SalesData(<span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">string</span> &amp;s) : _bookNo(s) &#123;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
+<h3 id="default的含义">=default的含义</h3>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SalesData</span>&#123;</span></span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">string</span> _bookNo;</span><br><span class="line">    SalesData() = <span class="keyword">default</span>;</span><br><span class="line">    SalesData(<span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">string</span> &amp;s) : _bookNo(s) &#123;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>该构造函数(default)不接收任何参数，所以是默认构造函数。这个构造函数完全等同于合成默认构造函数，并且如果在类内部定义则是内联的，在外部定义则不是</p>
-<h3 id="构造函数初始化列表"><a href="#构造函数初始化列表" class="headerlink" title="构造函数初始化列表"></a>构造函数初始化列表</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SalesData(<span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">string</span> &amp;s): bookNo(s) &#123;&#125;</span><br></pre></td></tr></table></figure>
-
+<h3 id="构造函数初始化列表">构造函数初始化列表</h3>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SalesData(<span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">string</span> &amp;s): bookNo(s) &#123;&#125;</span><br></pre></td></tr></table></figure>
 <p>冒号和花括号间的代码为构造函数初始值列表，负责为新创建的对象的数据成员赋初值。</p>
 <p>注意：</p>
 <ul>
 <li>构造函数不应该轻易覆盖类内初始值</li>
 <li>如果你不能使用类内初始值，则所有构造函数均应该显示初始化每个内置类型</li>
 </ul>
-<h3 id="委托构造函数"><a href="#委托构造函数" class="headerlink" title="委托构造函数"></a>委托构造函数</h3><p>这个是C++11里面的新功能，放上例子。在委托构造函数中，先执行其本身的代码（花括弧中的…），再去执行被委托的构造方法</p>
+<h3 id="委托构造函数">委托构造函数</h3>
+<p>这个是C++11里面的新功能，放上例子。在委托构造函数中，先执行其本身的代码（花括弧中的...），再去执行被委托的构造方法</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SalesData</span> &#123;</span></span><br><span class="line">    <span class="comment">//非委托构造函数</span></span><br><span class="line">    SalesData(<span class="built_in">std</span>::<span class="built_in">string</span> s)&#123;&#125;</span><br><span class="line">    SalesData(<span class="built_in">std</span>::<span class="built_in">string</span> s, <span class="keyword">unsigned</span> count):bookNo(s), unitsSold(count)&#123;&#125;</span><br><span class="line">    <span class="comment">//委托构造函数</span></span><br><span class="line">    SalesData(): SalesData(<span class="string">""</span>,<span class="number">0</span>)&#123;...&#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">combine</span><span class="params">(<span class="keyword">const</span> SalesData&amp; item)</span></span>&#123;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h3 id="explicit关键字"><a href="#explicit关键字" class="headerlink" title="explicit关键字"></a>explicit关键字</h3><p>explicit关键字主要是用在隐式转换上。比如说item是一个SalesData对象，该对象有一个combine方法，接受一个SalesData类型的常量引用。那么</p>
+<h3 id="explicit关键字">explicit关键字</h3>
+<p>explicit关键字主要是用在隐式转换上。比如说item是一个SalesData对象，该对象有一个combine方法，接受一个SalesData类型的常量引用。那么</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//显式转换成string，隐式转化成SalesData，正确</span></span><br><span class="line">item.combine(<span class="built_in">string</span>(<span class="string">"99999"</span>));</span><br><span class="line"><span class="comment">//隐式转换成string，显式转换成SalesData，正确</span></span><br><span class="line">item.combine(SalesData(<span class="string">"99999"</span>));</span><br><span class="line"></span><br><span class="line"><span class="comment">//但是不能两步转换！错误！</span></span><br><span class="line">item.combine(<span class="string">"999999"</span>);</span><br></pre></td></tr></table></figure>
-
 <p>而explicit关键字能阻止隐式转换（顾名思义嘛，explicit是明确的意思）</p>
 <p>不过要注意一点的是，explicit关键字只对单个参数的构造函数有效，需要多个参数的构造函数不适用隐式转换，因此也就不需要explicit关键字了。</p>
-<h2 id="类的拷贝、赋值、析构"><a href="#类的拷贝、赋值、析构" class="headerlink" title="类的拷贝、赋值、析构"></a>类的拷贝、赋值、析构</h2><p>大多数情况下编译器会自动生成默认的拷贝、赋值、析构函数，但是也不尽然，尤其是当类内有动态分配的内存时（比如涉及到new delete之类的）。事实上为了防止我们在内存的枪林弹雨里挣扎，《C++ Primer》建议能用std里的东西就用std里的东西，比如vector或string之类的。</p>
-<h3 id="类拷贝"><a href="#类拷贝" class="headerlink" title="类拷贝"></a>类拷贝</h3><p>拷贝构造函数指的是：一个构造函数的第一个参数是自身类型的引用，且任何额外参数都有默认值</p>
+<h2 id="类的拷贝赋值析构">类的拷贝、赋值、析构</h2>
+<p>大多数情况下编译器会自动生成默认的拷贝、赋值、析构函数，但是也不尽然，尤其是当类内有动态分配的内存时（比如涉及到new delete之类的）。事实上为了防止我们在内存的枪林弹雨里挣扎，《C++ Primer》建议能用std里的东西就用std里的东西，比如vector或string之类的。</p>
+<h3 id="类拷贝">类拷贝</h3>
+<p>拷贝构造函数指的是：一个构造函数的第一个参数是自身类型的引用，且任何额外参数都有默认值</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Foo</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    Foo();</span><br><span class="line">    Foo(<span class="keyword">const</span> Foo&amp;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p>因此对于类而言</p>
 <ul>
 <li>直接初始化：要求编译器使用普通的函数匹配</li>
@@ -288,7 +291,6 @@
 </ul>
 <p>以下是书中给的例子</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//直接初始化</span></span><br><span class="line"><span class="function"><span class="built_in">string</span> <span class="title">dots</span><span class="params">(<span class="number">10</span>, <span class="string">'.'</span>)</span></span>;</span><br><span class="line"><span class="function"><span class="built_in">string</span> <span class="title">s</span><span class="params">(dots)</span></span>;</span><br><span class="line"><span class="built_in">string</span> s2 = dots;</span><br><span class="line"><span class="comment">//拷贝初始化</span></span><br><span class="line"><span class="built_in">string</span> book = <span class="string">"999999"</span>;</span><br><span class="line"><span class="built_in">string</span> nine = <span class="built_in">string</span>(<span class="number">100</span>, <span class="string">'9'</span>);</span><br></pre></td></tr></table></figure>
-
 <p>值得注意的是，拷贝初始化不仅在使用=的时候发生，还包括了：</p>
 <ul>
 <li>将一个对象作为实参传递给一个非引用类型形参</li>
@@ -297,15 +299,14 @@
 </ul>
 <p>前两点比较好理解。在我的个人实践中，为了防止超大的vector在函数调用中引起的内存拷贝，一般这么写（不知道有没有更优雅的方式）</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">fun</span><span class="params">(<span class="keyword">const</span> <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; &amp;arg, <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; &amp;res)</span></span>;</span><br></pre></td></tr></table></figure>
-
 <p>最后一点中的聚合类指的是只包含数据的struct，可以如此初始化</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Foo</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">  <span class="keyword">int</span> a;</span><br><span class="line">  <span class="keyword">double</span> b;</span><br><span class="line">&#125;;</span><br><span class="line">Foo foo = &#123; <span class="number">1</span>, <span class="number">2</span> &#125;;</span><br></pre></td></tr></table></figure>
-
 <p>这里有一点值得注意，即拷贝初始化和explicit关键字。如果我们使用的初始化值是通过一个explicit构造函数进行类型转换，那么就要注意。这里有点微妙，来用vector说明一下。</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; <span class="title">v1</span><span class="params">(<span class="number">10</span>)</span></span>;<span class="comment">//正确的直接初始化，这个构造函数是explicit的</span></span><br><span class="line"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; v2 = <span class="number">10</span>；<span class="comment">//错误，这里有隐式转换，但是被explicit阻止了</span></span><br><span class="line"><span class="keyword">void</span> f(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;);<span class="comment">//f的参数是拷贝初始化</span></span><br><span class="line">f(<span class="number">10</span>);<span class="comment">//错误，不能隐式地将10转为vector&lt;int&gt;</span></span><br><span class="line">f(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;(<span class="number">10</span>));<span class="comment">//正确，显式地将10转为vector</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="类赋值"><a href="#类赋值" class="headerlink" title="类赋值"></a>类赋值</h3><p>这里主要是涉及到了赋值运算符的重载。对于默认的赋值运算符（即合成拷贝赋值运算符），会对右侧的对象每个非static成员赋予左边，用的是拷贝构造函数。也就是说，大部分上都是直接内存拷贝，正确地使用是不会有野指针问题。当然可以重载，这个就要小心啦，指针容易乱飞，尤其是再掺上多线程，啧啧，那酸爽。</p>
-<h3 id="类析构"><a href="#类析构" class="headerlink" title="类析构"></a>类析构</h3><p>析构函数不接受参数，也没有返回值，不能被重载。一般而言，内置类型没有析构函数，因此销毁内置类型成员什么也不需要做。但是指针类型的需要小心！不然会出现内存泄露。</p>
+<h3 id="类赋值">类赋值</h3>
+<p>这里主要是涉及到了赋值运算符的重载。对于默认的赋值运算符（即合成拷贝赋值运算符），会对右侧的对象每个非static成员赋予左边，用的是拷贝构造函数。也就是说，大部分上都是直接内存拷贝，正确地使用是不会有野指针问题。当然可以重载，这个就要小心啦，指针容易乱飞，尤其是再掺上多线程，啧啧，那酸爽。</p>
+<h3 id="类析构">类析构</h3>
+<p>析构函数不接受参数，也没有返回值，不能被重载。一般而言，内置类型没有析构函数，因此销毁内置类型成员什么也不需要做。但是指针类型的需要小心！不然会出现内存泄露。</p>
 <p>什么时候会调用析构函数：</p>
 <ul>
 <li>变量在离开作用域时</li>
@@ -316,10 +317,10 @@
 </ul>
 <p>书中提到一点，析构函数本身并不直接销毁成员。成员是在析构函数体之后隐含的析构阶段中被销毁的。析构函数在某些时候用于阻止对象被销毁，这里就可能造成new和delete不能成对出现（其实现在我还是想不通这又有什么用。。。）。如下</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">NoDeconstruct</span> &#123;</span></span><br><span class="line">    NoDeconstruct() = <span class="keyword">default</span>;</span><br><span class="line">    ~NoDeconstruct() = <span class="keyword">delete</span>;<span class="comment">//表示删除该方法</span></span><br><span class="line">&#125;</span><br><span class="line">NoDeconstruct n;<span class="comment">//错误：析构方法不存在</span></span><br><span class="line">NoDeconstruct *p = <span class="keyword">new</span> NoDeconstruct();<span class="comment">//正确</span></span><br><span class="line"><span class="keyword">delete</span> p;<span class="comment">//错误</span></span><br></pre></td></tr></table></figure>
-
 <p>专门在Xcode上试了一下，还真可以。不过这点在三/五法则中直接禁止，个人认为析构函数在绝大多数情况下都不会被删除。</p>
-<h3 id="三-五法则"><a href="#三-五法则" class="headerlink" title="三/五法则"></a>三/五法则</h3><p>三指的是拷贝构造函数、拷贝赋值函数、析构函数。五指的是对应的五条法则。</p>
-<p> <strong>1.需要析构函数的类也需要拷贝构造函数和拷贝赋值函数</strong></p>
+<h3 id="三五法则">三/五法则</h3>
+<p>三指的是拷贝构造函数、拷贝赋值函数、析构函数。五指的是对应的五条法则。</p>
+<p><strong>1.需要析构函数的类也需要拷贝构造函数和拷贝赋值函数</strong></p>
 <p>典型的情况就是类内包含指针成员。指针成员需要析构函数来释放其指向的内存，那么如果执行默认的拷贝构造函数，意味着内存共享，然而这个共享是不靠谱的。想象一下拷贝构造出来的对象被销毁了，意味着那块共享的内存也没了</p>
 <p><strong>2.需要拷贝操作的类也需要赋值操作，反之亦然</strong></p>
 <p>需要拷贝操作代表这个类在拷贝时需要进行一些额外的操作。赋值操作=先析构+拷贝，所以拷贝需要的赋值也需要。反之亦然。</p>
@@ -414,7 +415,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#类定义"><span class="nav-number">1.</span> <span class="nav-text">类定义</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#class-vs-struct"><span class="nav-number">1.1.</span> <span class="nav-text">class vs struct</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#this指针"><span class="nav-number">1.2.</span> <span class="nav-text">this指针</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#const成员函数"><span class="nav-number">1.3.</span> <span class="nav-text">const成员函数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#构造函数"><span class="nav-number">2.</span> <span class="nav-text">构造函数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#默认构造函数"><span class="nav-number">2.1.</span> <span class="nav-text">默认构造函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#default的含义"><span class="nav-number">2.2.</span> <span class="nav-text">&#x3D;default的含义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#构造函数初始化列表"><span class="nav-number">2.3.</span> <span class="nav-text">构造函数初始化列表</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#委托构造函数"><span class="nav-number">2.4.</span> <span class="nav-text">委托构造函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#explicit关键字"><span class="nav-number">2.5.</span> <span class="nav-text">explicit关键字</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#类的拷贝、赋值、析构"><span class="nav-number">3.</span> <span class="nav-text">类的拷贝、赋值、析构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#类拷贝"><span class="nav-number">3.1.</span> <span class="nav-text">类拷贝</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#类赋值"><span class="nav-number">3.2.</span> <span class="nav-text">类赋值</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#类析构"><span class="nav-number">3.3.</span> <span class="nav-text">类析构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三-五法则"><span class="nav-number">3.4.</span> <span class="nav-text">三&#x2F;五法则</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#类定义"><span class="nav-number">1.</span> <span class="nav-text">类定义</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#class-vs-struct"><span class="nav-number">1.1.</span> <span class="nav-text">class vs struct</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#this指针"><span class="nav-number">1.2.</span> <span class="nav-text">this指针</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#const成员函数"><span class="nav-number">1.3.</span> <span class="nav-text">const成员函数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#构造函数"><span class="nav-number">2.</span> <span class="nav-text">构造函数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#默认构造函数"><span class="nav-number">2.1.</span> <span class="nav-text">默认构造函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#default的含义"><span class="nav-number">2.2.</span> <span class="nav-text">&#x3D;default的含义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#构造函数初始化列表"><span class="nav-number">2.3.</span> <span class="nav-text">构造函数初始化列表</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#委托构造函数"><span class="nav-number">2.4.</span> <span class="nav-text">委托构造函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#explicit关键字"><span class="nav-number">2.5.</span> <span class="nav-text">explicit关键字</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#类的拷贝赋值析构"><span class="nav-number">3.</span> <span class="nav-text">类的拷贝、赋值、析构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#类拷贝"><span class="nav-number">3.1.</span> <span class="nav-text">类拷贝</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#类赋值"><span class="nav-number">3.2.</span> <span class="nav-text">类赋值</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#类析构"><span class="nav-number">3.3.</span> <span class="nav-text">类析构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三五法则"><span class="nav-number">3.4.</span> <span class="nav-text">三&#x2F;五法则</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 

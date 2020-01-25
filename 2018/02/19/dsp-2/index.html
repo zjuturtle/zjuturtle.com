@@ -52,12 +52,14 @@
 <meta property="og:url" content="http://zjuturtle.com/2018/02/19/dsp-2/index.html">
 <meta property="og:site_name" content="zjuturtle&#39;s blog">
 <meta property="og:description" content="第二部分主要是 z 变换相关内容。">
+<meta property="og:image" content="http://zjuturtle.com/2018/02/19/dsp-2/z_s_plane.jpg">
 <meta property="article:published_time" content="2018-02-19T05:27:47.000Z">
 <meta property="article:modified_time" content="2018-06-20T09:08:59.960Z">
 <meta property="article:author" content="zjuturtle">
 <meta property="article:tag" content="DSP">
 <meta property="article:tag" content="Algorithm">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://zjuturtle.com/2018/02/19/dsp-2/z_s_plane.jpg">
 
 <link rel="canonical" href="http://zjuturtle.com/2018/02/19/dsp-2/">
 
@@ -234,143 +236,180 @@
       
         <p>第二部分主要是 z 变换相关内容。</p>
 <a id="more"></a>
-
-<h2 id="z-变换定义"><a href="#z-变换定义" class="headerlink" title="z 变换定义"></a>z 变换定义</h2><p>对一个离散信号 $x(n), n \in (-\infty, \infty)$，z 变换的定义如下</p>
-<p>$$X(z) = \sum_{n=-\infty}^{\infty}x(n)z^{-n}$$</p>
-<p>其中 $z$ 为一复变量。因为 $n \in (-\infty, \infty)$，上式也称之为双边 z 变换。那么如果 $n \in [0, \infty)$ ，就变成了单边 z 变换</p>
-<p>$$X(z) = \sum_{n=0}^{\infty}x(n)z^{-n}$$</p>
-<p>同样的，如果我们已知 $X(z)$ 及其收敛域 ROC 反求序列 $x(n)$ 则称之为逆 z 变换。</p>
-<h3 id="z-变换与拉普拉斯变换"><a href="#z-变换与拉普拉斯变换" class="headerlink" title="z 变换与拉普拉斯变换"></a>z 变换与拉普拉斯变换</h3><p>令 $x_s(nT_s)$ 是由连续信号 $x(t)$ 经抽样得到，即有</p>
-<p>$$x_s(nT_s) = x(t)\sum_{n=-\infty}^{\infty}\delta(t-nT_s)=\sum_nx(nT_s)\delta(t-nT_s)$$</p>
+<h2 id="z-变换定义">z 变换定义</h2>
+<p>对一个离散信号 <span class="math inline">\(x(n), n \in (-\infty, \infty)\)</span>，z 变换的定义如下</p>
+<p><span class="math display">\[X(z) = \sum_{n=-\infty}^{\infty}x(n)z^{-n}\]</span></p>
+<p>其中 <span class="math inline">\(z\)</span> 为一复变量。因为 <span class="math inline">\(n \in (-\infty, \infty)\)</span>，上式也称之为双边 z 变换。那么如果 <span class="math inline">\(n \in [0, \infty)\)</span> ，就变成了单边 z 变换</p>
+<p><span class="math display">\[X(z) = \sum_{n=0}^{\infty}x(n)z^{-n}\]</span></p>
+<p>同样的，如果我们已知 <span class="math inline">\(X(z)\)</span> 及其收敛域 ROC 反求序列 <span class="math inline">\(x(n)\)</span> 则称之为逆 z 变换。</p>
+<h3 id="z-变换与拉普拉斯变换">z 变换与拉普拉斯变换</h3>
+<p>令 <span class="math inline">\(x_s(nT_s)\)</span> 是由连续信号 <span class="math inline">\(x(t)\)</span> 经抽样得到，即有</p>
+<p><span class="math display">\[x_s(nT_s) = x(t)\sum_{n=-\infty}^{\infty}\delta(t-nT_s)=\sum_nx(nT_s)\delta(t-nT_s)\]</span></p>
 <p>对上式取拉普拉斯变换，有</p>
-<p>$$\begin{split}X(s) &amp;= \int_{-\infty}^{\infty}x_s(nT_s)e^{-st}dt \<br>&amp;=\int_{-\infty}^{\infty}[\sum_nx(nT_s)\delta(t-nT_s)]e^{-st}dt \<br>&amp;=\sum_nx(nT_s)\int_{-\infty}^{\infty}\delta(t-nT_s)e^{-st}dt \<br>&amp;=\sum_{n=-\infty}^{\infty}x(nT_s)e^{-snT_s} \<br>&amp;=\int_{-\infty}^{\infty}x(nT_s)e^{-(snT_S)t}dt = X(e^{sT_s}) \end{split}$$</p>
-<p>记 $z=e^{sT_s}$，将 $T_s$ 归一化为 1，我们就能得到 z 变换的定义</p>
-<p>$$X(z) = \sum_{n=-\infty}^{\infty}x(n)z^{-n}$$</p>
-<p>记拉普拉斯变量 $s=\sigma + j\Omega$，且 $\Omega=2 \pi f$。$\Omega$ 可以认为是相对连续系统及连续信号的角频率，单位 rad/s，则有</p>
-<p>$$z=e^{sT_s}=e^{(\sigma+j \Omega)T_s}=e^{\sigma T_s}e^{j \Omega T_s}$$</p>
-<p>再记 $r=e^{\sigma T_s},\omega=\Omega T_s$，则有</p>
-<p>$$z=re^{j \omega}$$</p>
-<p>$$X(z)=\sum_{n=-\infty}^{\infty}[x(n)r^{-n}]e^{-j\omega n}$$</p>
-<p>注意到这个式子和傅立叶变换的相似之处。z 变换可以看成是信号乘以一加权序列 $r^{-n}$ 后的傅立叶变换 $X(z) = F[x(n)r^{-n}]$。显然，当 $r=1$ 时 z 变换就变成了离散序列的傅立叶变换。</p>
-<h3 id="z-平面和-s-平面"><a href="#z-平面和-s-平面" class="headerlink" title="z 平面和 s 平面"></a>z 平面和 s 平面</h3><p>直接抄一张书上的图（Mac下数学绘图太麻烦了）</p>
-
-
+<p><span class="math display">\[\begin{split}X(s) &amp;= \int_{-\infty}^{\infty}x_s(nT_s)e^{-st}dt \\\
+&amp;=\int_{-\infty}^{\infty}[\sum_nx(nT_s)\delta(t-nT_s)]e^{-st}dt \\\
+&amp;=\sum_nx(nT_s)\int_{-\infty}^{\infty}\delta(t-nT_s)e^{-st}dt \\\
+&amp;=\sum_{n=-\infty}^{\infty}x(nT_s)e^{-snT_s} \\\
+&amp;=\int_{-\infty}^{\infty}x(nT_s)e^{-(snT_S)t}dt = X(e^{sT_s}) \end{split}\]</span></p>
+<p>记 <span class="math inline">\(z=e^{sT_s}\)</span>，将 <span class="math inline">\(T_s\)</span> 归一化为 1，我们就能得到 z 变换的定义</p>
+<p><span class="math display">\[X(z) = \sum_{n=-\infty}^{\infty}x(n)z^{-n}\]</span></p>
+<p>记拉普拉斯变量 <span class="math inline">\(s=\sigma + j\Omega\)</span>，且 <span class="math inline">\(\Omega=2 \pi f\)</span>。<span class="math inline">\(\Omega\)</span> 可以认为是相对连续系统及连续信号的角频率，单位 rad/s，则有</p>
+<p><span class="math display">\[z=e^{sT_s}=e^{(\sigma+j \Omega)T_s}=e^{\sigma T_s}e^{j \Omega T_s}\]</span></p>
+<p>再记 <span class="math inline">\(r=e^{\sigma T_s},\omega=\Omega T_s\)</span>，则有</p>
+<p><span class="math display">\[z=re^{j \omega}\]</span></p>
+<p><span class="math display">\[X(z)=\sum_{n=-\infty}^{\infty}[x(n)r^{-n}]e^{-j\omega n}\]</span></p>
+<p>注意到这个式子和傅立叶变换的相似之处。z 变换可以看成是信号乘以一加权序列 <span class="math inline">\(r^{-n}\)</span> 后的傅立叶变换 <span class="math inline">\(X(z) = F[x(n)r^{-n}]\)</span>。显然，当 <span class="math inline">\(r=1\)</span> 时 z 变换就变成了离散序列的傅立叶变换。</p>
+<h3 id="z-平面和-s-平面">z 平面和 s 平面</h3>
+<p>直接抄一张书上的图（Mac下数学绘图太麻烦了）</p>
+<img src="/2018/02/19/dsp-2/z_s_plane.jpg" class="">
 <p>不难得到二者之间的对应关系</p>
 <ul>
-<li>当 $\sigma = 0$ 时， $r=1$。对应 $s$ 平面的 $j \Omega$ 轴。而 $|z|=1$ 对应 $z$ 平面半径 $r=1$ 的圆。即当 $z$ 仅在 $j\Omega$ 轴上取值时，z 变换就变成了傅立叶变换</li>
-<li>当 $\sigma &lt; 0$ 对应 $s$ 平面的左半平面，对应 $r &lt; 1$ 即单位圆内部</li>
+<li>当 <span class="math inline">\(\sigma = 0\)</span> 时， <span class="math inline">\(r=1\)</span>。对应 <span class="math inline">\(s\)</span> 平面的 <span class="math inline">\(j \Omega\)</span> 轴。而 <span class="math inline">\(|z|=1\)</span> 对应 <span class="math inline">\(z\)</span> 平面半径 <span class="math inline">\(r=1\)</span> 的圆。即当 <span class="math inline">\(z\)</span> 仅在 <span class="math inline">\(j\Omega\)</span> 轴上取值时，z 变换就变成了傅立叶变换</li>
+<li>当 <span class="math inline">\(\sigma &lt; 0\)</span> 对应 <span class="math inline">\(s\)</span> 平面的左半平面，对应 <span class="math inline">\(r &lt; 1\)</span> 即单位圆内部</li>
 </ul>
-<p>我们设 $T_s$ 是抽样周期，$f_s = 1/T_s$ 为抽样频率，则有</p>
-<p>$$\omega=\Omega T_s = 2 \pi f/f_s$$</p>
-<p>因此，当 $f$ 在 $j\Omega$ 轴上从 $-\infty$ 到 $\infty$ 的过程中。每间隔 $f_s$，对应 $\omega$ 从 0 到 $2\pi$，即在单位圆上绕了一周。所以从 $s$ 平面到 $z$ 平面的映射不是单一的。</p>
+<p>我们设 <span class="math inline">\(T_s\)</span> 是抽样周期，<span class="math inline">\(f_s = 1/T_s\)</span> 为抽样频率，则有</p>
+<p><span class="math display">\[\omega=\Omega T_s = 2 \pi f/f_s\]</span></p>
+<p>因此，当 <span class="math inline">\(f\)</span> 在 <span class="math inline">\(j\Omega\)</span> 轴上从 <span class="math inline">\(-\infty\)</span> 到 <span class="math inline">\(\infty\)</span> 的过程中。每间隔 <span class="math inline">\(f_s\)</span>，对应 <span class="math inline">\(\omega\)</span> 从 0 到 <span class="math inline">\(2\pi\)</span>，即在单位圆上绕了一周。所以从 <span class="math inline">\(s\)</span> 平面到 <span class="math inline">\(z\)</span> 平面的映射不是单一的。</p>
 <p>由此引出一些重要的定义</p>
 <ul>
-<li>实际频率 $f$，相对连续系统的频率</li>
-<li>角频率 $\Omega=2\pi f$，相对连续系统的角频率</li>
-<li>归一化频率 $f’=f/f_s$</li>
-<li>圆周频率 $\omega=2 \pi f’$</li>
+<li>实际频率 <span class="math inline">\(f\)</span>，相对连续系统的频率</li>
+<li>角频率 <span class="math inline">\(\Omega=2\pi f\)</span>，相对连续系统的角频率</li>
+<li>归一化频率 <span class="math inline">\(f&#39;=f/f_s\)</span></li>
+<li>圆周频率 <span class="math inline">\(\omega=2 \pi f&#39;\)</span></li>
 </ul>
-<h2 id="z-变换的收敛域"><a href="#z-变换的收敛域" class="headerlink" title="z 变换的收敛域"></a>z 变换的收敛域</h2><p>给出定义，对于 z 变换 $X(z)$，使其收敛的 $z$ 的取值集合称为 z 变换的收敛域 ROC。即有</p>
-<p>$$\sum_{n=-\infty}^{\infty}|x(n)r^{-n}|&lt;\infty$$</p>
-<p>其中 $r = |z|$。因此可以想象收敛域时 $z$ 平面上一个圆的内部或者外部，即有 $R_-&lt;|z|&lt;R_+$。下面有一些例子</p>
-<h3 id="例1"><a href="#例1" class="headerlink" title="例1"></a>例1</h3><p>令 $a$ 为常数，$u(n)$ 为单位阶跃函数。求以下式子 z 变换的收敛域</p>
-<p>$$x(n)=a^nu(n)$$</p>
+<h2 id="z-变换的收敛域">z 变换的收敛域</h2>
+<p>给出定义，对于 z 变换 <span class="math inline">\(X(z)\)</span>，使其收敛的 <span class="math inline">\(z\)</span> 的取值集合称为 z 变换的收敛域 ROC。即有</p>
+<p><span class="math display">\[\sum_{n=-\infty}^{\infty}|x(n)r^{-n}|&lt;\infty\]</span></p>
+<p>其中 <span class="math inline">\(r = |z|\)</span>。因此可以想象收敛域时 <span class="math inline">\(z\)</span> 平面上一个圆的内部或者外部，即有 <span class="math inline">\(R_-&lt;|z|&lt;R_+\)</span>。下面有一些例子</p>
+<h3 id="例1">例1</h3>
+<p>令 <span class="math inline">\(a\)</span> 为常数，<span class="math inline">\(u(n)\)</span> 为单位阶跃函数。求以下式子 z 变换的收敛域</p>
+<p><span class="math display">\[x(n)=a^nu(n)\]</span></p>
 <p>根据定义我们有</p>
-<p>$$\begin{split} X(z)&amp;=\sum_{n=-\infty}^{\infty}a^nu(n)z^{-n}=\sum_{n=0}^{\infty} (az^{-1})^n \<br>&amp;=\frac z{z-a}<br>\end{split}$$</p>
-<p>显然当 $|az^{-1}|&lt;1$，即 $|z| &gt; |a|$时，$X(z)$ 收敛。因此收敛域为 $a&lt;|z|&lt;\infty$，图像上为圆半径 $r=|a|$ 之外的部分</p>
-<h3 id="例2"><a href="#例2" class="headerlink" title="例2"></a>例2</h3><p>定义同上</p>
-<p>$$x(n)=-a^nu(-n-1)$$</p>
-<p>其中 </p>
-<p>$$u(-n-1)=\begin{cases}<br>&amp;1 \ \ \  n \leq -1 \<br>&amp;0 \ \ \  n \geq 0<br>\end{cases}$$</p>
+<p><span class="math display">\[\begin{split} X(z)&amp;=\sum_{n=-\infty}^{\infty}a^nu(n)z^{-n}=\sum_{n=0}^{\infty} (az^{-1})^n \\\
+&amp;=\frac z{z-a}
+\end{split}\]</span></p>
+<p>显然当 <span class="math inline">\(|az^{-1}|&lt;1\)</span>，即 <span class="math inline">\(|z| &gt; |a|\)</span>时，<span class="math inline">\(X(z)\)</span> 收敛。因此收敛域为 <span class="math inline">\(a&lt;|z|&lt;\infty\)</span>，图像上为圆半径 <span class="math inline">\(r=|a|\)</span> 之外的部分</p>
+<h3 id="例2">例2</h3>
+<p>定义同上</p>
+<p><span class="math display">\[x(n)=-a^nu(-n-1)\]</span></p>
+<p>其中</p>
+<p><span class="math display">\[u(-n-1)=\begin{cases} 
+&amp;1 \ \ \  n \leq -1 \\\
+&amp;0 \ \ \  n \geq 0
+\end{cases}\]</span></p>
 <p>根据定义我们有</p>
-<p>$$\begin{split} X(z)&amp;=\sum_{n=-\infty}^{\infty}a^nu(-n-1)z^{-n}=-\sum_{n=-\infty}^0 (az^{-1})^n \<br>&amp;=\frac z{z-a}<br>\end{split}$$</p>
-<p>此时显然有 $|z|&lt;|a|$ 时收敛。因此收敛域为 $|z|&lt;a$，图像上为圆半径 $r=|a|$ 之内的部分。注意到例 1 和例 2 的 z 变换结果是一样的，但 ROC 不同。因此为了保证由逆 z 变换求出的序列是唯一的，则必须指明 ROC。</p>
-<h3 id="例3"><a href="#例3" class="headerlink" title="例3"></a>例3</h3><p>定义同上</p>
-<p>$$x(n)=a^{|n|}=a^nu(n)+a^{-n}u(-n-1)$$</p>
-<p>对于级数 $a^nu(n)$，其 z 变换为 $\frac 1{1-az^{-1}}$，ROC 是 $|z|&gt;a$。对于级数 $a^{-n}u(-n-1)$，其 z 变换为 $\frac 1{1-az}-1$，ROC 为 $|z|&lt;\frac 1a$。因此</p>
-<p>$$X(z)=\frac 1{1-az^{-1}}+\frac 1{1-az}-1$$</p>
-<p>其 ROC 为 $a&lt;|z|&lt;\frac 1a$</p>
-<p>显然 $a&gt;1$ 时不收敛，当 $a&lt;1$ 时 $X(z)$ 才收敛。在图像上是一个内径为 $r=a$ 外径为 $r=\frac 1a$ 的环</p>
-<h3 id="序列与-ROC-的关系"><a href="#序列与-ROC-的关系" class="headerlink" title="序列与 ROC 的关系"></a>序列与 ROC 的关系</h3><p>我们设序列 $x(n)$ 仅在 $n$ 取值 在 $N_1$ 与 $N_2$ 间有值，且$N_1 &lt; N_2$。我们可以推演得到以下 ROC 性质。这里特别注意一下，对于有限长的因果序列，其收敛域为 $ |z|&gt;0 $</p>
-<h4 id="有限长序列"><a href="#有限长序列" class="headerlink" title="有限长序列"></a>有限长序列</h4><table>
+<p><span class="math display">\[\begin{split} X(z)&amp;=\sum_{n=-\infty}^{\infty}a^nu(-n-1)z^{-n}=-\sum_{n=-\infty}^0 (az^{-1})^n \\\
+&amp;=\frac z{z-a}
+\end{split}\]</span></p>
+<p>此时显然有 <span class="math inline">\(|z|&lt;|a|\)</span> 时收敛。因此收敛域为 <span class="math inline">\(|z|&lt;a\)</span>，图像上为圆半径 <span class="math inline">\(r=|a|\)</span> 之内的部分。注意到例 1 和例 2 的 z 变换结果是一样的，但 ROC 不同。因此为了保证由逆 z 变换求出的序列是唯一的，则必须指明 ROC。</p>
+<h3 id="例3">例3</h3>
+<p>定义同上</p>
+<p><span class="math display">\[x(n)=a^{|n|}=a^nu(n)+a^{-n}u(-n-1)\]</span></p>
+<p>对于级数 <span class="math inline">\(a^nu(n)\)</span>，其 z 变换为 <span class="math inline">\(\frac 1{1-az^{-1}}\)</span>，ROC 是 <span class="math inline">\(|z|&gt;a\)</span>。对于级数 <span class="math inline">\(a^{-n}u(-n-1)\)</span>，其 z 变换为 <span class="math inline">\(\frac 1{1-az}-1\)</span>，ROC 为 <span class="math inline">\(|z|&lt;\frac 1a\)</span>。因此</p>
+<p><span class="math display">\[X(z)=\frac 1{1-az^{-1}}+\frac 1{1-az}-1\]</span></p>
+<p>其 ROC 为 <span class="math inline">\(a&lt;|z|&lt;\frac 1a\)</span></p>
+<p>显然 <span class="math inline">\(a&gt;1\)</span> 时不收敛，当 <span class="math inline">\(a&lt;1\)</span> 时 <span class="math inline">\(X(z)\)</span> 才收敛。在图像上是一个内径为 <span class="math inline">\(r=a\)</span> 外径为 <span class="math inline">\(r=\frac 1a\)</span> 的环</p>
+<h3 id="序列与-roc-的关系">序列与 ROC 的关系</h3>
+<p>我们设序列 <span class="math inline">\(x(n)\)</span> 仅在 <span class="math inline">\(n\)</span> 取值 在 <span class="math inline">\(N_1\)</span> 与 <span class="math inline">\(N_2\)</span> 间有值，且<span class="math inline">\(N_1 &lt; N_2\)</span>。我们可以推演得到以下 ROC 性质。这里特别注意一下，对于有限长的因果序列，其收敛域为 $ |z|&gt;0 $</p>
+<h4 id="有限长序列">有限长序列</h4>
+<table>
 <thead>
-<tr>
-<th align="center">$N_1,N_2$</th>
-<th align="center">ROC</th>
+<tr class="header">
+<th style="text-align: center;"><span class="math inline">\(N_1,N_2\)</span></th>
+<th style="text-align: center;">ROC</th>
 </tr>
 </thead>
-<tbody><tr>
-<td align="center">$0 \leq N_1 &lt; N_2 &lt; \infty$</td>
-<td align="center">$  \lvert z  \rvert &gt;0 $</td>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><span class="math inline">\(0 \leq N_1 &lt; N_2 &lt; \infty\)</span></td>
+<td style="text-align: center;">$ z &gt;0 $</td>
 </tr>
-<tr>
-<td align="center">$ -\infty&lt; N_1 &lt;  N_2 \leq 0$</td>
-<td align="center">$  \lvert z  \rvert &lt; \infty $</td>
+<tr class="even">
+<td style="text-align: center;">$ -&lt; N_1 &lt; N_2 $</td>
+<td style="text-align: center;">$ z &lt; $</td>
 </tr>
-<tr>
-<td align="center">$ -\infty&lt; N_1 \leq 0 &lt; N_2 &lt; \infty$</td>
-<td align="center">$  0 &lt; \lvert z  \rvert &lt; \infty $</td>
+<tr class="odd">
+<td style="text-align: center;">$ -&lt; N_1  &lt; N_2 &lt; $</td>
+<td style="text-align: center;">$ 0 &lt; z &lt; $</td>
 </tr>
-</tbody></table>
-<h4 id="右边序列"><a href="#右边序列" class="headerlink" title="右边序列"></a>右边序列</h4><table>
+</tbody>
+</table>
+<h4 id="右边序列">右边序列</h4>
+<table>
 <thead>
-<tr>
-<th align="center">$N_1,N_2$</th>
-<th align="center">ROC</th>
+<tr class="header">
+<th style="text-align: center;"><span class="math inline">\(N_1,N_2\)</span></th>
+<th style="text-align: center;">ROC</th>
 </tr>
 </thead>
-<tbody><tr>
-<td align="center">$N_1&lt;0,N_2=\infty$</td>
-<td align="center">$R_{x1}&lt; \lvert z \rvert &lt; \infty $</td>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><span class="math inline">\(N_1&lt;0,N_2=\infty\)</span></td>
+<td style="text-align: center;">$R_{x1}&lt; z &lt; $</td>
 </tr>
-<tr>
-<td align="center">$N_1 \geq 0,N_2=\infty$</td>
-<td align="center">$\lvert z \rvert &gt;R_{x1}$</td>
+<tr class="even">
+<td style="text-align: center;"><span class="math inline">\(N_1 \geq 0,N_2=\infty\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(\lvert z \rvert &gt;R_{x1}\)</span></td>
 </tr>
-</tbody></table>
-<h4 id="左边序列"><a href="#左边序列" class="headerlink" title="左边序列"></a>左边序列</h4><table>
+</tbody>
+</table>
+<h4 id="左边序列">左边序列</h4>
+<table>
 <thead>
-<tr>
-<th align="center">$N_1,N_2$</th>
-<th align="center">ROC</th>
+<tr class="header">
+<th style="text-align: center;"><span class="math inline">\(N_1,N_2\)</span></th>
+<th style="text-align: center;">ROC</th>
 </tr>
 </thead>
-<tbody><tr>
-<td align="center">$N_1=-\infty,N_2&gt;0$</td>
-<td align="center">$0&lt; \lvert z \rvert &lt;R_{x2}$</td>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><span class="math inline">\(N_1=-\infty,N_2&gt;0\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(0&lt; \lvert z \rvert &lt;R_{x2}\)</span></td>
 </tr>
-<tr>
-<td align="center">$N_1=-\infty,N_2 \leq 0$</td>
-<td align="center">$\lvert z \rvert &lt;R_{x2}$</td>
+<tr class="even">
+<td style="text-align: center;"><span class="math inline">\(N_1=-\infty,N_2 \leq 0\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(\lvert z \rvert &lt;R_{x2}\)</span></td>
 </tr>
-</tbody></table>
-<h4 id="双边序列"><a href="#双边序列" class="headerlink" title="双边序列"></a>双边序列</h4><table>
+</tbody>
+</table>
+<h4 id="双边序列">双边序列</h4>
+<table>
 <thead>
-<tr>
-<th align="center">$N_1,N_2$</th>
-<th align="center">ROC</th>
+<tr class="header">
+<th style="text-align: center;"><span class="math inline">\(N_1,N_2\)</span></th>
+<th style="text-align: center;">ROC</th>
 </tr>
 </thead>
-<tbody><tr>
-<td align="center">$N_1=-\infty,N_2=\infty$</td>
-<td align="center">$R_{x1}&lt; \lvert z \rvert &lt; R_{x2}$</td>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><span class="math inline">\(N_1=-\infty,N_2=\infty\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(R_{x1}&lt; \lvert z \rvert &lt; R_{x2}\)</span></td>
 </tr>
-</tbody></table>
-<h2 id="z-变换的性质"><a href="#z-变换的性质" class="headerlink" title="z 变换的性质"></a>z 变换的性质</h2><h3 id="线性"><a href="#线性" class="headerlink" title="线性"></a>线性</h3><p>若</p>
-<p>$$\begin{split} Z[x_1(n)]=&amp;X_1(z),ROC:R_1 \<br>Z[x_2(n)]=&amp;X_2(z),ROC:R_2 \end{split}$$</p>
+</tbody>
+</table>
+<h2 id="z-变换的性质">z 变换的性质</h2>
+<h3 id="线性">线性</h3>
+<p>若</p>
+<p><span class="math display">\[\begin{split} Z[x_1(n)]=&amp;X_1(z),ROC:R_1 \\\
+Z[x_2(n)]=&amp;X_2(z),ROC:R_2 \end{split}\]</span></p>
 <p>则有</p>
-<p>$$Z[ax_1(n)+bx_2(n)]=aX_1(z)+bX_2(z), ROC:R_1 \bigcap R_2$$</p>
-<h3 id="时移性质"><a href="#时移性质" class="headerlink" title="时移性质"></a>时移性质</h3><p>对于双边 z 变换有</p>
-<p>$$\begin{split} Z[x(n-k)]&amp;=\sum_{n=-\infty}^{\infty}x(n-k)z^{-n} \<br>&amp;=\sum_{m=-\infty}^{\infty}x(m)z^{-m}z^{-k}=z^{-k}X(z) \end{split}$$</p>
-<p>但对于单边 z 变换则稍微有点不同。如果 $x(n)$ 是因果序列</p>
-<p>$$Z[x(n-k)] = z^{-k}X^+(z)=z^{-k}X(z)$$<br>$$\begin{split} Z[x(n+k)] =&amp; z^k[X^+(z)-\sum_{n=0}^{k-1}x(n)z^{-n}] \<br>=&amp; z^k[X(z)-\sum_{n=0}^{k-1}x(n)z^{-n}] \end{split}$$</p>
-<h3 id="加权性质"><a href="#加权性质" class="headerlink" title="加权性质"></a>加权性质</h3><p>若</p>
-<p>$$Z[x(n)]=X(z),ROC:R_1 &lt; \lvert z \rvert &lt; R_2$$</p>
+<p><span class="math display">\[Z[ax_1(n)+bx_2(n)]=aX_1(z)+bX_2(z), ROC:R_1 \bigcap R_2\]</span></p>
+<h3 id="时移性质">时移性质</h3>
+<p>对于双边 z 变换有</p>
+<p><span class="math display">\[\begin{split} Z[x(n-k)]&amp;=\sum_{n=-\infty}^{\infty}x(n-k)z^{-n} \\\
+&amp;=\sum_{m=-\infty}^{\infty}x(m)z^{-m}z^{-k}=z^{-k}X(z) \end{split}\]</span></p>
+<p>但对于单边 z 变换则稍微有点不同。如果 <span class="math inline">\(x(n)\)</span> 是因果序列</p>
+<p><span class="math display">\[Z[x(n-k)] = z^{-k}X^+(z)=z^{-k}X(z)\]</span> <span class="math display">\[\begin{split} Z[x(n+k)] =&amp; z^k[X^+(z)-\sum_{n=0}^{k-1}x(n)z^{-n}] \\\
+=&amp; z^k[X(z)-\sum_{n=0}^{k-1}x(n)z^{-n}] \end{split}\]</span></p>
+<h3 id="加权性质">加权性质</h3>
+<p>若</p>
+<p><span class="math display">\[Z[x(n)]=X(z),ROC:R_1 &lt; \lvert z \rvert &lt; R_2\]</span></p>
 <p>则</p>
-<p>$$Z[a^nx(n)]=Z(z/a),ROC: \lvert a \rvert R_1 &lt; |z| &lt; |a| R_2 $$</p>
-<p>$$Z[nx(n)]=-z \frac d{dz} X(z),ROC:R_1 &lt; |z| &lt; R_2$$</p>
-<h3 id="时域卷积性质"><a href="#时域卷积性质" class="headerlink" title="时域卷积性质"></a>时域卷积性质</h3><p>记 $x(n),y(n)$ 的 z 变换分别时 $X(z),Y(z)$，则</p>
-<p>$$Z[x(n)*y(n)]=X(z)Y(z)$$</p>
+<p><span class="math display">\[Z[a^nx(n)]=Z(z/a),ROC: \lvert a \rvert R_1 &lt; |z| &lt; |a| R_2 \]</span></p>
+<p><span class="math display">\[Z[nx(n)]=-z \frac d{dz} X(z),ROC:R_1 &lt; |z| &lt; R_2\]</span></p>
+<h3 id="时域卷积性质">时域卷积性质</h3>
+<p>记 <span class="math inline">\(x(n),y(n)\)</span> 的 z 变换分别时 <span class="math inline">\(X(z),Y(z)\)</span>，则</p>
+<p><span class="math display">\[Z[x(n)*y(n)]=X(z)Y(z)\]</span></p>
 
     </div>
 
@@ -457,7 +496,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#z-变换定义"><span class="nav-number">1.</span> <span class="nav-text">z 变换定义</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#z-变换与拉普拉斯变换"><span class="nav-number">1.1.</span> <span class="nav-text">z 变换与拉普拉斯变换</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#z-平面和-s-平面"><span class="nav-number">1.2.</span> <span class="nav-text">z 平面和 s 平面</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#z-变换的收敛域"><span class="nav-number">2.</span> <span class="nav-text">z 变换的收敛域</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#例1"><span class="nav-number">2.1.</span> <span class="nav-text">例1</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#例2"><span class="nav-number">2.2.</span> <span class="nav-text">例2</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#例3"><span class="nav-number">2.3.</span> <span class="nav-text">例3</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#序列与-ROC-的关系"><span class="nav-number">2.4.</span> <span class="nav-text">序列与 ROC 的关系</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#有限长序列"><span class="nav-number">2.4.1.</span> <span class="nav-text">有限长序列</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#右边序列"><span class="nav-number">2.4.2.</span> <span class="nav-text">右边序列</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#左边序列"><span class="nav-number">2.4.3.</span> <span class="nav-text">左边序列</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#双边序列"><span class="nav-number">2.4.4.</span> <span class="nav-text">双边序列</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#z-变换的性质"><span class="nav-number">3.</span> <span class="nav-text">z 变换的性质</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#线性"><span class="nav-number">3.1.</span> <span class="nav-text">线性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#时移性质"><span class="nav-number">3.2.</span> <span class="nav-text">时移性质</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#加权性质"><span class="nav-number">3.3.</span> <span class="nav-text">加权性质</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#时域卷积性质"><span class="nav-number">3.4.</span> <span class="nav-text">时域卷积性质</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#z-变换定义"><span class="nav-number">1.</span> <span class="nav-text">z 变换定义</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#z-变换与拉普拉斯变换"><span class="nav-number">1.1.</span> <span class="nav-text">z 变换与拉普拉斯变换</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#z-平面和-s-平面"><span class="nav-number">1.2.</span> <span class="nav-text">z 平面和 s 平面</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#z-变换的收敛域"><span class="nav-number">2.</span> <span class="nav-text">z 变换的收敛域</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#例1"><span class="nav-number">2.1.</span> <span class="nav-text">例1</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#例2"><span class="nav-number">2.2.</span> <span class="nav-text">例2</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#例3"><span class="nav-number">2.3.</span> <span class="nav-text">例3</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#序列与-roc-的关系"><span class="nav-number">2.4.</span> <span class="nav-text">序列与 ROC 的关系</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#有限长序列"><span class="nav-number">2.4.1.</span> <span class="nav-text">有限长序列</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#右边序列"><span class="nav-number">2.4.2.</span> <span class="nav-text">右边序列</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#左边序列"><span class="nav-number">2.4.3.</span> <span class="nav-text">左边序列</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#双边序列"><span class="nav-number">2.4.4.</span> <span class="nav-text">双边序列</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#z-变换的性质"><span class="nav-number">3.</span> <span class="nav-text">z 变换的性质</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#线性"><span class="nav-number">3.1.</span> <span class="nav-text">线性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#时移性质"><span class="nav-number">3.2.</span> <span class="nav-text">时移性质</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#加权性质"><span class="nav-number">3.3.</span> <span class="nav-text">加权性质</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#时域卷积性质"><span class="nav-number">3.4.</span> <span class="nav-text">时域卷积性质</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 

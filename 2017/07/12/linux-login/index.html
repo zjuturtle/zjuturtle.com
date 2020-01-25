@@ -234,19 +234,18 @@
         <p>讲道理之前还积压着好多篇博客没有写，今天写点小东西糊弄一下= =</p>
 <p>现在手头上需要管理的服务器有点多，每次登陆的时候都需要输入密码。然后就想用 ssh key 的方式来登陆。针对每一个服务器，都生成一对公钥私钥对。</p>
 <a id="more"></a>
-
-<h2 id="生成公钥和私钥"><a href="#生成公钥和私钥" class="headerlink" title="生成公钥和私钥"></a>生成公钥和私钥</h2><p>在 mac 或者 linux 系统下</p>
+<h2 id="生成公钥和私钥">生成公钥和私钥</h2>
+<p>在 mac 或者 linux 系统下</p>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh-keygen -t rsa -b 4096</span><br></pre></td></tr></table></figure>
-
 <p><code>-t rsa</code>加密方式为<code>RSA</code>方法， <code>-b 4096</code>代表加密位数为4096位</p>
 <p>之后会要求输入生成的文件名称，假设为 zjuturtle_rsa 。同时并不需要 passphrase</p>
 <p>然后就会生成私钥 zjuturtle_rsa 和对应的公钥 zjuturtle_rsa.pub。注意放在 ~/.ssh 文件夹下</p>
-<h2 id="上传公钥"><a href="#上传公钥" class="headerlink" title="上传公钥"></a>上传公钥</h2><p>在本机执行以下命令</p>
+<h2 id="上传公钥">上传公钥</h2>
+<p>在本机执行以下命令</p>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat ~/.ssh/zjuturtle_rsa.pub | ssh user@host <span class="string">"mkdir -p ~/.ssh &amp;&amp; cat &gt;&gt;  ~/.ssh/authorized_keys"</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="设置本地-Host"><a href="#设置本地-Host" class="headerlink" title="设置本地 Host"></a>设置本地 Host</h2><p>在 <code>~/.ssh</code> 文件夹下，应该有一个 <code>config</code> 文件。添加以下内容，能让 ssh 登录更加便捷</p>
+<h2 id="设置本地-host">设置本地 Host</h2>
+<p>在 <code>~/.ssh</code> 文件夹下，应该有一个 <code>config</code> 文件。添加以下内容，能让 ssh 登录更加便捷</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Host turtle</span><br><span class="line">    HostName zjuturtle.com</span><br><span class="line">    User turtle</span><br><span class="line">    IdentityFile ~&#x2F;.ssh&#x2F;zjuturtle_rsa</span><br></pre></td></tr></table></figure>
-
 <p>这样在命令行里，运行 <code>ssh turtle</code> 就可以直接登录啦~</p>
 
     </div>
@@ -333,7 +332,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#生成公钥和私钥"><span class="nav-number">1.</span> <span class="nav-text">生成公钥和私钥</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#上传公钥"><span class="nav-number">2.</span> <span class="nav-text">上传公钥</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#设置本地-Host"><span class="nav-number">3.</span> <span class="nav-text">设置本地 Host</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#生成公钥和私钥"><span class="nav-number">1.</span> <span class="nav-text">生成公钥和私钥</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#上传公钥"><span class="nav-number">2.</span> <span class="nav-text">上传公钥</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#设置本地-host"><span class="nav-number">3.</span> <span class="nav-text">设置本地 Host</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 

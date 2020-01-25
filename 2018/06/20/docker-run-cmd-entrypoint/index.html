@@ -229,47 +229,40 @@
         <p>又有一段时间没有写博客了。这一次我在 AWS 的 SageMaker 上去部署训练算法。SageMaker 的 train 和 host 都是在容器内实现的。我个人认为训练的任务放在容器里执行还是很科学的。在较低配置的机器上启动 Juypter Notebook 用于开发，然后在较高配置的集群上使用 Docker 训练算法，计算资源不闲置，用户也省钱。</p>
 <p>本文参(chao)考(xi)了 <a href="https://yeasy.gitbooks.io/docker_practice/content/" target="_blank" rel="noopener">Docker — 从入门到实践</a></p>
 <a id="more"></a>
-
-<h2 id="RUN-指令"><a href="#RUN-指令" class="headerlink" title="RUN 指令"></a>RUN 指令</h2><p>这个指令用于构建镜像，其实是在 <code>Dockerfile</code> 里面执行命令行命令。有两种写法</p>
+<h2 id="run-指令">RUN 指令</h2>
+<p>这个指令用于构建镜像，其实是在 <code>Dockerfile</code> 里面执行命令行命令。有两种写法</p>
 <ul>
 <li>shell 格式 <code>RUN &lt;COMMAND&gt;</code>。例如</li>
 </ul>
 <figure class="highlight docker"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">RUN</span><span class="bash"> apt-get update</span></span><br></pre></td></tr></table></figure>
-
 <ul>
-<li>exec 格式 <code>RUN [&quot;executable&quot;, &quot;param1&quot;, &quot;param2&quot;]</code>。例如</li>
+<li>exec 格式 <code>RUN ["executable", "param1", "param2"]</code>。例如</li>
 </ul>
 <figure class="highlight docker"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">RUN</span><span class="bash"> [<span class="string">"apt-get"</span>, <span class="string">"update"</span>]</span></span><br></pre></td></tr></table></figure>
-
 <p>但要注意，我们最好将命令写在同一个 <code>RUN</code> 命令里面，否则会造成镜像臃肿（因为每运行一次 <code>RUN</code> 就会新建一层）。</p>
 <p>所以最好这么写</p>
 <figure class="highlight docker"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">RUN</span><span class="bash"> buildDeps=<span class="string">'gcc libc6-dev make'</span> \</span></span><br><span class="line"><span class="bash">    &amp;&amp; apt-get update \</span></span><br><span class="line"><span class="bash">    &amp;&amp; apt-get install -y <span class="variable">$buildDeps</span> \</span></span><br><span class="line"><span class="bash">    &amp;&amp; wget -O redis.tar.gz <span class="string">"http://download.redis.io/releases/redis-3.2.5.tar.gz"</span> \</span></span><br><span class="line"><span class="bash">    &amp;&amp; mkdir -p /usr/src/redis \</span></span><br><span class="line"><span class="bash">    &amp;&amp; tar -xzf redis.tar.gz -C /usr/src/redis --strip-components=1 \</span></span><br><span class="line"><span class="bash">    &amp;&amp; make -C /usr/src/redis \</span></span><br><span class="line"><span class="bash">    &amp;&amp; make -C /usr/src/redis install \</span></span><br><span class="line"><span class="bash">    &amp;&amp; rm -rf /var/lib/apt/lists/* \</span></span><br><span class="line"><span class="bash">    &amp;&amp; rm redis.tar.gz \</span></span><br><span class="line"><span class="bash">    &amp;&amp; rm -r /usr/src/redis \</span></span><br><span class="line"><span class="bash">    &amp;&amp; apt-get purge -y --auto-remove <span class="variable">$buildDeps</span></span></span><br></pre></td></tr></table></figure>
-
 <p><code>RUN</code> 指令在容器构建过程中起作用，和容器的运行无关。</p>
-<h2 id="CMD-指令"><a href="#CMD-指令" class="headerlink" title="CMD 指令"></a>CMD 指令</h2><p><code>CMD</code> 指令用于指定默认的容器主建成的启动命令。在一个镜像里面仅有一个 <code>CMD</code> 指令会起作用。比如下面这个 Dockerfile</p>
+<h2 id="cmd-指令">CMD 指令</h2>
+<p><code>CMD</code> 指令用于指定默认的容器主建成的启动命令。在一个镜像里面仅有一个 <code>CMD</code> 指令会起作用。比如下面这个 Dockerfile</p>
 <figure class="highlight docker"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">FROM</span> ubuntu:<span class="number">16.04</span></span><br><span class="line"><span class="keyword">CMD</span><span class="bash"> [<span class="string">"echo"</span>, <span class="string">"first"</span>]</span></span><br><span class="line"><span class="keyword">CMD</span><span class="bash"> [<span class="string">"echo"</span>, <span class="string">"second"</span>]</span></span><br></pre></td></tr></table></figure>
-
 <p>第一个 <code>CMD</code> 指令会被忽略。如果运行这个 image，只会输出 <code>second</code></p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ docker build -t <span class="built_in">test</span> .</span><br><span class="line">$ docker run <span class="built_in">test</span></span><br><span class="line"><span class="comment"># echo second</span></span><br><span class="line">second</span><br></pre></td></tr></table></figure>
-
-<h2 id="ENTRYPOINT-指令"><a href="#ENTRYPOINT-指令" class="headerlink" title="ENTRYPOINT 指令"></a>ENTRYPOINT 指令</h2><p>如果我们需要在容器运行时传一些参数，就需要 <code>ENTRYPOINT</code> 指令了。当存在 <code>ENTRYPOINT</code> 时，<code>CMD</code> 的含义就发生了改变，不再是直接的运行其命令，而是将 <code>CMD</code> 的内容作为参数传给 <code>ENTRYPOINT</code> 指令，换句话说实际执行时，将变为 </p>
+<h2 id="entrypoint-指令">ENTRYPOINT 指令</h2>
+<p>如果我们需要在容器运行时传一些参数，就需要 <code>ENTRYPOINT</code> 指令了。当存在 <code>ENTRYPOINT</code> 时，<code>CMD</code> 的含义就发生了改变，不再是直接的运行其命令，而是将 <code>CMD</code> 的内容作为参数传给 <code>ENTRYPOINT</code> 指令，换句话说实际执行时，将变为</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;ENTRYPOINT&gt; <span class="string">"&lt;CMD&gt;"</span></span><br></pre></td></tr></table></figure>
-
 <p>举个栗子，下面这个镜像可以得知当前的公网 IP。</p>
 <figure class="highlight docker"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">FROM</span> ubuntu:<span class="number">16.04</span></span><br><span class="line"><span class="keyword">RUN</span><span class="bash"> apt-get update \</span></span><br><span class="line"><span class="bash">    &amp;&amp; apt-get install -y curl \</span></span><br><span class="line"><span class="bash">    &amp;&amp; rm -rf /var/lib/apt/lists/*</span></span><br><span class="line"><span class="keyword">CMD</span><span class="bash"> [ <span class="string">"curl"</span>, <span class="string">"-s"</span>, <span class="string">"http://ip.cn"</span> ]</span></span><br></pre></td></tr></table></figure>
-
 <p>我们可以直接运行</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ docker build -t myip .</span><br><span class="line">$ docker run myip</span><br><span class="line"><span class="comment">## 显示当前 IP ##</span></span><br></pre></td></tr></table></figure>
-
 <p>但如果我们希望显示 HTTP 头信息，就需要加上 <code>-i</code> 参数。但我们不可以直接加 <code>-i</code> 参数给 <code>docker run myip</code> 。因为 <code>docker run myip -i</code> 实际上会用 <code>-i</code> 来覆盖原有的默认 <code>CMD</code> 命令 <code>curl -s http://ip.cn</code>，而 <code>-i</code> 完全不是个命令。因此我们只能这么用</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker run myip curl -s http://ip.cn -i</span><br></pre></td></tr></table></figure>
-
 <p>很蠢，所以 <code>ENTRYPOINT</code> 指令就派上用场了。现在我们将 Dockerfile 改写如下</p>
 <figure class="highlight docker"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">FROM</span> ubuntu:<span class="number">16.04</span></span><br><span class="line"><span class="keyword">RUN</span><span class="bash"> apt-get update \</span></span><br><span class="line"><span class="bash">    &amp;&amp; apt-get install -y curl \</span></span><br><span class="line"><span class="bash">    &amp;&amp; rm -rf /var/lib/apt/lists/*</span></span><br><span class="line"><span class="keyword">ENTRYPOINT</span><span class="bash"> [ <span class="string">"curl"</span>, <span class="string">"-s"</span>, <span class="string">"http://ip.cn"</span> ]</span></span><br></pre></td></tr></table></figure>
-
 <p>这样，当我们运行 <code>docker run myip -i</code> 时， <code>CMD</code> 命令为 <code>-i</code>。再加上 <code>ENTRYPOINT</code>，本质上执行的命令就变成了 <code>curl -s http://ip.cn -i</code></p>
 <p>P.S. 上面栗子来自<a href="https://yeasy.gitbooks.io/docker_practice/content/image/dockerfile/entrypoint.html" target="_blank" rel="noopener">Docker — 从入门到实践</a></p>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ul>
+<h2 id="总结">总结</h2>
+<ul>
 <li>使用 RUN 指令安装应用和软件包，构建镜像。</li>
 <li>如果 Docker 镜像的用途是运行应用程序或服务，比如运行一个 MySQL，应该优先使用 Exec 格式的 ENTRYPOINT 指令。CMD 可为 ENTRYPOINT 提供额外的默认参数，同时可利用 docker run 命令行替换默认参数。</li>
 <li>如果想为容器设置默认的启动命令，可使用 CMD 指令。用户可在 docker run 命令行中替换此默认命令。</li>
@@ -360,7 +353,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#RUN-指令"><span class="nav-number">1.</span> <span class="nav-text">RUN 指令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CMD-指令"><span class="nav-number">2.</span> <span class="nav-text">CMD 指令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ENTRYPOINT-指令"><span class="nav-number">3.</span> <span class="nav-text">ENTRYPOINT 指令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">4.</span> <span class="nav-text">总结</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#run-指令"><span class="nav-number">1.</span> <span class="nav-text">RUN 指令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#cmd-指令"><span class="nav-number">2.</span> <span class="nav-text">CMD 指令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#entrypoint-指令"><span class="nav-number">3.</span> <span class="nav-text">ENTRYPOINT 指令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">4.</span> <span class="nav-text">总结</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 

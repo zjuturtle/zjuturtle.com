@@ -233,19 +233,16 @@
       
         <p>薅了一波阿里云的羊毛，3年香港服务器 2 折，用 Docker 简单搞了一下科学爱国。</p>
 <a id="more"></a>
-
-<h2 id="Docker-安装"><a href="#Docker-安装" class="headerlink" title="Docker 安装"></a>Docker 安装</h2><p>这一步参考 <a href="https://docs.docker.com/install/linux/docker-ce/ubuntu/" target="_blank" rel="noopener">Docker 文档</a> 就能搞定。命令如下</p>
+<h2 id="docker-安装">Docker 安装</h2>
+<p>这一步参考 <a href="https://docs.docker.com/install/linux/docker-ce/ubuntu/" target="_blank" rel="noopener">Docker 文档</a> 就能搞定。命令如下</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">$ sudo apt-get update</span><br><span class="line">$ sudo apt-get install apt-transport-https ca-certificates curl  software-properties-common</span><br><span class="line">$ curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -</span><br><span class="line">$ sudo add-apt-repository \</span><br><span class="line">   <span class="string">"deb [arch=amd64] https://download.docker.com/linux/ubuntu \</span></span><br><span class="line"><span class="string">   <span class="variable">$(lsb_release -cs)</span> \</span></span><br><span class="line"><span class="string">   stable"</span></span><br><span class="line">$ sudo apt-get update</span><br><span class="line">$ sudo apt-get install docker-ce</span><br></pre></td></tr></table></figure>
-
-<h2 id="开始爱国"><a href="#开始爱国" class="headerlink" title="开始爱国"></a>开始爱国</h2><p><a href="https://github.com/shadowsocks/shadowsocks-libev" target="_blank" rel="noopener">shadowsocks-libev</a> 是 C 编写的轻量级 SOCKS5 代理，文档写的十分详细。有官方的 Docker 镜像，所以直接 pull 下来运行就好。</p>
+<h2 id="开始爱国">开始爱国</h2>
+<p><a href="https://github.com/shadowsocks/shadowsocks-libev" target="_blank" rel="noopener">shadowsocks-libev</a> 是 C 编写的轻量级 SOCKS5 代理，文档写的十分详细。有官方的 Docker 镜像，所以直接 pull 下来运行就好。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker pull shadowsocks/shadowsocks-libev</span><br></pre></td></tr></table></figure>
-
 <p>再新建立一个 <code>docker-compose.yml</code> 文件如下，记得改密码。这个设置监听宿主机 28388 端口，并将其映射到 container 内部 8388 端口，科学爱国服务加密方式为 <code>aes-256-cfb</code>。</p>
 <figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">shadowsocks:</span></span><br><span class="line">  <span class="attr">image:</span> <span class="string">shadowsocks/shadowsocks-libev</span></span><br><span class="line">  <span class="attr">ports:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">"19652:8388/tcp"</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">"19652:8388/udp"</span></span><br><span class="line">  <span class="attr">environment:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">METHOD=aes-256-cfb</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">PASSWORD=XXXXXXXX</span></span><br><span class="line">  <span class="attr">restart:</span> <span class="string">always</span></span><br></pre></td></tr></table></figure>
-
 <p>现在可以直接使用 docker-compose 运行科学爱国服务了。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker-compose up -d</span><br></pre></td></tr></table></figure>
-
 <p>阿里云的服务器有比较严格的端口控制，记得去安全组把端口打开，不然还是没办法科学爱国。</p>
 
     </div>
@@ -332,7 +329,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Docker-安装"><span class="nav-number">1.</span> <span class="nav-text">Docker 安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#开始爱国"><span class="nav-number">2.</span> <span class="nav-text">开始爱国</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#docker-安装"><span class="nav-number">1.</span> <span class="nav-text">Docker 安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#开始爱国"><span class="nav-number">2.</span> <span class="nav-text">开始爱国</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 

@@ -233,53 +233,79 @@
       
         <p>在即将结课的斯坦福算法公开课上我遇到了一些特别难的题目（画风突变的那种难），觉得还蛮有意思，因此做一个随手的记录。</p>
 <a id="more"></a>
-
-<h2 id="问题-1"><a href="#问题-1" class="headerlink" title="问题 1"></a>问题 1</h2><h3 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h3><p>In the set cover problem, you are given m sets $ S_1,…,S_m$ each a subset of a common set $U$ with size $|U|=n$. The goal is to select as few of these sets as possible, subject to the constraint that the union of the chosen sets is all of $U$. (You can assume that $ ∪^m_{i=1} S_i=U $.) For example, if the given sets are {1,2}, {2,3}, and {3,4}, then the optimal solution consists of the sets {1,2} and {3,4}.</p>
-<p>Here is a natural iterative greedy algorithm. First, initialize $C=\emptyset$, where $C$ denotes the sets chosen so far. The main loop is: as long as the union $∪_{S \in C}S$ of the sets chosen so far is not the entire set $U$:</p>
-<p>Let $S_i$ be a set that includes the maximum-possible number of elements not in previously-chosen sets (i.e., that maximizes $|S_i−∪_{S \in C}S|$).<br>Add $S_i$ to $C$.</p>
-<p>Consider the following statement: for every instance of the set cover problem (with $|U|=n$), this greedy algorithm returns a set cover with size at most $f(n)$ times that of an optimal (minimum-size) set cover. Which of the following is the smallest choice of the function $f(n)$ for which this statement is true?</p>
+<h2 id="问题-1">问题 1</h2>
+<h3 id="问题描述">问题描述</h3>
+<p>In the set cover problem, you are given m sets $ S_1,...,S_m$ each a subset of a common set <span class="math inline">\(U\)</span> with size <span class="math inline">\(|U|=n\)</span>. The goal is to select as few of these sets as possible, subject to the constraint that the union of the chosen sets is all of <span class="math inline">\(U\)</span>. (You can assume that $ ∪^m_{i=1} S_i=U $.) For example, if the given sets are {1,2}, {2,3}, and {3,4}, then the optimal solution consists of the sets {1,2} and {3,4}.</p>
+<p>Here is a natural iterative greedy algorithm. First, initialize <span class="math inline">\(C=\emptyset\)</span>, where <span class="math inline">\(C\)</span> denotes the sets chosen so far. The main loop is: as long as the union <span class="math inline">\(∪_{S \in C}S\)</span> of the sets chosen so far is not the entire set <span class="math inline">\(U\)</span>:</p>
+<p>Let <span class="math inline">\(S_i\)</span> be a set that includes the maximum-possible number of elements not in previously-chosen sets (i.e., that maximizes <span class="math inline">\(|S_i−∪_{S \in C}S|\)</span>). Add <span class="math inline">\(S_i\)</span> to <span class="math inline">\(C\)</span>.</p>
+<p>Consider the following statement: for every instance of the set cover problem (with <span class="math inline">\(|U|=n\)</span>), this greedy algorithm returns a set cover with size at most <span class="math inline">\(f(n)\)</span> times that of an optimal (minimum-size) set cover. Which of the following is the smallest choice of the function <span class="math inline">\(f(n)\)</span> for which this statement is true?</p>
 <ul>
 <li>2</li>
-<li>$O(log \ n)$</li>
-<li>$O(\sqrt{n})$</li>
-<li>$O(n)$</li>
+<li><span class="math inline">\(O(log \ n)\)</span></li>
+<li><span class="math inline">\(O(\sqrt{n})\)</span></li>
+<li><span class="math inline">\(O(n)\)</span></li>
 </ul>
-<h3 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h3><p>首先来个例子</p>
-<p>$$\begin{split} U&amp;=[1,16],U \in N \\<br>S_1 &amp;= {1} \<br>S_2 &amp;= {16} \<br>S_3 &amp;= {2,15} \<br>S_4 &amp;= {3,4,13,14} \<br>S_5 &amp;= {5,6,7,8,9,10,11,12} \<br>S_6 &amp;= {9,10,11,12,13,14,15,16} \<br>S_7 &amp;= {1,2,3,4,5,6,7,8}\end{split}$$</p>
-<p>显然，最优解应该是集合 $S_6,S_7$。但在 Greedy algorithm 中，我们可能会依次选择 $S_5,S_4,S_3,S_2,S_1$。直觉上我们基本可以判断 $f(n)=O(log \ n)$</p>
-<h3 id="解答"><a href="#解答" class="headerlink" title="解答"></a>解答</h3><p>证明的关键在于 Greedy algorithm 每一次迭代中能新包含的元素个数与最优解的不等关系。我们设最优解（在上面例子中是 2，因为选择了 $S_6,S_7$ 两个集合）为 $OPT$。设在第 $i$ 次迭代运算之前，尚未包含的元素个数为 $x_i$，在 $i$ 次迭代运算时，选择的集合为 $S_i$，新包含的元素个数为 $y_i$，注意 $y_i \le |S_i|,x_{i+1}=x_i-y_i$。Greedy algorithm 经过 $k$ 次运算，最终得到的结果是 $k$，即结果为 ${S_1,S_2,…,S_k}$</p>
-<h4 id="引理"><a href="#引理" class="headerlink" title="引理"></a>引理</h4><p>$$\frac{x_i}{OPT} \le y_i$$</p>
-<p>证明：当 $i=1$ 时，此时 $C=\emptyset$， Greedy algorithm 会选择包含元素最大的子集，记为 $S_1=S_{max}$，那么此时 $y_1=|S_{max}|$</p>
-<p>因为 $|S_{max}| \ge S_1,S_2,…,S_m$ 且 $x_1=n$，显然有 $\frac{x_1}{OPT} \le y_1$</p>
-<p>接下来只要证明当 $\frac{x_i}{OPT} \le y_i$ 时，$\frac{x_{i+1}}{OPT} \le y_{i+1}$ 即可。</p>
-<p>假设我们已经进行了 $i$ 次迭代。我们定义一个子问题，记 $S = S_1 \bigcup S_2 \bigcup …S_i$，$\hat{S_{i+1}}= S_{i+1}-S,\hat{S_{i+2}}= S_{i+2}-S,…\hat{S_{m}}= S_{m}-S$。子问题即在这些子集 $\hat{S_{i+1}},\hat{S_{i+2}},…\hat{S_{m}}$ 求最小覆盖。定义该子问题的最优解为 $\hat{OPT}$，显然我们有 $OPT \ge \hat{OPT}$。根据前述，我们有 $\frac{\hat{x_1}}{\hat{OPT}} \le \hat{y_1}$。而且根据子问题定义有 $x_{i+1}=\hat{x_1},y_{i+1}=\hat{y_1}$，所以</p>
-<p>$$\frac{x_{i+1}}{OPT} \le \frac{x_{i+1}}{\hat{OPT}} =\frac{\hat{x_1}}{\hat{OPT}} \le \hat{y_1} = y_{i+1}$$</p>
+<h3 id="例子">例子</h3>
+<p>首先来个例子</p>
+<p><span class="math display">\[\begin{split} U&amp;=[1,16],U \in N \\\ 
+S_1 &amp;= \{1\} \\\
+S_2 &amp;= \{16\} \\\
+S_3 &amp;= \{2,15\} \\\
+S_4 &amp;= \{3,4,13,14\} \\\
+S_5 &amp;= \{5,6,7,8,9,10,11,12\} \\\
+S_6 &amp;= \{9,10,11,12,13,14,15,16\} \\\
+S_7 &amp;= \{1,2,3,4,5,6,7,8\}\end{split}\]</span></p>
+<p>显然，最优解应该是集合 <span class="math inline">\(S_6,S_7\)</span>。但在 Greedy algorithm 中，我们可能会依次选择 <span class="math inline">\(S_5,S_4,S_3,S_2,S_1\)</span>。直觉上我们基本可以判断 <span class="math inline">\(f(n)=O(log \ n)\)</span></p>
+<h3 id="解答">解答</h3>
+<p>证明的关键在于 Greedy algorithm 每一次迭代中能新包含的元素个数与最优解的不等关系。我们设最优解（在上面例子中是 2，因为选择了 <span class="math inline">\(S_6,S_7\)</span> 两个集合）为 <span class="math inline">\(OPT\)</span>。设在第 <span class="math inline">\(i\)</span> 次迭代运算之前，尚未包含的元素个数为 <span class="math inline">\(x_i\)</span>，在 <span class="math inline">\(i\)</span> 次迭代运算时，选择的集合为 <span class="math inline">\(S_i\)</span>，新包含的元素个数为 <span class="math inline">\(y_i\)</span>，注意 <span class="math inline">\(y_i \le |S_i|,x_{i+1}=x_i-y_i\)</span>。Greedy algorithm 经过 <span class="math inline">\(k\)</span> 次运算，最终得到的结果是 <span class="math inline">\(k\)</span>，即结果为 <span class="math inline">\({S_1,S_2,...,S_k}\)</span></p>
+<h4 id="引理">引理</h4>
+<p><span class="math display">\[\frac{x_i}{OPT} \le y_i\]</span></p>
+<p>证明：当 <span class="math inline">\(i=1\)</span> 时，此时 <span class="math inline">\(C=\emptyset\)</span>， Greedy algorithm 会选择包含元素最大的子集，记为 <span class="math inline">\(S_1=S_{max}\)</span>，那么此时 <span class="math inline">\(y_1=|S_{max}|\)</span></p>
+<p>因为 <span class="math inline">\(|S_{max}| \ge S_1,S_2,...,S_m\)</span> 且 <span class="math inline">\(x_1=n\)</span>，显然有 <span class="math inline">\(\frac{x_1}{OPT} \le y_1\)</span></p>
+<p>接下来只要证明当 <span class="math inline">\(\frac{x_i}{OPT} \le y_i\)</span> 时，<span class="math inline">\(\frac{x_{i+1}}{OPT} \le y_{i+1}\)</span> 即可。</p>
+<p>假设我们已经进行了 <span class="math inline">\(i\)</span> 次迭代。我们定义一个子问题，记 <span class="math inline">\(S = S_1 \bigcup S_2 \bigcup ...S_i\)</span>，<span class="math inline">\(\hat{S_{i+1}}= S_{i+1}-S,\hat{S_{i+2}}= S_{i+2}-S,...\hat{S_{m}}= S_{m}-S\)</span>。子问题即在这些子集 <span class="math inline">\(\hat{S_{i+1}},\hat{S_{i+2}},...\hat{S_{m}}\)</span> 求最小覆盖。定义该子问题的最优解为 <span class="math inline">\(\hat{OPT}\)</span>，显然我们有 <span class="math inline">\(OPT \ge \hat{OPT}\)</span>。根据前述，我们有 <span class="math inline">\(\frac{\hat{x_1}}{\hat{OPT}} \le \hat{y_1}\)</span>。而且根据子问题定义有 <span class="math inline">\(x_{i+1}=\hat{x_1},y_{i+1}=\hat{y_1}\)</span>，所以</p>
+<p><span class="math display">\[\frac{x_{i+1}}{OPT} \le \frac{x_{i+1}}{\hat{OPT}} =\frac{\hat{x_1}}{\hat{OPT}} \le \hat{y_1} = y_{i+1}\]</span></p>
 <p>证毕。</p>
-<h4 id="计算"><a href="#计算" class="headerlink" title="计算"></a>计算</h4><p>对于引理，我们可以理解为每一次迭代都会新包含剩下未包含元素的 $\frac 1{OPT}$ 。那么有</p>
-<p>$$\begin{split} n(1-\frac 1{OPT})^k &lt; 1 \<br>n(1- \frac 1{OPT})^{k-1} &gt; 1\<br>n(1-\frac 1{OPT})^k \approx 1 \<br>n(1- \frac 1{OPT})^{OPT} \approx n \frac 1 e \end{split}$$</p>
-<p>上述的最后两个式子取 $log$ 再相除就有 $f(n) = \frac k {OPT} = O(log \ n)$</p>
-<h2 id="问题-2"><a href="#问题-2" class="headerlink" title="问题 2"></a>问题 2</h2><p>Suppose you are given m sets $ S_1,…,S_m$, each a subset of a common set $U$. The goal is to choose 2 of the m sets, $S_i$ and $S_j$, to maximize the size $|S_i∪S_j|$ of their union. One natural heuristic is to use a greedy algorithm:</p>
-<p> (i) choose the first set $S_i$ to be as large as possible, breaking ties arbitrarily; </p>
-<p> (ii) choose the second set Sj to maximize $|S_i∪S_j|$ (i.e., as the set that includes as many elements as possible that are not already in $S_i$), again breaking ties arbitrarily. </p>
-<p> For example, if the given sets are {1,2}, {2,3}, and {3,4}, then the algorithm might pick the set {1,2} in the first step; if it does so, it definitely picks the set {3,4} in the second step (for an objective function value of 4).</p>
-<p>Consider the following statement: for every instance of the above problem, the greedy algorithm above chooses two sets $S_i,S_j$ such that $|S_i∪S_j|$ is at least $c$ times the maximum size of the union of two of the given sets. Which of the following is the largest choice of the constant $c$ for which this statement is true?</p>
+<h4 id="计算">计算</h4>
+<p>对于引理，我们可以理解为每一次迭代都会新包含剩下未包含元素的 <span class="math inline">\(\frac 1{OPT}\)</span> 。那么有</p>
+<p><span class="math display">\[\begin{split} n(1-\frac 1{OPT})^k &lt; 1 \\\
+n(1- \frac 1{OPT})^{k-1} &gt; 1\\\
+n(1-\frac 1{OPT})^k \approx 1 \\\
+n(1- \frac 1{OPT})^{OPT} \approx n \frac 1 e \end{split}\]</span></p>
+<p>上述的最后两个式子取 <span class="math inline">\(log\)</span> 再相除就有 <span class="math inline">\(f(n) = \frac k {OPT} = O(log \ n)\)</span></p>
+<h2 id="问题-2">问题 2</h2>
+<p>Suppose you are given m sets $ S_1,...,S_m$, each a subset of a common set <span class="math inline">\(U\)</span>. The goal is to choose 2 of the m sets, <span class="math inline">\(S_i\)</span> and <span class="math inline">\(S_j\)</span>, to maximize the size <span class="math inline">\(|S_i∪S_j|\)</span> of their union. One natural heuristic is to use a greedy algorithm:</p>
+<ol type="i">
+<li><p>choose the first set <span class="math inline">\(S_i\)</span> to be as large as possible, breaking ties arbitrarily;</p></li>
+<li><p>choose the second set Sj to maximize <span class="math inline">\(|S_i∪S_j|\)</span> (i.e., as the set that includes as many elements as possible that are not already in <span class="math inline">\(S_i\)</span>), again breaking ties arbitrarily.</p></li>
+</ol>
+<p>For example, if the given sets are {1,2}, {2,3}, and {3,4}, then the algorithm might pick the set {1,2} in the first step; if it does so, it definitely picks the set {3,4} in the second step (for an objective function value of 4).</p>
+<p>Consider the following statement: for every instance of the above problem, the greedy algorithm above chooses two sets <span class="math inline">\(S_i,S_j\)</span> such that <span class="math inline">\(|S_i∪S_j|\)</span> is at least <span class="math inline">\(c\)</span> times the maximum size of the union of two of the given sets. Which of the following is the largest choice of the constant <span class="math inline">\(c\)</span> for which this statement is true?</p>
 <ul>
 <li>2/3</li>
 <li>1</li>
 <li>1/2</li>
 <li>3/4</li>
 </ul>
-<h3 id="例子-1"><a href="#例子-1" class="headerlink" title="例子"></a>例子</h3><p>还是先来一个例子说明一下。</p>
-<p>$$\begin{split} U&amp;=[1,8],U \in N \\<br>S_1 &amp;= {2,7} \<br>S_2 &amp;= {3,4,5,6} \<br>S_3 &amp;= {1,2,3,4} \<br>S_4 &amp;= {5,6,7,8} \end{split}$$</p>
-<p>最优解为 $|S_3 \bigcup S_4|=8$，但是在 Greedy algorithm 中，我们可能会依次选择 $|S_2 \bigcup S_1|=6$。直觉上，我们可以判断 3/4 是正确答案。</p>
-<h3 id="解答-1"><a href="#解答-1" class="headerlink" title="解答"></a>解答</h3><p>设最优解其选择的集合为 $S_i,S_j$。在 Greedy algorithm 中，选择的集合依次是 $S_1,S_2$。根据定义，$S_1$ 是所有集合中最包含元素最多的。那么就有</p>
-<p>实际上这里问题 2 可以转化为问题 1。即只要记 $U = S_1 \bigcup S_2 \bigcup S_i \bigcup S_j$。此时，问题 1 中的 $OPT=2$。根据之前的结论我们有</p>
-<p>$$\begin{split} \frac {x_1}2 \le y_1 \<br>  \frac {x_2}2 \le y_2 \end{split}$$</p>
-<p>  其中 $x_1 = |S_i \bigcup S_j|,y_1 = |S_1|,x_2 = |S_i \bigcup S_j|-|S_1|,y_2=|S_1 \bigcup S_2| - |S_1|$，所以有</p>
-<p>  $$\begin{split} |S_1| \ge \frac{|S_i \bigcup S_j|}2 \<br>   2|S_1 \bigcup S_2| - |S_1| \ge |S_i \bigcup S_j|\end{split}$$</p>
-<p>  将上式相加</p>
-<p>  $$2 |S_1 \bigcup S_2| \ge \frac32 |S_i \bigcup S_j|$$</p>
-<p>  因此得到答案 3/4</p>
+<h3 id="例子-1">例子</h3>
+<p>还是先来一个例子说明一下。</p>
+<p><span class="math display">\[\begin{split} U&amp;=[1,8],U \in N \\\ 
+S_1 &amp;= \{2,7\} \\\
+S_2 &amp;= \{3,4,5,6\} \\\
+S_3 &amp;= \{1,2,3,4\} \\\
+S_4 &amp;= \{5,6,7,8\} \end{split}\]</span></p>
+<p>最优解为 <span class="math inline">\(|S_3 \bigcup S_4|=8\)</span>，但是在 Greedy algorithm 中，我们可能会依次选择 <span class="math inline">\(|S_2 \bigcup S_1|=6\)</span>。直觉上，我们可以判断 3/4 是正确答案。</p>
+<h3 id="解答-1">解答</h3>
+<p>设最优解其选择的集合为 <span class="math inline">\(S_i,S_j\)</span>。在 Greedy algorithm 中，选择的集合依次是 <span class="math inline">\(S_1,S_2\)</span>。根据定义，<span class="math inline">\(S_1\)</span> 是所有集合中最包含元素最多的。那么就有</p>
+<p>实际上这里问题 2 可以转化为问题 1。即只要记 <span class="math inline">\(U = S_1 \bigcup S_2 \bigcup S_i \bigcup S_j\)</span>。此时，问题 1 中的 <span class="math inline">\(OPT=2\)</span>。根据之前的结论我们有</p>
+<p><span class="math display">\[\begin{split} \frac {x_1}2 \le y_1 \\\
+  \frac {x_2}2 \le y_2 \end{split}\]</span></p>
+<p>其中 <span class="math inline">\(x_1 = |S_i \bigcup S_j|,y_1 = |S_1|,x_2 = |S_i \bigcup S_j|-|S_1|,y_2=|S_1 \bigcup S_2| - |S_1|\)</span>，所以有</p>
+<p><span class="math display">\[\begin{split} |S_1| \ge \frac{|S_i \bigcup S_j|}2 \\
+   2|S_1 \bigcup S_2| - |S_1| \ge |S_i \bigcup S_j|\end{split}\]</span></p>
+<p>将上式相加</p>
+<p><span class="math display">\[2 |S_1 \bigcup S_2| \ge \frac32 |S_i \bigcup S_j|\]</span></p>
+<p>因此得到答案 3/4</p>
 
     </div>
 

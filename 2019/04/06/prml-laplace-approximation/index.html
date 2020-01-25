@@ -230,33 +230,35 @@
         <p>时隔近半年的更新来了（我是罪人）。其实已经写好了两篇，还有一篇讲核方法以及随笔写到一半），所以今天就一次性放出两篇博客。博客所依赖的库之类的也多半过时了，一并升级了下。</p>
 <p>好了言归正传，PRML 里面介绍了一种糙但是管用的近似方法，称为 Laplace Approximation 。它可以用于近似条件概率的概率分布函数，可以说是一种很粗暴很简单的方法了。它仅适用于连续变量，用于近似的函数为高斯函数。</p>
 <a id="more"></a>
-
-<h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>考虑单个变量 $w$，$D$ 是观察到的变量，$Z$ 是归一化变量</p>
-<p>$$p(w|D)= \frac1Zp(w,D)=\frac1Zp(D|w)p(w)=\frac1Zf(w)$$</p>
+<h2 id="简介">简介</h2>
+<p>考虑单个变量 <span class="math inline">\(w\)</span>，<span class="math inline">\(D\)</span> 是观察到的变量，<span class="math inline">\(Z\)</span> 是归一化变量</p>
+<p><span class="math display">\[p(w|D)= \frac1Zp(w,D)=\frac1Zp(D|w)p(w)=\frac1Zf(w)\]</span></p>
 <p>注意这里有</p>
-<p>$$Z=\int p(w,D);dw=\int f(w);\mathrm{d}w$$</p>
-<p>我们需要找到 $w_0$ 和 $A$ 使得</p>
-<p>$$p(w|D) \approx N(w|w_0,A^{-1})$$</p>
-<h2 id="计算方法"><a href="#计算方法" class="headerlink" title="计算方法"></a>计算方法</h2><p>首先找到一个 $f(w)$ 的极大值 $w_0$，有</p>
-<p>$$\frac{\mathrm{d} f(w)}{\mathrm{d} w}=0$$</p>
-<p>接下来对 $\ln f(w)$ 在 $w_0$ 附近进行二阶泰勒展开有</p>
-<p>$$\ln f(w) \approx \ln f(w_0)+\frac12A{(w-w_0)}^2$$</p>
+<p><span class="math display">\[Z=\int p(w,D)\;dw=\int f(w)\;\mathrm{d}w\]</span></p>
+<p>我们需要找到 <span class="math inline">\(w_0\)</span> 和 <span class="math inline">\(A\)</span> 使得</p>
+<p><span class="math display">\[p(w|D) \approx N(w|w_0,A^{-1})\]</span></p>
+<h2 id="计算方法">计算方法</h2>
+<p>首先找到一个 <span class="math inline">\(f(w)\)</span> 的极大值 <span class="math inline">\(w_0\)</span>，有</p>
+<p><span class="math display">\[\frac{\mathrm{d} f(w)}{\mathrm{d} w}=0\]</span></p>
+<p>接下来对 <span class="math inline">\(\ln f(w)\)</span> 在 <span class="math inline">\(w_0\)</span> 附近进行二阶泰勒展开有</p>
+<p><span class="math display">\[\ln f(w) \approx \ln f(w_0)+\frac12A{(w-w_0)}^2\]</span></p>
 <p>其中</p>
-<p>$$A=-\frac{d^2}{dw^2}\ln f(w)$$</p>
-<p>然后将 $\ln$ 符号去掉，可以得到</p>
-<p>$$f(w) \approx f(w_0)\exp{\left[\frac 12A(w-w_0)^2\right]}$$</p>
-<p>$$p(w|D)\approx \frac1Zf(w_0)\exp{\left[\frac 12A(w-w_0)^2\right]}$$</p>
-<p>注意到高斯分布的形式 $g(x)=\frac1{\sqrt{2 \pi \sigma}} \exp \left[-\frac{(x-\mu)^2}{2 {\sigma}^2} \right]$ 与 $p(w|D)$ 十分相似。可以作出如下近似（即 Laplace Approximation）</p>
-<p>$$p(w|D) \approx N(w|w_0, A^{-1})$$</p>
-<p>值得注意的是，我们并没有计算 $f(w_0)$ 或者 $Z$ 值本身，实际上我们仅通过 $f(w)$ 的指数项进行了近似。</p>
-<h2 id="多维推广"><a href="#多维推广" class="headerlink" title="多维推广"></a>多维推广</h2><p>推广到多维的情况，我们有</p>
-<p>$$\ln f(\mathbf{z}) \approx \ln f(\mathbf{z_0})-\frac12(\mathbf{z}-\mathbf{z_0})^T\mathbf{A}(\mathbf{z}-\mathbf{z_0})$$</p>
+<p><span class="math display">\[A=-\frac{d^2}{dw^2}\ln f(w)\]</span></p>
+<p>然后将 <span class="math inline">\(\ln\)</span> 符号去掉，可以得到</p>
+<p><span class="math display">\[f(w) \approx f(w_0)\exp{\left[\frac 12A(w-w_0)^2\right]}\]</span></p>
+<p><span class="math display">\[p(w|D)\approx \frac1Zf(w_0)\exp{\left[\frac 12A(w-w_0)^2\right]}\]</span></p>
+<p>注意到高斯分布的形式 <span class="math inline">\(g(x)=\frac1{\sqrt{2 \pi \sigma}} \exp \left[-\frac{(x-\mu)^2}{2 {\sigma}^2} \right]\)</span> 与 <span class="math inline">\(p(w|D)\)</span> 十分相似。可以作出如下近似（即 Laplace Approximation）</p>
+<p><span class="math display">\[p(w|D) \approx N(w|w_0, A^{-1})\]</span></p>
+<p>值得注意的是，我们并没有计算 <span class="math inline">\(f(w_0)\)</span> 或者 <span class="math inline">\(Z\)</span> 值本身，实际上我们仅通过 <span class="math inline">\(f(w)\)</span> 的指数项进行了近似。</p>
+<h2 id="多维推广">多维推广</h2>
+<p>推广到多维的情况，我们有</p>
+<p><span class="math display">\[\ln f(\mathbf{z}) \approx \ln f(\mathbf{z_0})-\frac12(\mathbf{z}-\mathbf{z_0})^T\mathbf{A}(\mathbf{z}-\mathbf{z_0})\]</span></p>
 <p>其中</p>
-<p>$$\mathbf{A}=-\nabla\nabla\ln f(\mathbf{z})|_{\mathbf{z}=\mathbf{z_0}}$$</p>
+<p><span class="math display">\[\mathbf{A}=-\nabla\nabla\ln f(\mathbf{z})|_{\mathbf{z}=\mathbf{z_0}}\]</span></p>
 <p>那么就有</p>
-<p>$$f(\mathbf{z}) \approx f(\mathbf{z_0})\exp{\left{ -\frac12(\mathbf{z}-\mathbf{z_0})^T\mathbf{A}(\mathbf{z}-\mathbf{z_0})\right}}$$</p>
+<p><span class="math display">\[f(\mathbf{z}) \approx f(\mathbf{z_0})\exp{\left\{ -\frac12(\mathbf{z}-\mathbf{z_0})^T\mathbf{A}(\mathbf{z}-\mathbf{z_0})\right\}}\]</span></p>
 <p>最后就有</p>
-<p>$$q(\mathbf{z})=N(\mathbf{z}|\mathbf{z_0},\mathbf{A}^{-1})$$</p>
+<p><span class="math display">\[q(\mathbf{z})=N(\mathbf{z}|\mathbf{z_0},\mathbf{A}^{-1})\]</span></p>
 
     </div>
 
