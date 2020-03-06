@@ -54,7 +54,7 @@
 <meta property="og:description" content="MFCC 是语音识别里比较重要的概念，用于声学建模。基本步骤如下  将音频按照 10ms步进，20-30ms 长度切片 计算每一帧的功率谱周期图（periodogram estimate of the power spectrum） 计算 mel filterbank 计算 filterbank energy， 对 filterbank energy 求对数 计算 log filterbank e">
 <meta property="og:image" content="http://zjuturtle.com/2020/03/06/fbank-mfcc/window.jpg">
 <meta property="article:published_time" content="2020-03-06T02:39:11.000Z">
-<meta property="article:modified_time" content="2020-03-06T02:42:44.553Z">
+<meta property="article:modified_time" content="2020-03-06T07:13:54.327Z">
 <meta property="article:author" content="zjuturtle">
 <meta property="article:tag" content="ASR">
 <meta property="article:tag" content="Fbank">
@@ -197,7 +197,7 @@
               <span class="post-meta-item-text">Posted on</span>
               
 
-              <time title="Created: 2020-03-06 10:39:11 / Modified: 10:42:44" itemprop="dateCreated datePublished" datetime="2020-03-06T10:39:11+08:00">2020-03-06</time>
+              <time title="Created: 2020-03-06 10:39:11 / Modified: 15:13:54" itemprop="dateCreated datePublished" datetime="2020-03-06T10:39:11+08:00">2020-03-06</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -258,7 +258,7 @@
 <p>算得 <span class="math inline">\(f(i)\)</span> 结果为 9, 16, 25, 35, 47, 63, 81, 104, 132, 165, 206, 256。这里第 256 个点刚好对应了 8 KHz 处。根据这 12 个点可以得到 10 个三角窗如图</p>
 <img src="/2020/03/06/fbank-mfcc/window.jpg" class="">
 <h3 id="计算-filterbank-energy-的对数">4. 计算 filterbank energy 的对数</h3>
-<p>我们取 20-40 个梅尔三角窗（标准是26个），对上一步得到的 257 个系数进行加窗（其实就是点乘），就可以得到 26 个 257 维的能量谱，将这 26 个能量谱累加起来，然后对其求对数，便得到了 filterbank energy。为什么要求对数？因为人耳对声音响度不是线性的。</p>
+<p>我们取 20-40 个梅尔三角窗（标准是26个），对上一步得到的 257 个系数进行加窗（其实就是点乘），就可以得到 26 个 257 维的能量谱，将这 26 个能量谱内的 257 个系数分别加起来，然后对其求对数，便得到了 filterbank energy（26维）。为什么要求对数？因为人耳对声音响度不是线性的。</p>
 <p>实际上，这个就是我们所说的 FBank。</p>
 <h3 id="计算-filterbank-energies-的-dct-系数">5. 计算 filterbank energies 的 DCT 系数</h3>
 <p>对 fbank 计算 DCT。离散余弦变换（DCT）我个人觉得和 DFT 差不多，只是它的结果都是实数而已。公式似乎还有很多种变形，这里就不贴了，详见 <a href="https://zh.wikipedia.org/wiki/%E7%A6%BB%E6%95%A3%E4%BD%99%E5%BC%A6%E5%8F%98%E6%8D%A2" target="_blank" rel="noopener">wiki</a>。</p>
@@ -290,7 +290,10 @@
     <a href="/2020/01/25/hmm-2/" rel="prev" title="隐马尔可夫模型参数训练">
       <i class="fa fa-chevron-left"></i> 隐马尔可夫模型参数训练
     </a></div>
-      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/2020/03/07/viterbi/" rel="next" title="维特比解码算法">
+      维特比解码算法 <i class="fa fa-chevron-right"></i>
+    </a></div>
     </div>
       </footer>
     
@@ -367,7 +370,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">44</span>
+          <span class="site-state-item-count">45</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -377,7 +380,7 @@
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
-        <span class="site-state-item-count">49</span>
+        <span class="site-state-item-count">52</span>
         <span class="site-state-item-name">tags</span>
       </div>
   </nav>

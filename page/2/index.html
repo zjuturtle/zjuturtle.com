@@ -166,6 +166,90 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://zjuturtle.com/2019/04/06/prml-logistic-regression-bayes/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="zjuturtle">
+      <meta itemprop="description" content="瞎几把搞的幸运E">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="zjuturtle's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/04/06/prml-logistic-regression-bayes/" class="post-title-link" itemprop="url">PRML笔记 - Logistic Regression 的贝叶斯方法</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2019-04-06 00:14:20 / Modified: 00:16:36" itemprop="dateCreated datePublished" datetime="2019-04-06T00:14:20+08:00">2019-04-06</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Algorithm/" itemprop="url" rel="index">
+                    <span itemprop="name">Algorithm</span>
+                  </a>
+                </span>
+            </span>
+
+          
+            <span id="/2019/04/06/prml-logistic-regression-bayes/" class="post-meta-item leancloud_visitors" data-flag-title="PRML笔记 - Logistic Regression 的贝叶斯方法" title="Views">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">Views: </span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>实际上对于 Logistic Regression 也是可以应用贝叶斯方法的。但直接应用非常困难。因为在贝叶斯框架下计算后验概率，我们需要对其做归一化的操作。而在 Logistic Regression 中，假设我们有 N 个数据点，那么在似然函数中就会有 N 个 sigmoid 函数连乘。这在归一化时会很麻烦，基本告别解析计算。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2019/04/06/prml-logistic-regression-bayes/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-Hans">
     <link itemprop="mainEntityOfPage" href="http://zjuturtle.com/2019/04/06/prml-laplace-approximation/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -955,91 +1039,6 @@
   
   
 
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-Hans">
-    <link itemprop="mainEntityOfPage" href="http://zjuturtle.com/2018/06/20/docker-run-cmd-entrypoint/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="zjuturtle">
-      <meta itemprop="description" content="瞎几把搞的幸运E">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="zjuturtle's blog">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2018/06/20/docker-run-cmd-entrypoint/" class="post-title-link" itemprop="url">Docker 中 RUN/CMD/ENTRYPOINT 详解</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2018-06-20 17:42:37 / Modified: 17:45:04" itemprop="dateCreated datePublished" datetime="2018-06-20T17:42:37+08:00">2018-06-20</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/TechChatter/" itemprop="url" rel="index">
-                    <span itemprop="name">TechChatter</span>
-                  </a>
-                </span>
-            </span>
-
-          
-            <span id="/2018/06/20/docker-run-cmd-entrypoint/" class="post-meta-item leancloud_visitors" data-flag-title="Docker 中 RUN/CMD/ENTRYPOINT 详解" title="Views">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">Views: </span>
-              <span class="leancloud-visitors-count"></span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>又有一段时间没有写博客了。这一次我在 AWS 的 SageMaker 上去部署训练算法。SageMaker 的 train 和 host 都是在容器内实现的。我个人认为训练的任务放在容器里执行还是很科学的。在较低配置的机器上启动 Juypter Notebook 用于开发，然后在较高配置的集群上使用 Docker 训练算法，计算资源不闲置，用户也省钱。</p>
-<p>本文参(chao)考(xi)了 <a href="https://yeasy.gitbooks.io/docker_practice/content/" target="_blank" rel="noopener">Docker — 从入门到实践</a></p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2018/06/20/docker-run-cmd-entrypoint/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
   </div>
 
   
@@ -1112,7 +1111,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">44</span>
+          <span class="site-state-item-count">45</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -1122,7 +1121,7 @@
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
-        <span class="site-state-item-count">49</span>
+        <span class="site-state-item-count">52</span>
         <span class="site-state-item-name">tags</span>
       </div>
   </nav>
