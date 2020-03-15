@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico">
+  <link rel="mask-icon" href="/images/favicon.ico" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('http://zjuturtle.com').hostname,
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.7.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="这一回我们讲讲如何在 N-gram 模型中使用维特比算法进行连续语音识别。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="N-gram 与 Viterbi 算法">
+<meta property="og:url" content="http://zjuturtle.com/2020/03/16/n-gram-viterbi/index.html">
+<meta property="og:site_name" content="zjuturtle&#39;s blog">
+<meta property="og:description" content="这一回我们讲讲如何在 N-gram 模型中使用维特比算法进行连续语音识别。">
+<meta property="og:image" content="http://zjuturtle.com/2020/03/16/n-gram-viterbi/example.jpg">
+<meta property="article:published_time" content="2020-03-15T17:54:26.000Z">
+<meta property="article:modified_time" content="2020-03-15T17:57:09.511Z">
+<meta property="article:author" content="zjuturtle">
+<meta property="article:tag" content="Algorithm">
+<meta property="article:tag" content="HMM">
+<meta property="article:tag" content="vierbi">
+<meta property="article:tag" content="维特比算法">
+<meta property="article:tag" content="N-gram">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://zjuturtle.com/2020/03/16/n-gram-viterbi/example.jpg">
+
+<link rel="canonical" href="http://zjuturtle.com/2020/03/16/n-gram-viterbi/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>N-gram 与 Viterbi 算法 | zjuturtle's blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">zjuturtle's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://zjuturtle.com/2020/03/16/n-gram-viterbi/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="zjuturtle">
+      <meta itemprop="description" content="瞎几把搞的幸运E">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="zjuturtle's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          N-gram 与 Viterbi 算法
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2020-03-16 01:54:26 / Modified: 01:57:09" itemprop="dateCreated datePublished" datetime="2020-03-16T01:54:26+08:00">2020-03-16</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Algorithm/" itemprop="url" rel="index">
+                    <span itemprop="name">Algorithm</span>
+                  </a>
+                </span>
+            </span>
+
+          
+            <span id="/2020/03/16/n-gram-viterbi/" class="post-meta-item leancloud_visitors" data-flag-title="N-gram 与 Viterbi 算法" title="Views">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">Views: </span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>这一回我们讲讲如何在 N-gram 模型中使用维特比算法进行连续语音识别。</p>
+<a id="more"></a>
+<h2 id="n-gram-模型">N-gram 模型</h2>
+<p>N-gram 本质上是一个统计模型，它的思想很简单。假设一个长度为 <span class="math inline">\(M\)</span> 的词序列为 <span class="math inline">\(w_1^M=\{w_1,...,w_M\}\)</span>，那么我们有</p>
+<p><span class="math display">\[P(W)=\prod_{m=1}^M P(w_m|w_1^{m-1})\]</span></p>
+<p>N-gram 就是把概率 <span class="math inline">\(P(w_m|w_1^{m-1})\)</span> 近似为 <span class="math inline">\(P(w_m|w_{m-n+1}^{m-1})\)</span>。就是说，下一个词的概率只和前 <span class="math inline">\(N\)</span> 个词有关。N-gram 模型也可以看做是 <span class="math inline">\(N-1\)</span> 阶的马尔科夫模型（注意这里是马尔可夫模型，而不是 HMM），它的每个状态只依赖于之前的 <span class="math inline">\(N-1\)</span> 个时刻，而与更久之前的历史无关。</p>
+<p>对于 N-gram 模型，它可以表达为 WFSA，需要有 <span class="math inline">\(|V|^{n-1}\)</span> 个状态以及 <span class="math inline">\(|V|^n\)</span> 个跳转，这里 <span class="math inline">\(|V|\)</span> 为词典的大小，每个状态表示 <span class="math inline">\(N-1\)</span> 个词的历史，而每一个跳转表示出现下一个词的概率。</p>
+<h2 id="搜索空间">搜索空间</h2>
+<p>假设句子 <span class="math inline">\(W\)</span> 由 <span class="math inline">\(M_W\)</span> 个词组成，<span class="math inline">\(W=w_1...w_{M_W}\)</span>。那么我们需要搜索最佳路径如下</p>
+<p><span class="math display">\[\begin{aligned} \hat{W}=&amp;\arg \max_{W \in \omega}\{\sum_{S \in S_W}p(O,S|W)P(W)\} \\
+=&amp;\arg \max_{W \in \omega} \{\sum_{S \in S_W} \prod_{m=1}^{M_W} p(o_{t_{m-1}+1}^{t_m},s_{t_{m-1}+1}^{t_m}|w_m)P(w_m|w_1^{m-1}) \}
+\end{aligned}\]</span></p>
+<p>解释一下，<span class="math inline">\(p(o_a^b,s_a^b|w)\)</span> 表示词 <span class="math inline">\(w\)</span> 沿着状态序列 <span class="math inline">\(s_a,...,s_b\)</span> 生成语音片段 <span class="math inline">\(o_a,...,o_b\)</span> 的概率。<span class="math inline">\(S_W\)</span> 为词序列 <span class="math inline">\(W\)</span> 可以对应的所有合法状态序列。<span class="math inline">\(t_m\)</span> 表示词 <span class="math inline">\(w_m\)</span> 对应的观察的最后一帧的下标，所以 <span class="math inline">\(t_{m-1}+1,...,t_m\)</span> 是 <span class="math inline">\(w_m\)</span> 对应的全部观察序列（<span class="math inline">\(t_m\)</span> 是 <span class="math inline">\(w_m\)</span> 对应的 HMM 终止状态）</p>
+<p>使用 Viterbi 概率来近似，可以把求和变成 max 。求和变求最大，我的理解是：一个词序列可以对应多种状态序列，实际上我们只需要取这个词序列最可能对音的状态序列就可以。因此公式改写如下</p>
+<p><span class="math display">\[\begin{aligned} \hat{W}=&amp; \arg \max_{W \in \omega}\{\sum_{S \in S_W}p(O,S|W)P(W)\} \\
+=&amp;\arg \max_{W \in \omega } \{\max_{S \in S_W}\prod_{m=1}^{M_W} p(o_{t_{m-1}+1}^{t_m},s_{t_{m-1}+1}^{t_m}|w_m)P(w_m|w_1^{m-1})\} \\
+=&amp;\arg \max\{\max_{T \in \tau_W} \prod_{m=1}^{M_W}  \tilde{p}(o_{t_{m-1}+1}^{t_m})P(w_m|w_1^{m-1}) \}
+\end{aligned}\]</span></p>
+<p>这个式子中 <span class="math inline">\(\tau_W\)</span> 代表词序列 <span class="math inline">\(W\)</span> 所有可能的结束帧序列（其实间接表示了一种对齐方式）。换句话说 <span class="math inline">\(T \in \tau_W\)</span> 是一个时间序列 <span class="math inline">\(t_1,...,t_{M_W}\)</span>，表示了词序列 <span class="math inline">\(w_1,...,w_{M_W}\)</span> 每一个词的最后一帧的时间。</p>
+<h2 id="hmm-模型扩展">HMM 模型扩展</h2>
+<p>Viterbi 算法可以高效的估计一个 HMM 模型在给定观测下的最优状态估计，即在上式中，可以高效计算一个词的最优状态序列。但这里我们需要对所有的词序列进行遍历（给定词序列，寻找最佳的时间序列对应方式，再求最大值）。这里我们对 Viterbi 算法进行扩展，即在词之间的增加状态跳转，同时这个跳转会讲语言模型的得分编码进去。</p>
+<p>这样一个扩展后的 HMM 大约会有 <span class="math inline">\(|\overline{S}|*|V|^{n-1}\)</span> 个状态。<span class="math inline">\(|\overline{S}|\)</span> 是每个词的平均状态数，而 <span class="math inline">\(|V|^{n-1}\)</span> 是 N-gram 模型的状态数。同时为了方便，我们还会有一个特殊的开始状态和结束状态。</p>
+<p>下图是一个简单的例子。每个方块代表一个词，词内的声学模型是 3 状态的 HMM（也可以是其他 HMM），每个状态都可以跳转到自身或者下一个状态。方块之间的跳转代表 N-gram 表示的语言模型。注意到这里还有一个特殊的跳转，直接从结束状态跳回至初始状态，方便进行连续的语音识别。</p>
+<img src="/2020/03/16/n-gram-viterbi/example.jpg" class="">
+<p>对上面的 HMM 应用维特比算法（输入的观测为声学概率，寻找最佳状态序列），便可以执行连续识别任务。</p>
+<p>$$ 参考资料</p>
+<p><a href="http://fancyerii.github.io/wfst/overview/" target="_blank" rel="noopener">语音识别系统概述</a></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Algorithm/" rel="tag"># Algorithm</a>
+              <a href="/tags/HMM/" rel="tag"># HMM</a>
+              <a href="/tags/vierbi/" rel="tag"># vierbi</a>
+              <a href="/tags/%E7%BB%B4%E7%89%B9%E6%AF%94%E7%AE%97%E6%B3%95/" rel="tag"># 维特比算法</a>
+              <a href="/tags/N-gram/" rel="tag"># N-gram</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/03/07/dtw/" rel="prev" title="DTW 算法简介">
+      <i class="fa fa-chevron-left"></i> DTW 算法简介
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="gitalk-container"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#n-gram-模型"><span class="nav-number">1.</span> <span class="nav-text">N-gram 模型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#搜索空间"><span class="nav-number">2.</span> <span class="nav-text">搜索空间</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#hmm-模型扩展"><span class="nav-number">3.</span> <span class="nav-text">HMM 模型扩展</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="zjuturtle"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">zjuturtle</p>
+  <div class="site-description" itemprop="description">瞎几把搞的幸运E</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">47</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">54</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/zjuturtle" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;zjuturtle" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:leijinghaog@gmail.com" title="E-Mail → mailto:leijinghaog@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">zjuturtle</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v4.2.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">Theme – <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.7.0
+  </div>
+
+        
+
+
+
+
+
+
+  <script>
+  function leancloudSelector(url) {
+    url = encodeURI(url);
+    return document.getElementById(url).querySelector('.leancloud-visitors-count');
+  }
+  if (CONFIG.page.isPost) {
+    function addCount(Counter) {
+      var visitors = document.querySelector('.leancloud_visitors');
+      var url = decodeURI(visitors.getAttribute('id'));
+      var title = visitors.getAttribute('data-flag-title');
+
+      Counter('get', `/classes/Counter?where=${JSON.stringify({ url })}`)
+        .then(response => response.json())
+        .then(({ results }) => {
+          if (results.length > 0) {
+            var counter = results[0];
+            Counter('put', '/classes/Counter/' + counter.objectId, { time: { '__op': 'Increment', 'amount': 1 } })
+              .then(response => response.json())
+              .then(() => {
+                leancloudSelector(url).innerText = counter.time + 1;
+              })
+              .catch(error => {
+                console.error('Failed to save visitor count', error);
+              })
+          } else {
+              leancloudSelector(url).innerText = 'Counter not initialized! More info at console err msg.';
+              console.error('ATTENTION! LeanCloud counter has security bug, see how to solve it here: https://github.com/theme-next/hexo-leancloud-counter-security. \n However, you can still use LeanCloud without security, by setting `security` option to `false`.');
+            
+          }
+        })
+        .catch(error => {
+          console.error('LeanCloud Counter Error', error);
+        });
+    }
+  } else {
+    function showTime(Counter) {
+      var visitors = document.querySelectorAll('.leancloud_visitors');
+      var entries = [...visitors].map(element => {
+        return decodeURI(element.getAttribute('id'));
+      });
+
+      Counter('get', `/classes/Counter?where=${JSON.stringify({ url: { '$in': entries } })}`)
+        .then(response => response.json())
+        .then(({ results }) => {
+          if (results.length === 0) {
+            document.querySelectorAll('.leancloud_visitors .leancloud-visitors-count').forEach(element => {
+              element.innerText = 0;
+            });
+            return;
+          }
+          for (let item of results) {
+            let { url, time } = item;
+            leancloudSelector(url).innerText = time;
+          }
+          for (let url of entries) {
+            var element = leancloudSelector(url);
+            if (element.innerText == '') {
+              element.innerText = 0;
+            }
+          }
+        })
+        .catch(error => {
+          console.error('LeanCloud Counter Error', error);
+        });
+    }
+  }
+
+  fetch('https://app-router.leancloud.cn/2/route?appId=WPxUE6YkPBut4XJcmskHhlvL-gzGzoHsz')
+    .then(response => response.json())
+    .then(({ api_server }) => {
+      var Counter = (method, url, data) => {
+        return fetch(`https://${api_server}/1.1${url}`, {
+          method: method,
+          headers: {
+            'X-LC-Id': 'WPxUE6YkPBut4XJcmskHhlvL-gzGzoHsz',
+            'X-LC-Key': 'oCVD6rCmlv3Nx4jcOX0UiWNW',
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data)
+        });
+      };
+      if (CONFIG.page.isPost) {
+        if (CONFIG.hostname !== location.hostname) return;
+        addCount(Counter);
+      } else if (document.querySelectorAll('.post-title-link').length >= 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+<script type="text/x-mathjax-config">
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') {
+          next = next.nextSibling;
+        }
+        if (next && next.nodeName.toLowerCase() === 'br') {
+          next.parentNode.removeChild(next);
+        }
+      }
+    });
+  });
+
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      element = document.getElementById(all[i].inputID + '-Frame').parentNode;
+      if (element.nodeName.toLowerCase() == 'li') {
+        element = element.parentNode;
+      }
+      element.classList.add('has-jax');
+    }
+  });
+</script>
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML', () => {
+    MathJax.Hub.Typeset();
+  }, window.MathJax);
+</script>
+
+    
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID: '08e86c9d0536ed791bf9',
+      clientSecret: '0982e8cb7b507eee3022547b44ebc4c4f6f2a944',
+      repo: 'Gitalk',
+      owner: 'AnotherZjuturtle',
+      admin: ['AnotherZjuturtle'],
+      id: 'dd16d4dd7dd77f6d42cacd2ea1fb08bf',
+        language: 'zh-CN',
+      distractionFreeMode: true
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
+
+</body>
+</html>
