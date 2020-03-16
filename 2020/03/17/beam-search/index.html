@@ -46,16 +46,23 @@
   };
 </script>
 
-  <meta name="description" content="瞎几把搞的幸运E">
-<meta property="og:type" content="website">
-<meta property="og:title" content="zjuturtle&#39;s blog">
-<meta property="og:url" content="http://zjuturtle.com/tags/EEG/index.html">
+  <meta name="description" content="上一篇博客我们介绍了基于 N-gram 的 viterbi 解码算法，它的时间复杂度达到了 \(O(|\overline{S}|^2 *|Q|^2*T)\) 其中 \(|\overline{S}|\) 表示每个词内部的平均 HMM 状态数目，\(|Q|\) 表示总的词数目，\(T\) 表示输入序列长度。在大规模连续语音识别系统里， \(|Q|\) 会非常大，因此还需要其他方法进一步减小计算量，这里">
+<meta property="og:type" content="article">
+<meta property="og:title" content="beam-search">
+<meta property="og:url" content="http://zjuturtle.com/2020/03/17/beam-search/index.html">
 <meta property="og:site_name" content="zjuturtle&#39;s blog">
-<meta property="og:description" content="瞎几把搞的幸运E">
+<meta property="og:description" content="上一篇博客我们介绍了基于 N-gram 的 viterbi 解码算法，它的时间复杂度达到了 \(O(|\overline{S}|^2 *|Q|^2*T)\) 其中 \(|\overline{S}|\) 表示每个词内部的平均 HMM 状态数目，\(|Q|\) 表示总的词数目，\(T\) 表示输入序列长度。在大规模连续语音识别系统里， \(|Q|\) 会非常大，因此还需要其他方法进一步减小计算量，这里">
+<meta property="article:published_time" content="2020-03-16T17:04:09.000Z">
+<meta property="article:modified_time" content="2020-03-16T17:05:02.694Z">
 <meta property="article:author" content="zjuturtle">
+<meta property="article:tag" content="Algorithm">
+<meta property="article:tag" content="HMM">
+<meta property="article:tag" content="ASR">
+<meta property="article:tag" content="vierbi">
+<meta property="article:tag" content="beam search">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="http://zjuturtle.com/tags/EEG/">
+<link rel="canonical" href="http://zjuturtle.com/2020/03/17/beam-search/">
 
 
 <script id="page-configurations">
@@ -63,11 +70,11 @@
   CONFIG.page = {
     sidebar: "",
     isHome: false,
-    isPost: false
+    isPost: true
   };
 </script>
 
-  <title>Tag: EEG | zjuturtle's blog</title>
+  <title>beam-search | zjuturtle's blog</title>
   
 
 
@@ -161,54 +168,130 @@
           <div class="content">
             
 
+  <div class="posts-expand">
+      
   
   
-  
-  <div class="post-block">
-    <div class="posts-collapse">
-      <div class="collection-title">
-        <h1 class="collection-header">EEG
-          <small>Tag</small>
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://zjuturtle.com/2020/03/17/beam-search/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="zjuturtle">
+      <meta itemprop="description" content="瞎几把搞的幸运E">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="zjuturtle's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          beam-search
         </h1>
-      </div>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2020-03-17 01:04:09 / Modified: 01:05:02" itemprop="dateCreated datePublished" datetime="2020-03-17T01:04:09+08:00">2020-03-17</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Algorithm/" itemprop="url" rel="index">
+                    <span itemprop="name">Algorithm</span>
+                  </a>
+                </span>
+            </span>
+
+          
+            <span id="/2020/03/17/beam-search/" class="post-meta-item leancloud_visitors" data-flag-title="beam-search" title="Views">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">Views: </span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
-    <div class="collection-year">
-      <h1 class="collection-header">2018</h1>
+        <p>上一篇博客我们介绍了基于 N-gram 的 viterbi 解码算法，它的时间复杂度达到了 <span class="math inline">\(O(|\overline{S}|^2 *|Q|^2*T)\)</span> 其中 <span class="math inline">\(|\overline{S}|\)</span> 表示每个词内部的平均 HMM 状态数目，<span class="math inline">\(|Q|\)</span> 表示总的词数目，<span class="math inline">\(T\)</span> 表示输入序列长度。在大规模连续语音识别系统里， <span class="math inline">\(|Q|\)</span> 会非常大，因此还需要其他方法进一步减小计算量，这里我们介绍一种 beam search 算法。</p>
+<a id="more"></a>
+<h2 id="一些定义">一些定义</h2>
+<p>我们先写出原始 viterbi 算法。假设 N-gram 中的某个词 <span class="math inline">\(p\)</span> 的声学模型 HMM 为 <span class="math inline">\(\theta_p=(S_p,Y_p,A_p,B_p,\Pi_p,F_p)\)</span>。解释一下各个量的含义</p>
+<ul>
+<li><span class="math inline">\(S_p\)</span> 状态集合。</li>
+<li><span class="math inline">\(Y_p\)</span> 输出集合（可观测状态或者输出，可以是连续的，这里可以理解为 fbank ）</li>
+<li><span class="math inline">\(A_p\)</span> 状态转移矩阵。<span class="math inline">\(A_p=a_{ij}\)</span>，<span class="math inline">\(a_{ij}\)</span> 表示从 HMM 状态 <span class="math inline">\(i\)</span> 跳转到状态 <span class="math inline">\(j\)</span> 的概率。满足 <span class="math inline">\(\sum_{j}a_{ij}=1\)</span></li>
+<li><span class="math inline">\(B_p\)</span> 输出概率分布。<span class="math inline">\(B_p=b_s(x)\)</span> 表示状态 <span class="math inline">\(s\)</span> 下随机变量 <span class="math inline">\(x\)</span> 的概率密度函数，满足 <span class="math inline">\(\int_{-\infty}^{\infty} b_s(x)dx = 1\)</span></li>
+<li><span class="math inline">\(\Pi_p\)</span> 初始状态分布。<span class="math inline">\(\Pi_p\)</span></li>
+<li><span class="math inline">\(F_p\)</span> 终止状态集合</li>
+</ul>
+<p>然后我们定义下面两个量</p>
+<ul>
+<li><span class="math inline">\(\tilde{\alpha}(t,p,s)\)</span> 为到 <span class="math inline">\(t\)</span> 帧时， Grammar 状态为 <span class="math inline">\(p\)</span> 并且 HMM 状态为 <span class="math inline">\(s\)</span> 的条件下，不完整路径的 Viterbi 得分</li>
+<li><span class="math inline">\(B(t,p,s)\)</span> 一个回溯用的指针，记录 <span class="math inline">\(t\)</span> 时刻处于 Grammar 状态 <span class="math inline">\(p\)</span> 并且 HMM 状态为 <span class="math inline">\(s\)</span> 时的最可能序列。本质上 <span class="math inline">\(B(t,p,s)\)</span> 记录了一个 pair <span class="math inline">\((\tau, q)\)</span>，其中 <span class="math inline">\(\tau\)</span> 是 Grammar 状态 <span class="math inline">\(p\)</span> 的开始帧，而 <span class="math inline">\(q\)</span> 是最优状态序列里面当前状态(词)之前的状态(词)。如果当前状态是第一个状态，则 <span class="math inline">\(q=0\)</span></li>
+</ul>
+<h2 id="时间同步的-viterbi-beam-搜索算法">时间同步的 Viterbi Beam 搜索算法</h2>
+<p>它在每一个时刻 <span class="math inline">\(t\)</span> 都会计算到目前为止的最高分</p>
+<p><span class="math display">\[L_t^{max} = \max _{p \in Q, s \in S_p} \tilde{\alpha}(t,p,s)\]</span></p>
+<p>这个公式用于剪裁掉目前为止不太有希望的路径，这里可以引入一个参数 <span class="math inline">\(0&lt;\lambda&lt;1\)</span> 去控制。如果 <span class="math inline">\(\tilde{\alpha}(t,p,s)&lt;\lambda L_t^{max}\)</span> 则将这条路径标记为不活跃，并在下一帧处理时抛弃。一般概率我们会在 log 空间内计算，因此允许的最小得分为 <span class="math inline">\(\log L_t^{max}+\log \lambda\)</span>。通常我们把 <span class="math inline">\(\eta=-\log \lambda\)</span> 称为 beam width。除此之外，还有一种裁剪方法是值保留得分最高的 K 条路径，K 也叫作beam width。我们甚至可以把两者结合起来：最多选择 K 条路径，但是如果 K 条路径里还有小于 <span class="math inline">\(\log L_t^{max}+\log \lambda\)</span> 的路径，还是去掉</p>
+<h2 id="参考资料">参考资料</h2>
+<p><a href="http://fancyerii.github.io/wfst/overview/" target="_blank" rel="noopener">语音识别系统概述</a></p>
+
     </div>
 
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+    
+    
+    
 
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2018-06-22T17:42:37+08:00"
-              content="2018-06-22">
-          06-22
-        </time>
-      </div>
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Algorithm/" rel="tag"># Algorithm</a>
+              <a href="/tags/HMM/" rel="tag"># HMM</a>
+              <a href="/tags/ASR/" rel="tag"># ASR</a>
+              <a href="/tags/vierbi/" rel="tag"># vierbi</a>
+              <a href="/tags/beam-search/" rel="tag"># beam search</a>
+          </div>
 
-      <h2 class="post-title">
-          <a class="post-title-link" href="/2018/06/22/lz-complexity/" itemprop="url">
-            <span itemprop="name">Lempel-Ziv complexity 详解</span>
-          </a>
-      </h2>
+        
 
-    </header>
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/03/16/n-gram-viterbi/" rel="prev" title="N-gram 与 Viterbi 算法">
+      <i class="fa fa-chevron-left"></i> N-gram 与 Viterbi 算法
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
   </article>
+  
+  
+  
 
-    </div>
   </div>
-  
-  
-  
-
-  
-
 
 
           </div>
           
+    <div class="comments" id="gitalk-container"></div>
 
 <script>
   window.addEventListener('tabs:register', () => {
@@ -255,6 +338,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一些定义"><span class="nav-number">1.</span> <span class="nav-text">一些定义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#时间同步的-viterbi-beam-搜索算法"><span class="nav-number">2.</span> <span class="nav-text">时间同步的 Viterbi Beam 搜索算法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考资料"><span class="nav-number">3.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -515,6 +599,25 @@
 
   
 
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID: '08e86c9d0536ed791bf9',
+      clientSecret: '0982e8cb7b507eee3022547b44ebc4c4f6f2a944',
+      repo: 'Gitalk',
+      owner: 'AnotherZjuturtle',
+      admin: ['AnotherZjuturtle'],
+      id: '09cedcc8424dbbcc52feb9365cd4451f',
+        language: 'zh-CN',
+      distractionFreeMode: true
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
 
 </body>
 </html>
